@@ -1,0 +1,30 @@
+from IPython.display import HTML
+import swmmio
+import pyswmm
+import pandas as pd
+from swmmio import Model
+
+# path to a SWMM model
+model_path = 'https://raw.githubusercontent.com/USEPA/swmm-nrtestsuite/refs/heads/dev/public/examples/Example1.inp'
+model = swmmio.Model(model_path)
+model.summary
+print(model.summary)
+
+# get the data related to links
+links = model.links.dataframe
+print(links)
+
+model.inp.outfalls
+
+#modify the dataframe
+model.inp.outfalls.loc['J4', 'OutfallType'] = 'FIXED'
+
+#save
+model.inp.save('SWMMIO_Example1.inp')
+
+#new model instance
+example_1 = swmmio.Model('SWMMIO_Example1.inp')
+Nodes = example_1.nodes.dataframe
+print(Nodes)
+
+

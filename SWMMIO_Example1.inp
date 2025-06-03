@@ -1,240 +1,210 @@
 [TITLE]
-
+;;Project Title/Notes
+Example 1
 
 [OPTIONS]
-;;Options            Value
-;;------------------ ------------
+;;Option             Value
 FLOW_UNITS           CFS
 INFILTRATION         HORTON
-FLOW_ROUTING         DYNWAVE
-START_DATE           11/01/2015
-START_TIME           14:00:00
-REPORT_START_DATE    11/01/2015
-REPORT_START_TIME    14:00:00
-END_DATE             11/04/2015
-END_TIME             00:00:00
-SWEEP_START          01/01
-SWEEP_END            12/31
-DRY_DAYS             0
-REPORT_STEP          00:01:00
-WET_STEP             00:05:00
-DRY_STEP             00:05:00
-ROUTING_STEP         1
-ALLOW_PONDING        NO
-INERTIAL_DAMPING     NONE
-VARIABLE_STEP        0.75
-LENGTHENING_STEP     0
-MIN_SURFAREA         12.557
-NORMAL_FLOW_LIMITED  BOTH
-SKIP_STEADY_STATE    NO
-FORCE_MAIN_EQUATION  H-W
+FLOW_ROUTING         KINWAVE
 LINK_OFFSETS         DEPTH
 MIN_SLOPE            0
-MAX_TRIALS           8
-HEAD_TOLERANCE       0.005
+ALLOW_PONDING        NO
+SKIP_STEADY_STATE    NO
+
+START_DATE           01/01/1998
+START_TIME           00:00:00
+REPORT_START_DATE    01/01/1998
+REPORT_START_TIME    00:00:00
+END_DATE             01/02/1998
+END_TIME             12:00:00
+SWEEP_START          1/1
+SWEEP_END            12/31
+DRY_DAYS             5
+REPORT_STEP          01:00:00
+WET_STEP             00:15:00
+DRY_STEP             01:00:00
+ROUTING_STEP         0:01:00
+
+INERTIAL_DAMPING     PARTIAL
+NORMAL_FLOW_LIMITED  BOTH
+FORCE_MAIN_EQUATION  H-W
+VARIABLE_STEP        0.75
+LENGTHENING_STEP     0
+MIN_SURFAREA         0
+MAX_TRIALS           0
+HEAD_TOLERANCE       0
 SYS_FLOW_TOL         5
 LAT_FLOW_TOL         5
-MINIMUM_STEP         0.5
-THREADS              1
+;MINIMUM_STEP         0.5
+;THREADS              1
 
 [EVAPORATION]
-;;Type          Parameters
-;;------------- ----------
-CONSTANT     0.0
-DRY_ONLY     NO
+;;Data Source    Parameters
+;;-------------- ----------------
+CONSTANT         0.0
+DRY_ONLY         NO
 
 [RAINGAGES]
-;;                 Rain      Time   Snow   Data      
-;;Name             Type      Intrvl Catch  Source    
-;;---------------- --------- ------ ------ ----------
-SCS_24h_Type_I_1in INTENSITY 0:15   1.0    TIMESERIES SCS_24h_Type_I_1in
+;;    RainType    TimeIntrvl SnowCatch DataSource   DataSourceName
+RG1   INTENSITY   1:00       1.0       TIMESERIES   TS1         
 
 [SUBCATCHMENTS]
-;;                                                 Total    Pcnt.             Pcnt.    Curb     Snow    
-;;Name           Raingage         Outlet           Area     Imperv   Width    Slope    Length   Pack    
-;;-------------- ---------------- ---------------- -------- -------- -------- -------- -------- --------
-S1               SCS_24h_Type_I_1in J1             1        100      500      0.5      0                        
-S2               SCS_24h_Type_I_1in J2             2        100      500      0.5      0                        
-S3               SCS_24h_Type_I_1in j3             3        100      500      0.5      0                        
+;;  Raingage Outlet Area PercImperv Width PercSlope CurbLength
+1   RG1      9      10   50         500   0.01      0       
+2   RG1      10     10   50         500   0.01      0       
+3   RG1      13     5    50         500   0.01      0       
+4   RG1      22     5    50         500   0.01      0       
+5   RG1      15     15   50         500   0.01      0       
+6   RG1      23     12   10         500   0.01      0       
+7   RG1      19     4    10         500   0.01      0       
+8   RG1      18     10   10         500   0.01      0       
 
 [SUBAREAS]
-;;Subcatchment   N-Imperv   N-Perv     S-Imperv   S-Perv     PctZero    RouteTo    PctRouted 
+;;Subcatchment   N-Imperv   N-Perv     S-Imperv   S-Perv     PctZero    RouteTo    PctRouted
 ;;-------------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-S1               0.01       0.1        0.05       0.05       25         OUTLET    
-S2               0.01       0.1        0.05       0.05       25         OUTLET    
-S3               0.01       0.1        0.05       0.05       25         OUTLET    
+1                0.001      0.10       0.05       0.05       25         OUTLET
+2                0.001      0.10       0.05       0.05       25         OUTLET
+3                0.001      0.10       0.05       0.05       25         OUTLET
+4                0.001      0.10       0.05       0.05       25         OUTLET
+5                0.001      0.10       0.05       0.05       25         OUTLET
+6                0.001      0.10       0.05       0.05       25         OUTLET
+7                0.001      0.10       0.05       0.05       25         OUTLET
+8                0.001      0.10       0.05       0.05       25         OUTLET
 
 [INFILTRATION]
-;;Subcatchment   MaxRate    MinRate    Decay      DryTime    MaxInfil  
+;;Subcatchment   MaxRate    MinRate    Decay      DryTime    MaxInfil
 ;;-------------- ---------- ---------- ---------- ---------- ----------
-S1               3          0.5        4          7          0         
-S2               3          0.5        4          7          0         
-S3               3          0.5        4          7          0         
+1                0.35       0.25       4.14       0.50       0
+2                0.7        0.3        4.14       0.50       0
+3                0.7        0.3        4.14       0.50       0
+4                0.7        0.3        4.14       0.50       0
+5                0.7        0.3        4.14       0.50       0
+6                0.7        0.3        4.14       0.50       0
+7                0.7        0.3        4.14       0.50       0
+8                0.7        0.3        4.14       0.50       0
 
 [JUNCTIONS]
-;;               Invert     Max.       Init.      Surcharge  Ponded    
-;;Name           Elev.      Depth      Depth      Depth      Area      
-;;-------------- ---------- ---------- ---------- ---------- ----------
-J1               20.728     15         0          0          0         
-J3               6.547      15         0          0          0         
+;;   InvertElev MaxDepth InitDepth SurchargeDepth PondedArea
+9    1000       3        0         0              0       
+10   995        3        0         0              0       
+13   995        3        0         0              0       
+14   990        3        0         0              0       
+15   987        3        0         0              0       
+16   985        3        0         0              0       
+17   980        3        0         0              0       
+19   1010       3        0         0              0       
+20   1005       3        0         0              0       
+21   990        3        0         0              0       
+22   987        3        0         0              0       
+23   990        3        0         0              0       
+24   984        3        0         0              0       
 
 [OUTFALLS]
 ;;   InvertElev OutfallType StageOrTimeseries
-J4   0          FIXED       NO             
-
-[STORAGE]
-;;               Invert   Max.     Init.    Storage    Curve                      Ponded   Evap.   
-;;Name           Elev.    Depth    Depth    Curve      Params                     Area     Frac.    Infiltration parameters
-;;-------------- -------- -------- -------- ---------- -------- -------- -------- -------- -------- -----------------------
-J2               13.392   15       0        FUNCTIONAL 1000     0        0        0        0       
+18    975.0     FREE        NO             
+J4              FIXED                      
 
 [CONDUITS]
-;;               Inlet            Outlet                      Manning    Inlet      Outlet     Init.      Max.      
-;;Name           Node             Node             Length     N          Offset     Offset     Flow       Flow      
-;;-------------- ---------------- ---------------- ---------- ---------- ---------- ---------- ---------- ----------
-C1:C2            J1               J2               244.63     0.01       0          0          0          0         
-
-[PUMPS]
-;;               Inlet            Outlet           Pump             Init.  Startup  Shutoff 
-;;Name           Node             Node             Curve            Status Depth    Depth   
-;;-------------- ---------------- ---------------- ---------------- ------ -------- --------
-C2               J2               J3               *                ON     0        0       
-
-[WEIRS]
-;;               Inlet            Outlet           Weir         Crest      Disch.     Flap End      End       
-;;Name           Node             Node             Type         Height     Coeff.     Gate Con.     Coeff.     Surcharge  RoadWidth  RoadSurf  
-;;-------------- ---------------- ---------------- ------------ ---------- ---------- ---- -------- ---------- ---------- ---------- ----------
-C3               J3               J4               TRANSVERSE   0          3.33       NO   0        0          NO        
+;;   InletNode OutletNode Length Roughness InOffset OutOffset InitFlow MaxFlow
+1    9         10         400    0.01      0        0         0        0    
+4    19        20         200    0.01      0        0         0        0    
+5    20        21         200    0.01      0        0         0        0    
+6    10        21         400    0.01      0        1         0        0    
+7    21        22         300    0.01      1        1         0        0    
+8    22        16         300    0.01      0        0         0        0    
+10   17        18         400    0.01      0        0         0        0    
+11   13        14         400    0.01      0        0         0        0    
+12   14        15         400    0.01      0        0         0        0    
+13   15        16         400    0.01      0        0         0        0    
+14   23        24         400    0.01      0        0         0        0    
+15   16        24         100    0.01      0        0         0        0    
+16   24        17         400    0.01      0        0         0        0    
 
 [XSECTIONS]
-;;Link           Shape        Geom1            Geom2      Geom3      Geom4      Barrels   
-;;-------------- ------------ ---------------- ---------- ---------- ---------- ----------
-C1:C2            CIRCULAR     1                0          0          0          1                    
-C3               RECT_OPEN    5                1          0          0         
+;;Link           Shape        Geom1            Geom2      Geom3      Geom4      Barrels    Culvert
+;;-------------- ------------ ---------------- ---------- ---------- ---------- ---------- ----------
+1                CIRCULAR     1.5              0          0          0          1
+4                CIRCULAR     1                0          0          0          1
+5                CIRCULAR     1                0          0          0          1
+6                CIRCULAR     1                0          0          0          1
+7                CIRCULAR     2                0          0          0          1
+8                CIRCULAR     2                0          0          0          1
+10               CIRCULAR     2                0          0          0          1
+11               CIRCULAR     1.5              0          0          0          1
+12               CIRCULAR     1.5              0          0          0          1
+13               CIRCULAR     1.5              0          0          0          1
+14               CIRCULAR     1                0          0          0          1
+15               CIRCULAR     2                0          0          0          1
+16               CIRCULAR     2                0          0          0          1
 
-[LOSSES]
-;;Link           Inlet      Outlet     Average    Flap Gate  SeepageRate
-;;-------------- ---------- ---------- ---------- ---------- ----------
+[POLLUTANTS]
+;;Name           Units  Crain      Cgw        Crdii      Kdecay     SnowOnly   Co-Pollutant     Co-Frac    Cdwf       Cinit
+;;-------------- ------ ---------- ---------- ---------- ---------- ---------- ---------------- ---------- ---------- ----------
+TSS              MG/L   0.0        0.0        0          0.0        NO         *                0.0        0          0
+Lead             UG/L   0.0        0.0        0          0.0        NO         TSS              0.2        0          0
 
-[INFLOWS]
-;;                                                 Param    Units    Scale    Baseline Baseline
-;;Node           Parameter        Time Series      Type     Factor   Factor   Value    Pattern
-;;-------------- ---------------- ---------------- -------- -------- -------- -------- --------
-J1               FLOW             ""               FLOW     1.0      1        1                
-J3               Flow             ""               FLOW     1.0      1        1                
-J2               FLOW             ""               FLOW     1.0      1        1                
+[LANDUSES]
+;;               Sweeping   Fraction   Last
+;;Name           Interval   Available  Swept
+;;-------------- ---------- ---------- ----------
+Residential
+Undeveloped
 
-[DWF]
-;;                                Average    Time      
-;;Node           Parameter        Value      Patterns  
-;;-------------- ---------------- ---------- ----------
-J1               FLOW             8          "" "" "" ""
+[COVERAGES]
+;;Subcatchment   Land Use         Percent
+;;-------------- ---------------- ----------
+1                Residential      100.00
+2                Residential      50.00
+2                Undeveloped      50.00
+3                Residential      100.00
+4                Residential      50.00
+4                Undeveloped      50.00
+5                Residential      100.00
+6                Undeveloped      100.00
+7                Undeveloped      100.00
+8                Undeveloped      100.00
+
+[LOADINGS]
+;;Subcatchment   Pollutant        Buildup
+;;-------------- ---------------- ----------
+
+[BUILDUP]
+;;Land Use       Pollutant        Function   Coeff1     Coeff2     Coeff3     Per Unit
+;;-------------- ---------------- ---------- ---------- ---------- ---------- ----------
+Residential      TSS              SAT        50         0          2          AREA
+Residential      Lead             NONE       0          0          0          AREA
+Undeveloped      TSS              SAT        100        0          3          AREA
+Undeveloped      Lead             NONE       0          0          0          AREA
+
+[WASHOFF]
+;;Land Use       Pollutant        Function   Coeff1     Coeff2     SweepRmvl  BmpRmvl
+;;-------------- ---------------- ---------- ---------- ---------- ---------- ----------
+Residential      TSS              EXP        0.1        1          0          0
+Residential      Lead             EMC        0          0          0          0
+Undeveloped      TSS              EXP        0.1        0.7        0          0
+Undeveloped      Lead             EMC        0          0          0          0
 
 [TIMESERIES]
-;;Name           Date       Time       Value     
+;;Name           Date       Time       Value
 ;;-------------- ---------- ---------- ----------
-;SCS_24h_Type_I_1in design storm, total rainfall = 1 in, rain units = in/hr.
-SCS_24h_Type_I_1in            0:00       0.0175    
-SCS_24h_Type_I_1in            0:15       0.0175    
-SCS_24h_Type_I_1in            0:30       0.0175    
-SCS_24h_Type_I_1in            0:45       0.0175    
-SCS_24h_Type_I_1in            1:00       0.0175    
-SCS_24h_Type_I_1in            1:15       0.0175    
-SCS_24h_Type_I_1in            1:30       0.0175    
-SCS_24h_Type_I_1in            1:45       0.0175    
-SCS_24h_Type_I_1in            2:00       0.0205    
-SCS_24h_Type_I_1in            2:15       0.0205    
-SCS_24h_Type_I_1in            2:30       0.0205    
-SCS_24h_Type_I_1in            2:45       0.0205    
-SCS_24h_Type_I_1in            3:00       0.0205    
-SCS_24h_Type_I_1in            3:15       0.0205    
-SCS_24h_Type_I_1in            3:30       0.0205    
-SCS_24h_Type_I_1in            3:45       0.0205    
-SCS_24h_Type_I_1in            4:00       0.0245    
-SCS_24h_Type_I_1in            4:15       0.0245    
-SCS_24h_Type_I_1in            4:30       0.0245    
-SCS_24h_Type_I_1in            4:45       0.0245    
-SCS_24h_Type_I_1in            5:00       0.0245    
-SCS_24h_Type_I_1in            5:15       0.0245    
-SCS_24h_Type_I_1in            5:30       0.0245    
-SCS_24h_Type_I_1in            5:45       0.0245    
-SCS_24h_Type_I_1in            6:00       0.031     
-SCS_24h_Type_I_1in            6:15       0.031     
-SCS_24h_Type_I_1in            6:30       0.031     
-SCS_24h_Type_I_1in            6:45       0.031     
-SCS_24h_Type_I_1in            7:00       0.038     
-SCS_24h_Type_I_1in            7:15       0.038     
-SCS_24h_Type_I_1in            7:30       0.038     
-SCS_24h_Type_I_1in            7:45       0.038     
-SCS_24h_Type_I_1in            8:00       0.05      
-SCS_24h_Type_I_1in            8:15       0.05      
-SCS_24h_Type_I_1in            8:30       0.07      
-SCS_24h_Type_I_1in            8:45       0.07      
-SCS_24h_Type_I_1in            9:00       0.098     
-SCS_24h_Type_I_1in            9:15       0.098     
-SCS_24h_Type_I_1in            9:30       0.236     
-SCS_24h_Type_I_1in            9:45       0.612     
-SCS_24h_Type_I_1in            10:00      0.136     
-SCS_24h_Type_I_1in            10:15      0.136     
-SCS_24h_Type_I_1in            10:30      0.082     
-SCS_24h_Type_I_1in            10:45      0.082     
-SCS_24h_Type_I_1in            11:00      0.06      
-SCS_24h_Type_I_1in            11:15      0.06      
-SCS_24h_Type_I_1in            11:30      0.06      
-SCS_24h_Type_I_1in            11:45      0.052     
-SCS_24h_Type_I_1in            12:00      0.048     
-SCS_24h_Type_I_1in            12:15      0.048     
-SCS_24h_Type_I_1in            12:30      0.042     
-SCS_24h_Type_I_1in            12:45      0.042     
-SCS_24h_Type_I_1in            13:00      0.042     
-SCS_24h_Type_I_1in            13:15      0.042     
-SCS_24h_Type_I_1in            13:30      0.038     
-SCS_24h_Type_I_1in            13:45      0.038     
-SCS_24h_Type_I_1in            14:00      0.0315    
-SCS_24h_Type_I_1in            14:15      0.0315    
-SCS_24h_Type_I_1in            14:30      0.0315    
-SCS_24h_Type_I_1in            14:45      0.0315    
-SCS_24h_Type_I_1in            15:00      0.0315    
-SCS_24h_Type_I_1in            15:15      0.0315    
-SCS_24h_Type_I_1in            15:30      0.0315    
-SCS_24h_Type_I_1in            15:45      0.0315    
-SCS_24h_Type_I_1in            16:00      0.024     
-SCS_24h_Type_I_1in            16:15      0.024     
-SCS_24h_Type_I_1in            16:30      0.024     
-SCS_24h_Type_I_1in            16:45      0.024     
-SCS_24h_Type_I_1in            17:00      0.024     
-SCS_24h_Type_I_1in            17:15      0.024     
-SCS_24h_Type_I_1in            17:30      0.024     
-SCS_24h_Type_I_1in            17:45      0.024     
-SCS_24h_Type_I_1in            18:00      0.024     
-SCS_24h_Type_I_1in            18:15      0.024     
-SCS_24h_Type_I_1in            18:30      0.024     
-SCS_24h_Type_I_1in            18:45      0.024     
-SCS_24h_Type_I_1in            19:00      0.024     
-SCS_24h_Type_I_1in            19:15      0.024     
-SCS_24h_Type_I_1in            19:30      0.024     
-SCS_24h_Type_I_1in            19:45      0.024     
-SCS_24h_Type_I_1in            20:00      0.0185    
-SCS_24h_Type_I_1in            20:15      0.0185    
-SCS_24h_Type_I_1in            20:30      0.0185    
-SCS_24h_Type_I_1in            20:45      0.0185    
-SCS_24h_Type_I_1in            21:00      0.0185    
-SCS_24h_Type_I_1in            21:15      0.0185    
-SCS_24h_Type_I_1in            21:30      0.0185    
-SCS_24h_Type_I_1in            21:45      0.0185    
-SCS_24h_Type_I_1in            22:00      0.0185    
-SCS_24h_Type_I_1in            22:15      0.0185    
-SCS_24h_Type_I_1in            22:30      0.0185    
-SCS_24h_Type_I_1in            22:45      0.0185    
-SCS_24h_Type_I_1in            23:00      0.0185    
-SCS_24h_Type_I_1in            23:15      0.0185    
-SCS_24h_Type_I_1in            23:30      0.0185    
-SCS_24h_Type_I_1in            23:45      0.0185    
-SCS_24h_Type_I_1in            24:00      0         
+;RAINFALL
+TS1                         0:00       0.0
+TS1                         1:00       0.25
+TS1                         2:00       0.5
+TS1                         3:00       0.8
+TS1                         4:00       0.4
+TS1                         5:00       0.1
+TS1                         6:00       0.0
+TS1                         27:00      0.0
+TS1                         28:00      0.4
+TS1                         29:00      0.2
+TS1                         30:00      0.0
 
 [REPORT]
-INPUT      YES
-CONTROLS   YES
+;;Reporting Options
+INPUT      NO
+CONTROLS   NO
 SUBCATCHMENTS ALL
 NODES ALL
 LINKS ALL
@@ -242,35 +212,31 @@ LINKS ALL
 [TAGS]
 
 [MAP]
-DIMENSIONS       -100.0356        -181.9785        708.1256         213.8785        
-UNITS            Feet
+DIMENSIONS 0.000 0.000 10000.000 10000.000
+Units      None
 
 [COORDINATES]
-;;   X         Y         
-J1   0.0       0.0     
-J3   459.058   -113.145
-J4   671.391   -163.985
-J2   238.75    -53.332 
+;;   X         Y        
+9    4042.11   9600.0 
+10   4105.26   6947.37
+13   2336.84   4357.89
+14   3157.89   4294.74
+15   3221.05   3242.11
+16   4821.05   3326.32
+17   6252.63   2147.37
+19   7768.42   6736.84
+20   5957.89   6589.47
+21   4926.32   6105.26
+22   4421.05   4715.79
+23   6484.21   3978.95
+24   5389.47   3031.58
+18   6631.58   505.26 
 
-[POLYGONS]
-;;Subcatchment   X-Coord          Y-Coord         
-;;-------------- ---------------- ----------------
-S1               110.154          195.885         
-S1               110.154          47.351          
-S1               -56.323          42.367          
-S1               -63.301          181.928         
-S1               110.154          195.885         
-S2               394.261          131.088         
-S2               410.211          -20.436         
-S2               245.728          -19.439         
-S2               235.759          110.154         
-S2               394.261          131.088         
-S3               660.425          55.326          
-S3               657.435          -104.173        
-S3               519.867          -96.198         
-S3               509.898          50.342          
-S3               660.425          55.326          
+[VERTICES]
+;;   X         Y        
+10   6673.68   1368.42
 
 [SYMBOLS]
-;;Gage           X-Coord          Y-Coord         
-;;-------------- ---------------- ----------------
+;;Gage           X-Coord            Y-Coord
+;;-------------- ------------------ ------------------
+RG1              10084.210          8210.530
