@@ -4,8 +4,11 @@ import pyswmm
 import pandas as pd
 from swmmio import Model
 
-# path to a SWMM model
-model_path = 'https://raw.githubusercontent.com/USEPA/swmm-nrtestsuite/refs/heads/dev/public/examples/Example1.inp'
+# path to my SWMM model
+model_path = '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp'
+
+#test model
+#model_path = 'https://raw.githubusercontent.com/USEPA/swmm-nrtestsuite/refs/heads/dev/public/examples/Example1.inp'
 model = swmmio.Model(model_path)
 model.summary
 print(model.summary)
