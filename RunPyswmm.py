@@ -1,18 +1,24 @@
 import pyswmm
 import pandas as pd
-import networkx as nx
 import swmmio
 from IPython.display import HTML
 import matplotlib.pyplot as plt
 import datetime as dt
 import matplotlib.dates as mdates
 from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
+import numpy as np
+import pandas as pd
+import time
+from datetime import datetime
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
 
 
-node_ids = ["J338S", "J253S", "J366S"]
+node_ids = ["J338-S", "J253-S", "J366-S",]
+
 scenarios = {
     'base': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp",
     'BGN' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGN.inp",
@@ -25,7 +31,7 @@ scenarios = {
 ## BASE v19 SIM ------------------------------------------------------------------------------------------------------------
 # Initialize dictionaries for storing data from each scenario, for each node, for each property
 # function to run pyswmm and save outputs as dict
-def run_pyswmm(inp_path):
+def run_pyswmm(inp_path, node_ids):
     output = {node: {'depth': [], 'flow': []} for node in node_ids}
     time_stamps = []
 # run the BASE simulation, instantiate BE nodes
@@ -37,8 +43,8 @@ def run_pyswmm(inp_path):
         for step in enumerate(sim):
             time_stamps.append(sim.current_time)
             for node_id, node in nodes.items(): # store node data in dictionary
-                output[node]['depth'].append(node.depth*ft_to_m)
-                output[node]['flowrate'].append(node.total_inflow*cfs_to_cms)
+                output[node_id]['depth'].append(node.depth*ft_to_m)
+                output[node_id]['flow'].append(node.total_inflow*cfs_to_cms)
 
         # Construct DataFrame
         df = pd.DataFrame({'timestamp': time_stamps})
@@ -48,207 +54,54 @@ def run_pyswmm(inp_path):
 
         return df
 
-    # Run all scenarios and store results
-    scenario_results = {}
-    for scenario_name, inp_path in scenarios.items():
-        print(f"Running scenario: {scenario_name}")
-        scenario_results[scenario_name] = run_pyswmm(inp_path, node_ids)
+# Run all scenarios and store results
+scenario_results = {}
+for scenario_name, inp_path in scenarios.items():
+    print(f"Running scenario: {scenario_name}")
+    scenario_results[scenario_name] = run_pyswmm(inp_path, node_ids)
 
-#combined_df = pd.concat(scenarios, names=['scenario', 'row'])
-#print(combined_df.head())
+# Optional: Combine all into a single DataFrame with multi-index
+combined_df = pd.concat(scenario_results, names=['scenario', 'row'])
+
+# print(scenario_results['BGN'].tail())
+
+## rainfall data--------------------------------------------------------------------------------------------------------
+
+df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
+
+# combine date and time, convert to datetime
+df['dt'] = pd.to_datetime(df['date'].astype(str) + ' ' + df['time'].astype(str))
+
+#rainfall (inches *2.54 for plotting in cm)
+df['rain_cm'] = df['rain_inches']*2.54
+dt = df['dt']
+rain_cm = df['rain_cm']
+
+## Plotting------------------------------------------------------------------------------------------------------------
+
+# plot flow (in CMS) across scenarios
+fig, ax1 = plt.subplots(figsize=(10, 5))
+for scenario in scenarios.keys():
+    df = combined_df.loc[scenario]
+    ax1.plot(df['timestamp'], df['J338-S_flow'], label=scenario)
+
+ax2 = ax1.twinx()
+ax2.plot(dt, rain_cm, color='b')
+ax2.set_ylim(-0.05,5)
+ax2.invert_yaxis()
+ax2.set_ylabel('Precipitation (cm)', color='b')
+
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+ax1.set_xlabel('Time of Day')
+ax1.set_ylabel('Flow (cms)')
+ax1.set_title('June 27, 2023: J338-S Flow Across Scenarios')
+ax1.legend('center right')
+ax1.grid(True)
+plt.tight_layout()
+plt.show()
+
 '''
-## BGN v19 SIM ---------------------------------------------------------------------------------------------------------
-# Initialize Lists for storing data
-time_stamps_BGN = []
-J338S_depth_BGN = []
-J253S_depth_BGN = []
-J366S_depth_BGN = []
-J338S_flwrt_BGN = []
-J253S_flwrt_BGN = []
-J366S_flwrt_BGN = []
-
-#run the simulation, instantiate BE nodes
-with Simulation(r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGN.inp") as sim:
-    J338S_BGN = Nodes(sim)['J338-S']
-    J253S_BGN = Nodes(sim)['J253-S']
-    J366S_BGN = Nodes(sim)['J366-S']
-
-#lets python access sim during run (i think)
-    sim.step_advance(300)
-
-# Launch simulation
-    for ind, step in enumerate(sim):
-        time_stamps_BGN.append(sim.current_time)
-        J338S_depth_BGN.append(J338S_BGN.depth)
-        J253S_depth_BGN.append(J253S_BGN.depth)
-        J366S_depth_BGN.append(J366S_BGN.depth)
-        J338S_flwrt_BGN.append(J338S_BGN.total_inflow * cfs_to_cms)
-        J253S_flwrt_BGN.append(J253S_BGN.total_inflow * cfs_to_cms)
-        J366S_flwrt_BGN.append(J366S_BGN.total_inflow * cfs_to_cms)
-
-## Inlets v19 SIM ------------------------------------------------------------------------------------------------------
-# Initialize Lists for storing data
-time_stamps_inlets = []
-J338S_depth_inlets = []
-J253S_depth_inlets = []
-J366S_depth_inlets = []
-J338S_flwrt_inlets = []
-J253S_flwrt_inlets = []
-J366S_flwrt_inlets = []
-
-# run the simulation, instantiate BE nodes
-with Simulation(r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp") as sim:
-    J338S_inlet = Nodes(sim)['J338-S']
-    J253S_inlet = Nodes(sim)['J253-S']
-    J366S_inlet = Nodes(sim)['J366-S']
-
-#lets python access sim during run (i think)
-    sim.step_advance(300)
-
-# Launch simulation
-    for ind, step in enumerate(sim):
-        time_stamps_inlets.append(sim.current_time)
-        J338S_depth_inlets.append(J338S_inlet.depth)
-        J253S_depth_inlets.append(J253S_inlet.depth)
-        J366S_depth_inlets.append(J366S_inlet.depth)
-        J338S_flwrt_inlets.append(J338S_inlet.total_inflow * cfs_to_cms)
-        J253S_flwrt_inlets.append(J253S_inlet.total_inflow * cfs_to_cms)
-        J366S_flwrt_inlets.append(J366S_inlet.total_inflow * cfs_to_cms)
-
-## 3BGN v19 SIM ---------------------------------------------------------------------------------------------------------
-# Initialize Lists for storing data
-time_stamps_3BGN = []
-J338S_depth_3BGN = []
-J253S_depth_3BGN = []
-J366S_depth_3BGN = []
-J338S_flwrt_3BGN = []
-J253S_flwrt_3BGN = []
-J366S_flwrt_3BGN = []
-
-#run the simulation, instantiate BE nodes
-with Simulation(r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGNx3.inp") as sim:
-    J338S_3BGN = Nodes(sim)['J338-S']
-    J253S_3BGN = Nodes(sim)['J253-S']
-    J366S_3BGN = Nodes(sim)['J366-S']
-
-#lets python access sim during run (i think)
-    sim.step_advance(300)
-
-# Launch simulation
-    for ind, step in enumerate(sim):
-        time_stamps_3BGN.append(sim.current_time)
-        J338S_depth_3BGN.append(J338S_3BGN.depth)
-        J253S_depth_3BGN.append(J253S_3BGN.depth)
-        J366S_depth_3BGN.append(J366S_3BGN.depth)
-        J338S_flwrt_3BGN.append(J338S_3BGN.total_inflow * cfs_to_cms)
-        J253S_flwrt_3BGN.append(J253S_3BGN.total_inflow * cfs_to_cms)
-        J366S_flwrt_3BGN.append(J366S_3BGN.total_inflow * cfs_to_cms)
-
-## GreenMaxxing v19 SIM ---------------------------------------------------------------------------------------------------------
-# Initialize Lists for storing data
-time_stamps_GM = []
-J338S_depth_GM = []
-J253S_depth_GM = []
-J366S_depth_GM = []
-J338S_flwrt_GM = []
-J253S_flwrt_GM = []
-J366S_flwrt_GM = []
-
-#run the simulation, instantiate BE nodes
-with Simulation(r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing.inp") as sim:
-    J338S_GM = Nodes(sim)['J338-S']
-    J253S_GM = Nodes(sim)['J253-S']
-    J366S_GM = Nodes(sim)['J366-S']
-
-#lets python access sim during run (i think)
-    sim.step_advance(300)
-
-# Launch simulation
-    for ind, step in enumerate(sim):
-        time_stamps_GM.append(sim.current_time)
-        J338S_depth_GM.append(J338S_GM.depth)
-        J253S_depth_GM.append(J253S_GM.depth)
-        J366S_depth_GM.append(J366S_GM.depth)
-        J338S_flwrt_GM.append(J338S_GM.total_inflow * cfs_to_cms)
-        J253S_flwrt_GM.append(J253S_GM.total_inflow * cfs_to_cms)
-        J366S_flwrt_GM.append(J366S_GM.total_inflow * cfs_to_cms)
-
-## GreenMaxxing + inlets v19 SIM ---------------------------------------------------------------------------------------------------------
-# Initialize Lists for storing data
-time_stamps_GMI = []
-J338S_depth_GMI = []
-J253S_depth_GMI = []
-J366S_depth_GMI = []
-J338S_flwrt_GMI = []
-J253S_flwrt_GMI = []
-J366S_flwrt_GMI = []
-
-#run the simulation, instantiate BE nodes
-with Simulation(r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing+inlets.inp") as sim:
-    J338S_GMI = Nodes(sim)['J338-S']
-    J253S_GMI = Nodes(sim)['J253-S']
-    J366S_GMI = Nodes(sim)['J366-S']
-
-#lets python access sim during run (i think)
-    sim.step_advance(300)
-
-# Launch simulation
-    for ind, step in enumerate(sim):
-        time_stamps_GMI.append(sim.current_time)
-        J338S_depth_GMI.append(J338S_GMI.depth)
-        J253S_depth_GMI.append(J253S_GMI.depth)
-        J366S_depth_GMI.append(J366S_GMI.depth)
-        J338S_flwrt_GMI.append(J338S_GMI.total_inflow * cfs_to_cms)
-        J253S_flwrt_GMI.append(J253S_GMI.total_inflow * cfs_to_cms)
-        J366S_flwrt_GMI.append(J366S_GMI.total_inflow * cfs_to_cms)
-
-
-# Organize data into dictionaries for easier plotting
-time_stamps_dict = {
-    "Base": time_stamps,
-    "BGN": time_stamps_BGN,
-    "BGNx3": time_stamps_3BGN,
-    "Inlets": time_stamps_inlets,
-    "GreenMaxxed": time_stamps_GM,
-    "GreenMaxxed_Inlets": time_stamps_GMI
-
-}
-
-depth_data = {
-    "Base": {
-        "J338S": J338S_depth,
-        "J253S": J253S_depth,
-        "J366S": J366S_depth
-    },
-    "BGN": {
-        "J338S": J338S_depth_BGN,
-        "J253S": J253S_depth_BGN,
-        "J366S": J366S_depth_BGN
-    },
-    "BGNx3": {
-        "J338S": J338S_depth_3BGN,
-        "J253S": J253S_depth_3BGN,
-        "J366S": J366S_depth_3BGN
-    },
-    "GM": {
-        "J338S": J338S_depth_GM,
-        "J253S": J253S_depth_GM,
-        "J366S": J366S_depth_GM
-    },
-    "Inlets": {
-        "J338S": J338S_depth_inlets,
-        "J253S": J253S_depth_inlets,
-        "J366S": J366S_depth_inlets
-    },
-    "GMI": {
-        "J338S": J338S_depth_GMI,
-        "J253S": J253S_depth_GMI,
-        "J366S": J366S_depth_GMI
-    }
-}
-
 #pull out max depths
-
 max_depths = {}
 
 for scenario, node_dict in depth_data.items():
