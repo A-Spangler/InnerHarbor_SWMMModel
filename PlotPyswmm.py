@@ -1,11 +1,8 @@
+# How to make this run wihtout accessing the pyswmm simulation every time?
+
 import pyswmm
 import pandas as pd
 import swmmio
-from IPython.display import HTML
-import matplotlib.pyplot as plt
-import datetime as dt
-import matplotlib.dates as mdates
-from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
 import numpy as np
 import pandas as pd
 import time
@@ -13,58 +10,10 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
-ft_to_m = 12*2.54*(1/100)
+# read in data from RunPyswmm.py
+combined_df = pd.read_csv('6_27_2023_simV19.csv')
 
-
-node_ids = ["J338-S", "J253-S", "J366-S",]
-
-scenarios = {
-    'base': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp",
-    'BGN' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGN.inp",
-    'BGNx3' : "/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGNx3.inp",
-    'In': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp",
-    'GM': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing.inp",
-    'GM+In' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing+inlets.inp"
-}
-
-## BASE v19 SIM ------------------------------------------------------------------------------------------------------------
-# Initialize dictionaries for storing data from each scenario, for each node, for each property
-# function to run pyswmm and save outputs as dict
-def run_pyswmm(inp_path, node_ids):
-    output = {node: {'depth': [], 'flow': []} for node in node_ids}
-    time_stamps = []
-# run the BASE simulation, instantiate BE nodes
-    with Simulation(inp_path) as sim:
-        nodes = {node_id: Nodes(sim)[node_id] for node_id in node_ids}
-        sim.step_advance(300) #lets python access sim during run (300 sec = 5min inetervals)
-
-        # Launch BASE simulation
-        for step in enumerate(sim):
-            time_stamps.append(sim.current_time)
-            for node_id, node in nodes.items(): # store node data in dictionary
-                output[node_id]['depth'].append(node.depth*ft_to_m)
-                output[node_id]['flow'].append(node.total_inflow*cfs_to_cms)
-
-        # Construct DataFrame
-        df = pd.DataFrame({'timestamp': time_stamps})
-        for node_id in node_ids:
-            df[f'{node_id}_depth'] = output[node_id]['depth']
-            df[f'{node_id}_flow'] = output[node_id]['flow']
-
-        return df
-
-# Run all scenarios and store results
-scenario_results = {}
-for scenario_name, inp_path in scenarios.items():
-    print(f"Running scenario: {scenario_name}")
-    scenario_results[scenario_name] = run_pyswmm(inp_path, node_ids)
-
-# Optional: Combine all into a single DataFrame with multi-index
-combined_df = pd.concat(scenario_results, names=['scenario', 'row'])
-combined_df.to_csv('6_27_2023_simV19.csv', index=False)
-
-## rainfall data--------------------------------------------------------------------------------------------------------
+## read in rainfall data--------------------------------------------------------------------------------------------------------
 df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
 
 # combine date and time, convert to datetime
@@ -92,12 +41,10 @@ ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
 ax1.set_xlabel('Time of Day')
 ax1.set_ylabel('Flow (cms)')
 ax1.set_title('June 27, 2023: J338-S Flow Across Scenarios')
-ax1.legend(loc='center left')
+ax1.legend()
 ax1.grid(True)
 plt.tight_layout()
 plt.show()
-
-
 
 '''
 #pull out max depths
