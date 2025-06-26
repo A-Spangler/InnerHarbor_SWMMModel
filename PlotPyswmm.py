@@ -14,16 +14,31 @@ import matplotlib.dates as mdates
 combined_df = pd.read_csv('6_27_2023_simV19.csv')
 
 ## read in rainfall data--------------------------------------------------------------------------------------------------------
-df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
+df_rain = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
 
 # combine date and time, convert to datetime
-df['dt'] = pd.to_datetime(df['date'].astype(str) + ' ' + df['time'].astype(str))
-
+df_rain['dt'] = pd.to_datetime(df_rain['date'].astype(str) + ' ' + df_rain['time'].astype(str))
+df_rain.set_index('dt', inplace=True)
 #rainfall (inches *2.54 for plotting in cm)
-df['rain_cm'] = df['rain_inches']*2.54
-dt = df['dt']
-rain_cm = df['rain_cm']
+df_rain['rain_cm'] = df_rain['rain_inches']*2.54
 
+print(df_rain.head())
+
+#plot rain as inverted bar chart
+fig, ax1 = plt.subplots(figsize=(10, 5))
+#ax2 = ax1.twinx()
+ax1 = df_rain['rain_cm'].plot(kind='bar', figsize=(10, 6))
+#ax1.bar(df_rain.index, df_rain['rain_cm'], color='lightblue')
+#ax1.set_ylim(-0.05,5)
+ax1.set_ylabel('Precipitation (cm)', color='b')
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+ax1.set_xlabel('Time of Day')
+ax1.set_title('June 27, 2023: precip')
+ax1.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+''''
 ## Plotting------------------------------------------------------------------------------------------------------------
 # plot flow (in CMS) across scenarios
 fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -46,7 +61,7 @@ ax1.grid(True)
 plt.tight_layout()
 plt.show()
 
-'''
+
 #pull out max depths
 max_depths = {}
 

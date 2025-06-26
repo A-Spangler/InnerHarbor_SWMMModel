@@ -12,6 +12,7 @@ import time
 from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import itertools
 
 cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
@@ -23,36 +24,36 @@ scenarios = {
     'base': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp",
     'BGN' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGN.inp",
     'BGNx3' : "/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGNx3.inp",
-    'In': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp",
+    'IC': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp",
     'GM': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing.inp",
-    'GM+In' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing+inlets.inp"
+    'GM+IC' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing+inlets.inp"
 }
 
-## BASE v19 SIM ------------------------------------------------------------------------------------------------------------
+## run all scenarios ------------------------------------------------------------------------------------------------------------
 # Initialize dictionaries for storing data from each scenario, for each node, for each property
 # function to run pyswmm and save outputs as dict
 def run_pyswmm(inp_path, node_ids):
     output = {node: {'depth': [], 'flow': []} for node in node_ids}
     time_stamps = []
-# run the BASE simulation, instantiate BE nodes
+# run inp_path simulation, instantiate BE nodes
     with Simulation(inp_path) as sim:
         nodes = {node_id: Nodes(sim)[node_id] for node_id in node_ids}
         sim.step_advance(300) #lets python access sim during run (300 sec = 5min inetervals)
 
-        # Launch BASE simulation
+        # Launch inp_path simulation
         for step in enumerate(sim):
             time_stamps.append(sim.current_time)
             for node_id, node in nodes.items(): # store node data in dictionary
                 output[node_id]['depth'].append(node.depth*ft_to_m)
                 output[node_id]['flow'].append(node.total_inflow*cfs_to_cms)
 
-        # Construct DataFrame
-        df = pd.DataFrame({'timestamp': time_stamps})
+        # construct df
+        df_output = pd.DataFrame({'timestamp': time_stamps})
         for node_id in node_ids:
-            df[f'{node_id}_depth'] = output[node_id]['depth']
-            df[f'{node_id}_flow'] = output[node_id]['flow']
+            df_output[f'{node_id}_depth'] = output[node_id]['depth']
+            df_output[f'{node_id}_flow'] = output[node_id]['flow']
 
-        return df
+        return df_output
 
 # Run all scenarios and store results
 scenario_results = {}
@@ -60,43 +61,98 @@ for scenario_name, inp_path in scenarios.items():
     print(f"Running scenario: {scenario_name}")
     scenario_results[scenario_name] = run_pyswmm(inp_path, node_ids)
 
-# Optional: Combine all into a single DataFrame with multi-index
+# combine all into a single df
 combined_df = pd.concat(scenario_results, names=['scenario', 'row'])
 combined_df.to_csv('6_27_2023_simV19.csv', index=False)
 
+#duration over threshold
+# pull out time above 6 inch (=.1524m) threshold using a filter
+threshold=.1524 #meters
+duration_above_threshold = []
+
+#for scenario in scenarios.keys():
+#    df_thresh = combined_df.loc[scenario]
+ #   if df_thresh['J388-S_depth'] > threshold
+ #       duration_above_threshold.append()
+
+
 ## rainfall data--------------------------------------------------------------------------------------------------------
-df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
+df_rain = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
 
 # combine date and time, convert to datetime
-df['dt'] = pd.to_datetime(df['date'].astype(str) + ' ' + df['time'].astype(str))
+df_rain['dt'] = pd.to_datetime(df_rain['date'].astype(str) + ' ' + df_rain['time'].astype(str))
 
 #rainfall (inches *2.54 for plotting in cm)
-df['rain_cm'] = df['rain_inches']*2.54
-dt = df['dt']
-rain_cm = df['rain_cm']
+df_rain['rain_cm'] = df_rain['rain_inches']*2.54
+
+print(df_rain.head())
 
 ## Plotting------------------------------------------------------------------------------------------------------------
 # plot flow (in CMS) across scenarios
 fig, ax1 = plt.subplots(figsize=(10, 5))
-for scenario in scenarios.keys():
-    df = combined_df.loc[scenario]
-    ax1.plot(df['timestamp'], df['J338-S_flow'], label=scenario)
+colors = itertools.cycle(['lightblue','cornflowerblue','royalblue', 'blue', 'darkblue', 'black'])
 
+for scenario in scenarios.keys():
+    df_plot = combined_df.loc[scenario]
+    current_color = next(colors)
+    ax1.plot(df_plot['timestamp'], df_plot['J338-S_flow'], label=scenario, color=current_color)
+
+#plot rain as inverted. Should be bar chart but its not working
 ax2 = ax1.twinx()
-ax2.plot(dt, rain_cm, color='b')
+ax2.plot(df_rain['dt'], df_rain['rain_cm'], color='slategrey')
 ax2.set_ylim(-0.05,5)
 ax2.invert_yaxis()
-ax2.set_ylabel('Precipitation (cm)', color='b')
+ax2.set_ylabel('Precipitation (cm)', color='slategrey')
 
 ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
 ax1.set_xlabel('Time of Day')
 ax1.set_ylabel('Flow (cms)')
-ax1.set_title('June 27, 2023: J338-S Flow Across Scenarios')
+ax1.set_title('June 27, 2023: Broadway East Storm Flow')
 ax1.legend(loc='center left')
-ax1.grid(True)
+ax1.grid(axis='y')
 plt.tight_layout()
 plt.show()
 
+# Plot water depths for 1 B.E. node across scenarios
+fig, ax1 = plt.subplots(figsize=(10, 5))
+colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
+
+for scenario in scenarios.keys():
+    df_plot = combined_df.loc[scenario]
+    current_color = next(colors)
+    ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], label=scenario, color = current_color)
+
+#uncomment to zoom to 1 hour before and after max depth
+#max_index = combined_df['J338S_flow'].max
+#max_time = combined_df['J338S_flow'].max
+#start_time = max_time - dt.timedelta(hours=1)
+#end_time = max_time + dt.timedelta(hours=1)
+#ax.set_ylim(3.5,6.5)
+#ax.set_xlim([start_time, end_time])
+#plot rain as inverted. Should be bar chart
+#plot rain as inverted. Should be bar chart but its not working
+
+ax2 = ax1.twinx()
+ax2.plot(df_rain['dt'], df_rain['rain_cm'], color='slategrey')
+ax2.set_ylim(-0.05,3)
+ax2.invert_yaxis()
+ax2.set_ylabel('Precipitation (cm)', color='slategrey')
+
+ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+ax1.set_xlabel('Time of Day')
+ax1.set_ylabel('Depth (m)')
+ax1.set_title('June 27, 2023: Broadway East Flood Depth')
+ax1.legend(loc = 'center left')
+ax1.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+
+# Plot time above 6inch threshold for each scenario
+fig, ax1 = plt.subplots(figsize=(10, 5))
+for scenario in scenarios.keys():
+    df_plot = combined_df.loc[scenario]
+    ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], label=scenario)
 
 
 '''
@@ -146,52 +202,6 @@ for node in nodes:
     plt.show()
 
 ## Plotting ------------------------------------------------------------------------------------------------------------
-
-# Plot water depths for 3 B.E. nodes on one plot
-fig = plt.figure(figsize=(8,4), dpi=200)
-fig.suptitle("Broadway East Node Flowrate")
-axis_1 = fig.add_subplot(1,1,1)
-
-axis_1.plot(time_stamps, J338S_flwrt, color = 'c', label = 'Chase St. and Rutland St.')
-axis_1.plot(time_stamps, J253S_flwrt, color = 'm', label = 'Eager St. and Rutland St.')
-axis_1.plot(time_stamps, J366S_flwrt, color = 'y', label = 'Barnes Street')
-
-axis_1.set_ylabel("Flowrate (cfs)")
-axis_1.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %Hh'))
-axis_1.legend()
-
-fig.autofmt_xdate()
-plt.tight_layout()
-#plt.show()
-
-
-# plot 3 scenarios on one graph
-fig = plt.figure(figsize=(8,4), dpi=200)
-fig.suptitle("Chase St. and Rutland St. Flowrate by Scenario")
-axis_1 = fig.add_subplot(1,1,1)
-
-axis_1.plot(time_stamps, J338S_flwrt, color = 'lightsteelblue', label = 'Base Model')
-axis_1.plot(time_stamps_BGN, J338S_flwrt_BGN, color = 'cornflowerblue', label = 'BGN')
-axis_1.plot(time_stamps_3BGN, J338S_flwrt_3BGN, color = 'royalblue', label = 'BGN x3')
-axis_1.plot(time_stamps_GM, J338S_flwrt_GM, color = 'mediumblue', label = 'GreenMaxxed')
-axis_1.plot(time_stamps_inlets, J338S_flwrt_inlets, color = 'darkblue', label = 'Inlets')
-axis_1.plot(time_stamps_GMI, J338S_flwrt_GMI, color = 'black', label = 'GreenMaxxed + Inlets')
-
-#uncomment to zoom to 1 hour before and after max depth
-max_index = J338S_flwrt.index(max(J338S_flwrt))
-max_time = time_stamps[max_index]
-start_time = max_time - dt.timedelta(hours=1)
-end_time = max_time + dt.timedelta(hours=1)
-axis_1.set_ylim(3.5,6.5)
-axis_1.set_xlim([start_time, end_time])
-
-axis_1.set_ylabel("flowrate (cms)")
-axis_1.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %H:%M'))
-axis_1.legend()
-
-fig.autofmt_xdate()
-plt.tight_layout()
-plt.show()
 
 #plot small multiples of 3 nodes, 3 scenarios
 # plot 3 scenarios on one graph
