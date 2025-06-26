@@ -1,3 +1,6 @@
+# By: Ava Spangler
+# Date: 6/10/2025
+
 import pyswmm
 import pandas as pd
 import swmmio
@@ -17,15 +20,27 @@ import itertools
 cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
 
+def list_street_nodes(model_path):
+    nodes_df = model.nodes.dataframe
+    #nodes_df.columns = nodes_df.columns.str.strip()
+    nodes_df = nodes_df.reset_index()
+    node_names = nodes_df['Name'].tolist()
+    street_node_names = [k for k in node_names if '-S' in k]
+    return street_node_names
 
-node_ids = ["J338-S", "J253-S", "J366-S",]
+model_path = '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp'
+model = swmmio.Model(model_path)
+
+node_ids = list_street_nodes(model_path)
+
+#node_ids = ["J338-S", "J253-S", "J366-S",]
 
 scenarios = {
-    'base': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp",
+    'Base': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp",
     'BGN' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGN.inp",
     'BGNx3' : "/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGNx3.inp",
-    'IC': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp",
     'GM': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing.inp",
+    'IC': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp",
     'GM+IC' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing+inlets.inp"
 }
 
@@ -63,17 +78,17 @@ for scenario_name, inp_path in scenarios.items():
 
 # combine all into a single df
 combined_df = pd.concat(scenario_results, names=['scenario', 'row'])
-combined_df.to_csv('6_27_2023_simV19.csv', index=False)
+#combined_df.to_csv('6_27_2023_simV19.csv', index=False)
 
-#duration over threshold
-# pull out time above 6 inch (=.1524m) threshold using a filter
-threshold=.1524 #meters
-duration_above_threshold = []
 
-#for scenario in scenarios.keys():
-#    df_thresh = combined_df.loc[scenario]
- #   if df_thresh['J388-S_depth'] > threshold
- #       duration_above_threshold.append()
+# analysis -------------------------------------------------------------------------------------------------------------
+# find maximums from each column in the multiindex df
+max_df = combined_df.groupby(level=0).max()
+
+# Get list of nodes in model
+grouped_df = combined_df.stack().reset_index().groupby(level=0)
+print(grouped_df)
+
 
 
 ## rainfall data--------------------------------------------------------------------------------------------------------
@@ -85,9 +100,28 @@ df_rain['dt'] = pd.to_datetime(df_rain['date'].astype(str) + ' ' + df_rain['time
 #rainfall (inches *2.54 for plotting in cm)
 df_rain['rain_cm'] = df_rain['rain_inches']*2.54
 
-print(df_rain.head())
 
 ## Plotting------------------------------------------------------------------------------------------------------------
+
+# plot peak depth for all nodes in inner harbor as boxplots
+
+fig, ax1 = plt.subplots(figsize=(10, 5))
+colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
+# scenarios = ('base', 'BGN', 'BGNx3', 'IC', 'GM', 'GM+IC')
+for scenario in scenarios.keys():
+    df_plot = max_df.loc[scenario]
+    current_color = next(colors)
+   # ax1.boxplot(scenario, df_plot['J338-S_depth'], label=scenario, color=current_color)
+
+ax1.set_xlabel('Scenario')
+ax1.set_ylabel('Depth (m)')
+ax1.set_title('June 27, 2023: Maximum Flood Depth in Broadway East')
+# ax1.legend(loc='center left')
+ax1.grid(axis='y')
+plt.tight_layout()
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.svg')
+
+''''
 # plot flow (in CMS) across scenarios
 fig, ax1 = plt.subplots(figsize=(10, 5))
 colors = itertools.cycle(['lightblue','cornflowerblue','royalblue', 'blue', 'darkblue', 'black'])
@@ -154,8 +188,23 @@ for scenario in scenarios.keys():
     df_plot = combined_df.loc[scenario]
     ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], label=scenario)
 
+# bar chart showing max flowrate across scenarios
+fig, ax1 = plt.subplots(figsize=(10, 5))
+colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
+#scenarios = ('base', 'BGN', 'BGNx3', 'IC', 'GM', 'GM+IC')
+for scenario in scenarios.keys():
+    df_plot = combined_df.loc[scenario].max()
+    current_color = next(colors)
+    ax1.bar(scenario, df_plot['J338-S_depth'], label=scenario, color = current_color)
 
-'''
+ax1.set_xlabel('Scenario')
+ax1.set_ylabel('Depth (m)')
+ax1.set_title('June 27, 2023: Maximum Flood Depth in Broadway East')
+#ax1.legend(loc='center left')
+ax1.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
 #pull out max depths
 max_depths = {}
 
@@ -200,8 +249,6 @@ for node in nodes:
 
     plt.tight_layout()
     plt.show()
-
-## Plotting ------------------------------------------------------------------------------------------------------------
 
 #plot small multiples of 3 nodes, 3 scenarios
 # plot 3 scenarios on one graph

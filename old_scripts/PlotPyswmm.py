@@ -10,8 +10,8 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-# read in data from RunPyswmm.py
-combined_df = pd.read_csv('6_27_2023_simV19.csv')
+# read in data from runpyswmm.py
+combined_df = pd.read_csv('../processed/6_27_2023_simV19.csv')
 
 ## read in rainfall data--------------------------------------------------------------------------------------------------------
 df_rain = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/Validation/2023June27.xlsx')
