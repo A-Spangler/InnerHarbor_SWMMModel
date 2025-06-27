@@ -17,20 +17,20 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import itertools
 from scripts.config import scenarios
+from scripts.config import model_path
 
 cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
 
 def list_street_nodes(model_path):
     nodes_df = model.nodes.dataframe
-    #nodes_df.columns = nodes_df.columns.str.strip()
     nodes_df = nodes_df.reset_index()
     node_names = nodes_df['Name'].tolist()
     street_node_names = [k for k in node_names if '-S' in k]
     return street_node_names
 
 
-model_path = '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp'
+#model_path = '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp'
 model = swmmio.Model(model_path)
 node_ids = list_street_nodes(model_path)
 
@@ -71,7 +71,7 @@ for scenario_name, inp_path in scenarios.items():
 processed_df = pd.concat(scenario_results, names=['scenario'])
 processed_df.index.set_names(['scenario', 'row'], inplace=True)
 
-processed_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index=False)
+processed_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_test.csv', index=False)
 
 
 # analysis -------------------------------------------------------------------------------------------------------------

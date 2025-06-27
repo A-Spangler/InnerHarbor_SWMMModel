@@ -26,7 +26,7 @@ def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
 
     # plot rain on second axis as inverted. Should be bar chart but its not working
     ax2 = ax1.twinx()
-    ax2.plot(rain_df['dt'], rain_df['rain_cm'], color='slategrey')
+    ax2.depth(rain_df['dt'], rain_df['rain_cm'], color='slategrey')
     ax2.set_ylim(-0.05, 5)
     ax2.invert_yaxis()
     ax2.set_ylabel('Precipitation (cm)', color='slategrey')
@@ -113,8 +113,8 @@ processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experi
 rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
 
 # execute
-plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
-plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+#plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+#plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
 plot_flowrt_barchart(processed_df, scenarios)
 plot_depth_barchart(processed_df, scenarios)
 
