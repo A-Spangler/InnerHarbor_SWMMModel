@@ -16,6 +16,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import itertools
+from scripts.config import scenarios
 
 cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
@@ -28,21 +29,11 @@ def list_street_nodes(model_path):
     street_node_names = [k for k in node_names if '-S' in k]
     return street_node_names
 
+
 model_path = '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp'
 model = swmmio.Model(model_path)
-
 node_ids = list_street_nodes(model_path)
 
-#node_ids = ["J338-S", "J253-S", "J366-S",]
-
-scenarios = {
-    'Base': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp",
-    'BGN' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGN.inp",
-    'BGNx3' : "/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_BGNx3.inp",
-    'GM': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing.inp",
-    'IC': r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_Inlets.inp",
-    'GM+IC' : r"/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19_greenmaxxing+inlets.inp"
-}
 
 ## run all scenarios ------------------------------------------------------------------------------------------------------------
 # Initialize dictionaries for storing data from each scenario, for each node, for each property
@@ -52,23 +43,24 @@ def run_pyswmm(inp_path, node_ids):
     time_stamps = []
 # run inp_path simulation, instantiate BE nodes
     with Simulation(inp_path) as sim:
-        nodes = {node_id: Nodes(sim)[node_id] for node_id in node_ids}
+        nodes = {node_id: Nodes(sim)[node_id] for node_id in node_ids} #dictionary with nodes
         sim.step_advance(300) #lets python access sim during run (300 sec = 5min inetervals)
 
         # Launch inp_path simulation
         for step in enumerate(sim):
             time_stamps.append(sim.current_time)
-            for node_id, node in nodes.items(): # store node data in dictionary
+            for node_id, node in nodes.items(): # store node flow and depth data in node dictionary
                 output[node_id]['depth'].append(node.depth*ft_to_m)
                 output[node_id]['flow'].append(node.total_inflow*cfs_to_cms)
 
         # construct df
-        df_output = pd.DataFrame({'timestamp': time_stamps})
+        node_data = {'timestamp': time_stamps} #dictionary of timestamps
         for node_id in node_ids:
-            df_output[f'{node_id}_depth'] = output[node_id]['depth']
-            df_output[f'{node_id}_flow'] = output[node_id]['flow']
+            node_data[f'{node_id}_depth'] = output[node_id]['depth']
+            node_data[f'{node_id}_flow'] = output[node_id]['flow']
 
-        return df_output
+        df_node_data = pd.DataFrame(node_data).copy()
+        return df_node_data
 
 # Run all scenarios and store results
 scenario_results = {}
@@ -78,16 +70,14 @@ for scenario_name, inp_path in scenarios.items():
 
 # combine all into a single df
 combined_df = pd.concat(scenario_results, names=['scenario', 'row'])
-#combined_df.to_csv('6_27_2023_simV19.csv', index=False)
+combined_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index=False)
 
 
 # analysis -------------------------------------------------------------------------------------------------------------
 # find maximums from each column in the multiindex df
 max_df = combined_df.groupby(level=0).max()
 
-# Get list of nodes in model
-grouped_df = combined_df.stack().reset_index().groupby(level=0)
-print(grouped_df)
+#group each column based on if it is depth or flowrate
 
 
 
@@ -104,7 +94,7 @@ df_rain['rain_cm'] = df_rain['rain_inches']*2.54
 ## Plotting------------------------------------------------------------------------------------------------------------
 
 # plot peak depth for all nodes in inner harbor as boxplots
-
+''''
 fig, ax1 = plt.subplots(figsize=(10, 5))
 colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
 # scenarios = ('base', 'BGN', 'BGNx3', 'IC', 'GM', 'GM+IC')
@@ -120,8 +110,8 @@ ax1.set_title('June 27, 2023: Maximum Flood Depth in Broadway East')
 ax1.grid(axis='y')
 plt.tight_layout()
 plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.svg')
-
-''''
+'''
+'''
 # plot flow (in CMS) across scenarios
 fig, ax1 = plt.subplots(figsize=(10, 5))
 colors = itertools.cycle(['lightblue','cornflowerblue','royalblue', 'blue', 'darkblue', 'black'])
@@ -146,6 +136,7 @@ ax1.legend(loc='center left')
 ax1.grid(axis='y')
 plt.tight_layout()
 plt.show()
+'''
 
 # Plot water depths for 1 B.E. node across scenarios
 fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -182,6 +173,7 @@ plt.tight_layout()
 plt.show()
 
 
+'''
 # Plot time above 6inch threshold for each scenario
 fig, ax1 = plt.subplots(figsize=(10, 5))
 for scenario in scenarios.keys():

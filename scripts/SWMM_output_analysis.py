@@ -1,12 +1,13 @@
 # By: Ava Spangler
 # Date: 6/26/2025
-# Description: This code takes in saved rainfall data from excel and converts it to a dataframe
+# Description: This code takes processed SWMM data and analyzes in
 
 # IMPORTS --------------------------------------------------------------------------------------------------------------
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
+max_df = combined_df.groupby(level=0).max()
 
 # SAVE AND EXPORT ------------------------------------------------------------------------------------------------------
 
