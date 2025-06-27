@@ -113,8 +113,8 @@ processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experi
 rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
 
 # execute
-#plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
-#plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
 plot_flowrt_barchart(processed_df, scenarios)
 plot_depth_barchart(processed_df, scenarios)
 
