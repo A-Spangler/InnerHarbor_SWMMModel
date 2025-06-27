@@ -5,11 +5,9 @@
 
 # IMPORTS --------------------------------------------------------------------------------------------------------------
 import pandas as pd
-import numpy as np
 import swmmio
 import pyswmm
 import datetime as dt
-from IPython.display import HTML
 from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
 from scripts.config import scenarios
 
@@ -26,6 +24,7 @@ def list_street_nodes(model_path):
     node_names = nodes_df['Name'].tolist()
     street_node_names = [k for k in node_names if '-S' in k]
     return street_node_names
+
 def run_pyswmm(inp_path, node_ids):
     output = {node: {'depth': [], 'flow': []} for node in node_ids}
     time_stamps = []
@@ -52,18 +51,22 @@ def run_pyswmm(inp_path, node_ids):
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
-# Run all scenarios and store results
+
+#list street nodes
 model_path = '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/SWMM models copy/Inner_Harbor_Model_V19.inp'
 model = swmmio.Model(model_path)
 node_ids = list_street_nodes(model_path)
 
-# Run all scenarios and store results
+#run each scenario is pyswmm
 scenario_results = {}
 for scenario_name, inp_path in scenarios.items():
     print(f"Running scenario: {scenario_name}")
     scenario_results[scenario_name] = run_pyswmm(inp_path, node_ids)
 
+
 # SAVE AND EXPORT ------------------------------------------------------------------------------------------------------
-# combine all into a single df
-processed_df = pd.concat(scenario_results, names=['scenario', 'row'])
-processed_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index=False)
+# combine and save as a multiindex df
+processed_df = pd.concat(scenario_results, names=['scenario'])
+processed_df.index.set_names(['scenario', 'row'], inplace=True)
+
+processed_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv')

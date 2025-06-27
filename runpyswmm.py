@@ -62,20 +62,21 @@ def run_pyswmm(inp_path, node_ids):
         df_node_data = pd.DataFrame(node_data).copy()
         return df_node_data
 
-# Run all scenarios and store results
 scenario_results = {}
 for scenario_name, inp_path in scenarios.items():
     print(f"Running scenario: {scenario_name}")
     scenario_results[scenario_name] = run_pyswmm(inp_path, node_ids)
 
-# combine all into a single df
-combined_df = pd.concat(scenario_results, names=['scenario', 'row'])
-combined_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index=False)
+# Combine into a single multiindex df
+processed_df = pd.concat(scenario_results, names=['scenario'])
+processed_df.index.set_names(['scenario', 'row'], inplace=True)
+
+processed_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index=False)
 
 
 # analysis -------------------------------------------------------------------------------------------------------------
 # find maximums from each column in the multiindex df
-max_df = combined_df.groupby(level=0).max()
+max_df = processed_df.groupby(level=0).max()
 
 #group each column based on if it is depth or flowrate
 
@@ -117,7 +118,7 @@ fig, ax1 = plt.subplots(figsize=(10, 5))
 colors = itertools.cycle(['lightblue','cornflowerblue','royalblue', 'blue', 'darkblue', 'black'])
 
 for scenario in scenarios.keys():
-    df_plot = combined_df.loc[scenario]
+    df_plot = processed_df.loc[scenario]
     current_color = next(colors)
     ax1.plot(df_plot['timestamp'], df_plot['J338-S_flow'], label=scenario, color=current_color)
 

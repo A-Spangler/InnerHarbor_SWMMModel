@@ -11,8 +11,7 @@ from datetime import datetime
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import itertools
-from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
-
+from scripts.config import scenarios
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
@@ -66,7 +65,7 @@ def plot_depth_with_hyetograph(processed_df, rain_df, scenarios):
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_with_hyetograph_J338S.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_with_hyetograph_J338S.svg')
 
 
 # plot max depths for one node, all scenarios (m)
@@ -85,7 +84,7 @@ def plot_depth_barchart(processed_df, scenarios):
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_barchart_J338S.svg')
 
 
 # plot max flowrate for one node, all scenarios (cms)
@@ -109,11 +108,14 @@ def plot_flowrt_barchart(processed_df, scenarios):
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
-processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19.csv'
-                           , index_col=[0, 1])
+# load dfs
+processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
 # analyzed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/analyzed/6_27_23_simV19_analyzed')
 rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
 
+# execute
 plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios)
+plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
+plot_flowrt_barchart(processed_df, scenarios)
+plot_depth_barchart(processed_df, scenarios)
 
-# SAVE AND EXPORT ------------------------------------------------------------------------------------------------------
