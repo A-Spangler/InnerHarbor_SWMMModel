@@ -128,6 +128,7 @@ def boxplot_max_flow(max_flow_df):
     labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
+    #bplot = ax1.violinplot(x)
 
     # fill with colors
     for patch, color in zip(bplot['boxes'], colors):
@@ -139,6 +140,23 @@ def boxplot_max_flow(max_flow_df):
     #plt.show()
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.svg')
 
+def boxplot_above_curb(depth_time_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    x = depth_time_df['Base'], depth_time_df['BGN'], depth_time_df['BGNx3'], depth_time_df['GM'], depth_time_df['IC'], depth_time_df['GM+IC']
+    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
+    bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
+
+    # fill with colors
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    ax1.set_ylabel('Time (min)')
+    ax1.set_title('June 27, 2023: Duration of Flooding Above Curb')
+    plt.tight_layout()
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.svg')
+
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -146,13 +164,16 @@ if __name__ == "__main__":
     processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
     max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
     max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
+    depth_time_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
+
 
     # execute
     #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
     #plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
     #plot_flowrt_barchart(processed_df, scenarios)
     #plot_depth_barchart(processed_df, scenarios)
-    boxplot_max_depth(max_depth_df)
+    #boxplot_max_depth(max_depth_df)
     boxplot_max_flow(max_flow_df)
+    boxplot_above_curb(depth_time_df)
 

@@ -46,16 +46,23 @@ def find_max_flow(processed_df):
     return max_flow_df
 
 def time_above_curb(processed_df):
-    # drop flow cols
-    #depth_time_df = processed_df.columns.str.endswith('_flow')
-    depth_time_df = processed_df.loc[:,~processed_df.columns.str.endswith('_flow')]
-    print(depth_time_df)
+    threshold = 0.1524 # m (6 inches)
+    node_columns = [col for col in processed_df.columns if col.endswith('_depth')]
+
+    # Create a boolean df where True if above threshold
+    above_threshold = processed_df[node_columns] > threshold
+
+    #count number of cols, multiply by timestep set in data_processing.py (300sec = 5min)
+    count_above = above_threshold.groupby(level='scenario').sum()
+    total_time_above = count_above * 300 # seconds
+    total_time_above = total_time_above /60 #min
 
     # make scenarios should be column headers
-    #depth_time_df= max_depth_df.reset_index()
-    #depth_time_df = max_depth_df.set_index('scenario').T.reset_index(drop=True)
+    depth_time_df= total_time_above.reset_index()
+    depth_time_df = depth_time_df.set_index('scenario').T.reset_index(drop=True)
+    print(depth_time_df)
 
-    #depth_time_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
+    depth_time_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     return depth_time_df
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
