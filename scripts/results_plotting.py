@@ -105,16 +105,54 @@ def plot_flowrt_barchart(processed_df, scenarios):
     plt.tight_layout()
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.svg')
 
+def boxplot_max_depth(max_depth_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    x = max_depth_df['Base'], max_depth_df['BGN'], max_depth_df['BGNx3'], max_depth_df['GM'], max_depth_df['IC'], max_depth_df['GM+IC']
+    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
+    bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
+
+    # fill with colors
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    ax1.set_ylabel('Depth (m)')
+    ax1.set_title('June 27, 2023: Maximum Flood Depths Across Baltimore Harbor')
+    plt.tight_layout()
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_boxplot_allnodes.svg')
+
+def boxplot_max_flow(max_flow_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    x = max_flow_df['Base'], max_flow_df['BGN'], max_flow_df['BGNx3'], max_flow_df['GM'], max_flow_df['IC'], max_flow_df['GM+IC']
+    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
+    bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
+
+    # fill with colors
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    ax1.set_ylabel('Flow (cms)')
+    ax1.set_title('June 27, 2023: Maximum Flowrate Across Baltimore Harbor')
+    plt.tight_layout()
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.svg')
+
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
-# load dfs
-processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
-# analyzed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/analyzed/6_27_23_simV19_analyzed')
-rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
+if __name__ == "__main__":
+    # load dfs
+    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
+    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
+    rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
 
-# execute
-#plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
-#plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
-plot_flowrt_barchart(processed_df, scenarios)
-plot_depth_barchart(processed_df, scenarios)
+    # execute
+    #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+    #plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+    #plot_flowrt_barchart(processed_df, scenarios)
+    #plot_depth_barchart(processed_df, scenarios)
+    boxplot_max_depth(max_depth_df)
+    boxplot_max_flow(max_flow_df)
 
