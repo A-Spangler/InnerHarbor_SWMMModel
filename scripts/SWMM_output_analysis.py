@@ -24,7 +24,8 @@ def find_max_depth(processed_df):
     # make scenarios should be column headers
     max_depth_df = max_depth_df.reset_index()
     max_depth_df = max_depth_df.set_index('scenario').T.reset_index(drop=True)
-    print(max_depth_df)
+    mean_depth = max_depth_df.mean()
+    print(mean_depth)
 
     max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
     return max_depth_df
@@ -40,7 +41,8 @@ def find_max_flow(processed_df):
     # make scenarios should be column headers
     max_flow_df = max_flow_df.reset_index()
     max_flow_df = max_flow_df.set_index('scenario').T.reset_index(drop=True)
-    print(max_flow_df)
+    mean_flow = max_flow_df.mean()
+    print(mean_flow)
 
     max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
     return max_flow_df
@@ -52,15 +54,17 @@ def time_above_curb(processed_df):
     # Create a boolean df where True if above threshold
     above_threshold = processed_df[node_columns] > threshold
 
-    #count number of cols, multiply by timestep set in data_processing.py (300sec = 5min)
+    #count number of cols, multiply by timestep set in data_processing.py (300sec = 5min) to get duration
     count_above = above_threshold.groupby(level='scenario').sum()
     total_time_above = count_above * 300 # seconds
-    total_time_above = total_time_above /60 #min
+    total_time_above = total_time_above / 60 # min
+    total_time_above = total_time_above / 60  # hour
 
     # make scenarios should be column headers
     depth_time_df= total_time_above.reset_index()
     depth_time_df = depth_time_df.set_index('scenario').T.reset_index(drop=True)
-    print(depth_time_df)
+    mean_time = depth_time_df.mean()
+    print(mean_time)
 
     depth_time_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     return depth_time_df
@@ -72,11 +76,10 @@ if __name__ == "__main__":
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
 
     #execute find max
-    #find_max_depth(processed_df)
-    #find_max_flow(processed_df)
+    find_max_depth(processed_df)
+    find_max_flow(processed_df)
 
     # execute above curb
     time_above_curb(processed_df)
 
-# SAVE AND EXPORT ------------------------------------------------------------------------------------------------------
 

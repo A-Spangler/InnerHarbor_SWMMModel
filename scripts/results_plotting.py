@@ -119,8 +119,9 @@ def boxplot_max_depth(max_depth_df):
     ax1.set_ylabel('Depth (m)')
     ax1.set_title('June 27, 2023: Maximum Flood Depths Across Baltimore Harbor')
     plt.tight_layout()
+    ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_boxplot_allnodes.svg')
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_boxplot_allnodes.svg')
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -137,11 +138,12 @@ def boxplot_max_flow(max_flow_df):
     ax1.set_ylabel('Flow (cms)')
     ax1.set_title('June 27, 2023: Maximum Flowrate Across Baltimore Harbor')
     plt.tight_layout()
+    ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.svg')
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.svg')
 
 def boxplot_above_curb(depth_time_df):
-    fig, ax1 = plt.subplots(figsize=(10, 5))
+    fig, ax1 = plt.subplots(figsize=(10, 10))
     x = depth_time_df['Base'], depth_time_df['BGN'], depth_time_df['BGNx3'], depth_time_df['GM'], depth_time_df['IC'], depth_time_df['GM+IC']
     labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
@@ -151,11 +153,12 @@ def boxplot_above_curb(depth_time_df):
     for patch, color in zip(bplot['boxes'], colors):
         patch.set_facecolor(color)
 
-    ax1.set_ylabel('Time (min)')
+    ax1.set_ylabel('Time (hour)')
     ax1.set_title('June 27, 2023: Duration of Flooding Above Curb')
     plt.tight_layout()
-    #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.svg')
+    ax1.grid(axis='y')
+    plt.show()
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.svg')
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
@@ -174,6 +177,6 @@ if __name__ == "__main__":
     #plot_flowrt_barchart(processed_df, scenarios)
     #plot_depth_barchart(processed_df, scenarios)
     #boxplot_max_depth(max_depth_df)
-    boxplot_max_flow(max_flow_df)
+    #boxplot_max_flow(max_flow_df)
     boxplot_above_curb(depth_time_df)
 
