@@ -1,25 +1,7 @@
+import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
-np.random.seed(19680801)
-fruit_weights = [
-    np.random.normal(130, 10, size=100),
-    np.random.normal(125, 20, size=100),
-    np.random.normal(120, 30, size=100),
-]
-labels = ['peaches', 'oranges', 'tomatoes']
-colors = ['peachpuff', 'orange', 'tomato']
-print(fruit_weights)
-
-fig, ax = plt.subplots()
-ax.set_ylabel('fruit weight (g)')
-
-bplot = ax.boxplot(fruit_weights,
-                   patch_artist=True,  # fill with color
-                   tick_labels=labels)  # will be used to label x-ticks
-
-# fill with colors
-for patch, color in zip(bplot['boxes'], colors):
-    patch.set_facecolor(color)
-
+df = pd.read_csv('https://raw.githubusercontent.com/pandas-dev/pandas/main/pandas/tests/io/data/csv/iris.csv')
+print (df.head())
+pd.plotting.parallel_coordinates(df, 'Name', color=('#556270', '#4ECDC4', '#C7F464'))
 plt.show()

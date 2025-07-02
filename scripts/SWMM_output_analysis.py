@@ -23,12 +23,16 @@ def find_max_depth(processed_df):
 
     # make scenarios to column headers
     max_depth_df = max_depth_df.reset_index()
-    max_depth_df = max_depth_df.set_index('scenario').T.reset_index(drop=True)
+    max_depth_df = max_depth_df.set_index('scenario').T
+    max_depth_df = max_depth_df.reset_index().rename(columns={'index': 'node_name'})
+    max_depth_df = max_depth_df.reset_index(drop = True)
+    #print(max_depth_df.head())
 
-    #define new df showing relative change from base case
-    relative_change_in_depth = max_depth_df.copy()
+    # define new df showing relative change from base case
+    # drop node names for subtraction, then add back in
+    relative_change_in_depth = max_depth_df.iloc[:, 1:8].copy() # TODO: fix hardcoding in the column indicies, changes w scenarios
     relative_change_in_depth = relative_change_in_depth.sub(max_depth_df['Base'], axis = 0)
-
+    relative_change_in_depth['node_name'] = max_depth_df['node_name']
     print(relative_change_in_depth)
 
     max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
@@ -44,14 +48,16 @@ def find_max_flow(processed_df):
     flow_cols = [col for col in grouped_df.columns if col.endswith('_flow')]
     max_flow_df = grouped_df[flow_cols]
 
-    # make scenarios should be column headers
+    # make scenarios be column headers, keep node names
     max_flow_df = max_flow_df.reset_index()
-    max_flow_df = max_flow_df.set_index('scenario').T.reset_index(drop=True)
+    max_flow_df = max_flow_df.set_index('scenario').T
+    max_flow_df = max_flow_df.reset_index().rename(columns={'index': 'node_name'})
 
-    #define new df showing relative change from base case
-    relative_change_in_flow = max_flow_df.copy()
+    # define new df showing relative change from base case
+    # drop node names for subtraction, then add back in
+    relative_change_in_flow = max_flow_df.iloc[:, 1:8].copy() #TODO fix harcoding in the column indicies, changes w scenarios
     relative_change_in_flow = relative_change_in_flow.sub(max_flow_df['Base'], axis = 0)
-
+    relative_change_in_flow['node_name'] = max_flow_df['node_name']
 
     max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
     relative_change_in_flow.to_csv(
@@ -65,7 +71,6 @@ def time_above_curb(processed_df):
     # Create a boolean df where True if above threshold
     above_threshold = processed_df[node_columns] > threshold
 
-    # TODO: change to keep node names in DF, but remove in plotting. Check consistency!
     #count number of cols, multiply by timestep set in data_processing.py (300sec = 5min) to get duration
     count_above = above_threshold.groupby(level='scenario').sum()
     total_time_above = count_above * 300 # seconds
@@ -76,7 +81,6 @@ def time_above_curb(processed_df):
     depth_time_df= total_time_above.reset_index()
     depth_time_df = depth_time_df.set_index('scenario').T.reset_index(drop=True)
     mean_time = depth_time_df.mean()
-    print(mean_time)
 
     depth_time_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     return depth_time_df

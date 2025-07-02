@@ -10,7 +10,9 @@ import datetime as dt
 from datetime import datetime
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+from matplotlib import colormaps
 import itertools
+from pandas.plotting import parallel_coordinates
 from scripts.config import scenarios
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
@@ -198,14 +200,39 @@ def boxplot_above_curb(depth_time_df):
     plt.show()
     #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.svg')
 
+def depth_parallelcoord(relative_depth_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    pd.plotting.parallel_coordinates(relative_depth_df, 'node_name', colormap = 'Blues' )
+
+    ax1.set_ylabel('Depth (m)')
+    ax1.set_title('June 27, 2023: Depth of Flooding')
+    ax1.get_legend().remove()
+    plt.tight_layout()
+    ax1.grid(axis='y')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Depth.svg')
+
+def flow_parallelcoord(relative_flow_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    pd.plotting.parallel_coordinates(relative_flow_df, 'node_name',  colormap = 'Blues')
+
+    ax1.set_ylabel('Flowrate (cfs)')
+    ax1.set_title('June 27, 2023: Flowrate')
+    ax1.get_legend().remove()
+    plt.tight_layout()
+    ax1.grid(axis='y')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.svg')
+
+
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
     processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
     max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
     max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv')
-    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
     depth_time_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
 
@@ -217,7 +244,9 @@ if __name__ == "__main__":
     #plot_depth_barchart(processed_df, scenarios)
     #boxplot_max_depth(max_depth_df)
     #boxplot_max_flow(max_flow_df)
-    boxplot_relative_depth(relative_depth_df)
-    boxplot_relative_flow(relative_flow_df)
+    #boxplot_relative_depth(relative_depth_df)
+    #boxplot_relative_flow(relative_flow_df)
     #boxplot_above_curb(depth_time_df)
+    depth_parallelcoord(relative_depth_df)
+    flow_parallelcoord(relative_flow_df)
 
