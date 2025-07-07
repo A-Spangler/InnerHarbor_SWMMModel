@@ -13,7 +13,7 @@ from scripts.config import model_path
 from SWMM_data_processing import list_street_nodes
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
-def find_max_depth(processed_df):
+def find_max_depth(processed_df, neighborhoods):
     # find maxes for each node depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
@@ -26,7 +26,7 @@ def find_max_depth(processed_df):
     max_depth_df = max_depth_df.set_index('scenario').T
     max_depth_df = max_depth_df.reset_index().rename(columns={'index': 'node_name'})
     max_depth_df = max_depth_df.reset_index(drop = True)
-    #print(max_depth_df.head())
+    print(max_depth_df.head()) # TODO: ADD NEIGHBORHOODS !!
 
     # define new df showing relative change from base case
     # drop node names for subtraction, then add back in
@@ -38,9 +38,9 @@ def find_max_depth(processed_df):
     max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
     relative_change_in_depth.to_csv(
         '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv')
-    return max_depth_df, relative_change_in_depth
+    return max_depth_df, relative_change_in_depth  # relative means relative to base case
 
-def find_max_flow(processed_df):
+def find_max_flow(processed_df, neighborhoods):
     # find maxes for each node flowrate depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
@@ -62,7 +62,7 @@ def find_max_flow(processed_df):
     max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
     relative_change_in_flow.to_csv(
         '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv')
-    return max_flow_df, relative_change_in_flow
+    return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
 def time_above_curb(processed_df):
     threshold = 0.1524 # m (6 inches)
@@ -77,10 +77,9 @@ def time_above_curb(processed_df):
     total_time_above = total_time_above / 60 # min
     total_time_above = total_time_above / 60  # hour
 
-    # make scenarios should be column headers
+    # make scenarios be column headers
     depth_time_df= total_time_above.reset_index()
     depth_time_df = depth_time_df.set_index('scenario').T.reset_index(drop=True)
-    mean_time = depth_time_df.mean()
 
     depth_time_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     return depth_time_df
@@ -89,13 +88,16 @@ def time_above_curb(processed_df):
 if __name__ == "__main__":
     #load processed data
     processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
-    rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
+    neighborhoods = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - '
+                           'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
 
     #execute find max
-    find_max_depth(processed_df)
-    find_max_flow(processed_df)
+    find_max_depth(processed_df, neighborhoods)
+    find_max_flow(processed_df, neighborhoods)
 
     # execute above curb
     #time_above_curb(processed_df)
+
+
 
 

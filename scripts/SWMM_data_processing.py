@@ -29,6 +29,7 @@ def list_street_nodes(model_path):
 def run_pyswmm(inp_path, node_ids):
     output = {node: {'depth': [], 'flow': []} for node in node_ids}
     time_stamps = []
+
 # run inp_path simulation, instantiate BE nodes
     with Simulation(inp_path) as sim:
         nodes = {node_id: Nodes(sim)[node_id] for node_id in node_ids} #dictionary with nodes
@@ -51,6 +52,7 @@ def run_pyswmm(inp_path, node_ids):
         return df_node_data
 
 
+
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 
 # only rerun this code when SWMM_dataprocessing.py is run
@@ -69,5 +71,4 @@ if __name__ == "__main__":
     # combine and save as a multiindex df
     processed_df = pd.concat(scenario_results, names=['scenario'])
     processed_df.index.set_names(['scenario', 'row'], inplace=True)
-
     processed_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv')
