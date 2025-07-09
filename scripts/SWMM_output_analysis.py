@@ -30,7 +30,9 @@ def find_max_depth(processed_df, node_neighborhood):
     max_depth_df = max_depth_df.reset_index(drop = True)
     # assign neighborhoods to node name by extracting node name and mapping dict
     max_depth_df['node_id'] = max_depth_df['node_name'].str.extract(r'([^_]+)')[0]
-    max_depth_df['neighborhood'] = max_depth_df['node_id'].map(node_neighborhood) # TODO: rearrange order? order = ['col1', 'col2',...] df = df[order]
+    max_depth_df['neighborhood'] = max_depth_df['node_id'].map(lambda x: node_neighborhood[x][0])
+    max_depth_df['historic_stream'] = max_depth_df['node_id'].map(lambda x: node_neighborhood[x][1])
+    # TODO: rearrange order? order = ['col1', 'col2',...] df = df[order]
 
     # define new df showing relative change from base case
     # drop node names and neighborhoods for subtraction, then add back in
@@ -39,12 +41,13 @@ def find_max_depth(processed_df, node_neighborhood):
     relative_change_in_depth['node_name'] = max_depth_df['node_name']
     relative_change_in_depth['node_id'] = max_depth_df['node_id']
     relative_change_in_depth['neighborhood'] = max_depth_df['neighborhood']
+    relative_change_in_depth['historic_stream'] = max_depth_df['historic_stream']
 
     max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
     relative_change_in_depth.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv')
     return max_depth_df, relative_change_in_depth  # relative means relative to base case
 
-def find_max_flow(processed_df, node_neighborhood):
+def find_max_flow(processed_df, node_neighborhood_df):
     # find maxes for each node flowrate depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
@@ -58,7 +61,7 @@ def find_max_flow(processed_df, node_neighborhood):
     max_flow_df = max_flow_df.reset_index().rename(columns={'index': 'node_name'})
     # assign neighborhoods to node name by extracting node name and mapping dict
     max_flow_df['node_id'] = max_flow_df['node_name'].str.extract(r'([^_]+)')[0]
-    max_flow_df['neighborhood'] = max_flow_df['node_id'].map(node_neighborhood)
+    max_flow_df['neighborhood'] = max_flow_df['node_id'].map(node_neighborhood_df)
 
     # define new df showing relative change from base case
     # drop node names for subtraction, then add back in
@@ -103,7 +106,7 @@ if __name__ == "__main__":
 
     #execute find max
     find_max_depth(processed_df, node_neighborhood)
-    find_max_flow(processed_df, node_neighborhood)
+    #find_max_flow(processed_df, node_neighborhood)
 
     # execute above curb
     #time_above_curb(processed_df)

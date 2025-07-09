@@ -6,6 +6,7 @@
 import pyswmm
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import datetime as dt
 from datetime import datetime
 import matplotlib.dates as mdates
@@ -193,6 +194,44 @@ def boxplot_relative_depth(relative_depth_df):
     #plt.show()
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeDepth.svg')
 
+def boxplot_watersheds_relative_depth(relative_depth_df):
+    #make df long
+    value_vars = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    long_df = relative_depth_df.melt(
+        id_vars=['node_name', 'node_id', 'historic_stream'],
+        value_vars=value_vars,
+        var_name='scenario',
+        value_name='relative_depth'
+    )
+    # arrange neighborhood order
+    #neighborhood_order = ['Clifton Park', 'Broadway East', 'Eager Park', 'Dunbar-Broadway',
+                          #'Washington Hill', 'Berea', 'Madison-Eastend', 'McElderry Park', 'Johnston Square', 'Patterson Park', 'Downtown', 'Canton',
+                          #'Canton Industrial Area', 'Federal Hill', 'Fells Point', 'Upper Fells Point', 'Locust Point',
+                          #'Orangeville', 'Baltimore Highlands', ]
+    #long_df['neighborhood'] = pd.Categorical(
+    #    long_df['neighborhood'],
+    #    categories=neighborhood_order,
+    #    ordered=True
+    #)
+
+    #plot
+    plt.figure(figsize=(14, 5))
+    sns.boxplot(
+        data=long_df,
+        x='historic_stream',
+        y='relative_depth',
+        hue='scenario',  # Each color = one neighborhood
+        showfliers=False
+    )
+    plt.ylabel('Relative Depth (m)')
+    plt.title('Relative Change in Max Flood Depth')
+    plt.legend(title='Neighborhood', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.xticks(rotation = 90)
+    plt.tight_layout()
+    plt.grid(axis='y')
+    plt.show()
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeDepth.svg')
+
 
 def boxplot_relative_flow(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -233,23 +272,28 @@ def boxplot_above_curb(depth_time_df):
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    pd.plotting.parallel_coordinates(relative_depth_df, 'neighborhood', colormap = 'Blues' )
+    unwanted = ['Northside, Drains to Harbor', 'Southside, Drains to Harbor', 'Armistead Creek']
+    plot_df = relative_depth_df[~relative_depth_df['historic_stream'].isin(unwanted)]
+    plot_cols = ['historic_stream', 'Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    colors = ['lightskyblue', 'blue']
+    pd.plotting.parallel_coordinates(plot_df[plot_cols], 'historic_stream', color = colors)
 
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('June 27, 2023: Depth of Flooding')
+    ax1.set_title('June 27, 2023: Relative Improvement of Depth of Flooding')
     ax1.get_legend()
+    ax1.legend(loc = 'center left')
     plt.tight_layout()
     ax1.grid(axis='y')
-    plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Depth.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Relative_ParallelPlot_Depth.svg')
 
 def flow_parallelcoord(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    pd.plotting.parallel_coordinates(relative_flow_df, 'neighborhood',  colormap = 'Blues')
+    pd.plotting.parallel_coordinates(relative_flow_df, 'neighborhood',  colormap = 'jet')
 
     ax1.set_ylabel('Flowrate (cfs)')
     ax1.set_title('June 27, 2023: Flowrate')
-    ax1.get_legend()
+    ax1.get_legend(loc = 'center left')
     plt.tight_layout()
     ax1.grid(axis='y')
     plt.show()
@@ -279,7 +323,9 @@ if __name__ == "__main__":
     #boxplot_max_flow(max_flow_df)
     #boxplot_relative_depth(relative_depth_df)
     #boxplot_relative_flow(relative_flow_df)
+    #boxplot_watersheds_relative_depth(relative_depth_df)
     #boxplot_above_curb(depth_time_df)
     depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df)
+
 

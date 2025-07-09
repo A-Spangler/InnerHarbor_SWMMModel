@@ -1,7 +1,17 @@
+# IMPORTS --------------------------------------------------------------------------------------------------------------
 import pandas as pd
-import matplotlib.pyplot as plt
+import swmmio
+import pyswmm
+import datetime as dt
+from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
+from scripts.config import scenarios
+from scripts.config import model_path
 
-df = pd.read_csv('https://raw.githubusercontent.com/pandas-dev/pandas/main/pandas/tests/io/data/csv/iris.csv')
-print (df.head())
-pd.plotting.parallel_coordinates(df, 'Name', color=('#556270', '#4ECDC4', '#C7F464'))
-plt.show()
+def nodes(model_path):
+    nodes_df = model.nodes.dataframe
+    print(nodes_df)
+    return nodes_df
+
+    model = swmmio.Model(model_path)
+    node_ids = nodes(model_path)
+    print(node_ids)

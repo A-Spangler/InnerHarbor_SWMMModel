@@ -53,12 +53,14 @@ def run_pyswmm(inp_path, node_ids):
         df_node_data = pd.DataFrame(node_data).copy()
         return df_node_data
 
-# EXECUTION ------------------------------------------------------------------------------------------------------------
-# define node neighborhood dict
-node_neighborhood_df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
-                                     ' - Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx')
-node_neighborhood = dict(zip(node_neighborhood_df['street_node_id'], node_neighborhood_df['neighborhood']))
+    # define node neighborhood tuple
+node_neighborhood_df = pd.read_excel(
+        '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
+        ' - Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx')
+node_neighborhood = dict(zip(node_neighborhood_df['street_node_id'],zip(node_neighborhood_df['neighborhood'], node_neighborhood_df['historic_stream'])))
+print(node_neighborhood)
 
+# EXECUTION ------------------------------------------------------------------------------------------------------------
 # only rerun this code when SWMM_dataprocessing.py is run
 if __name__ == "__main__":
     # find street node names
@@ -66,7 +68,6 @@ if __name__ == "__main__":
     node_ids = list_street_nodes(model_path)
     node_ids.remove('J509-S') # drop patterson pond node, it is not a street and shouldn't be considered
 
-    #load node_neighborhoods sheet as dict
 
     #run each scenario in pyswmm
     scenario_results = {}
