@@ -18,6 +18,8 @@ from scripts.config import model_path
 cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
 model = swmmio.Model(model_path)
+from scripts.config import scenarios
+from scripts.config import model_path
 
 def list_street_nodes(model_path):
     nodes_df = model.nodes.dataframe
@@ -51,15 +53,20 @@ def run_pyswmm(inp_path, node_ids):
         df_node_data = pd.DataFrame(node_data).copy()
         return df_node_data
 
-
-
 # EXECUTION ------------------------------------------------------------------------------------------------------------
+# define node neighborhood dict
+node_neighborhood_df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
+                                     ' - Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx')
+node_neighborhood = dict(zip(node_neighborhood_df['street_node_id'], node_neighborhood_df['neighborhood']))
 
 # only rerun this code when SWMM_dataprocessing.py is run
 if __name__ == "__main__":
     # find street node names
     model = swmmio.Model(model_path)
     node_ids = list_street_nodes(model_path)
+    node_ids.remove('J509-S') # drop patterson pond node, it is not a street and shouldn't be considered
+
+    #load node_neighborhoods sheet as dict
 
     #run each scenario in pyswmm
     scenario_results = {}

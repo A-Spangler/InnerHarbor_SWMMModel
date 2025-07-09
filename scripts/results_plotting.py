@@ -19,14 +19,14 @@ from scripts.config import scenarios
 def plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios):
     processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
-    fig, ax1 = plt.subplots(figsize=(10, 5))
+    fig, ax1 = plt.subplots(figsize=(8, 5))
     df_plot = processed_df.loc['Base']
-    #ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], color='goldenrod', linewidth = 3)
-    ax1.plot(df_plot['timestamp'], df_plot['J437-S_depth'], color='goldenrod', linewidth=3)
+    ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], color='gold', linewidth = 3)
+    ax1.plot(df_plot['timestamp'], df_plot['J782-S_depth'], color='gold', linewidth=3)
 
     # plot rain on second axis as inverted. Should be bar chart but its not working
-    xmin = pd.Timestamp('2023-06-27 15:00:00')
-    xmax = pd.Timestamp('2023-06-27 19:30:00')
+    xmin = pd.Timestamp('2023-06-27 15:30:00')
+    xmax = pd.Timestamp('2023-06-27 19:00:00')
 
     ax2 = ax1.twinx()
     ax2.set_xlim([xmin, xmax])
@@ -38,13 +38,14 @@ def plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios):
 
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
+    ax1.set_ylim(-0.05, 0.4)
     ax1.set_ylabel('depth (m)', color = 'goldenrod')
-    ax1.set_title('June 27, 2023: Broadway East Flood Depth')
+    ax1.set_title('June 27, 2023: Patterson Park Flood Depth')
     #ax1.legend(loc='center left')
-    ax1.grid(axis='y')
+    #ax1.grid(axis='y')
     plt.tight_layout()
     plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/base_depth_J437.svg')
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/base_depth_J437.svg')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
 def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
@@ -232,27 +233,27 @@ def boxplot_above_curb(depth_time_df):
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    pd.plotting.parallel_coordinates(relative_depth_df, 'node_name', colormap = 'Blues' )
+    pd.plotting.parallel_coordinates(relative_depth_df, 'neighborhood', colormap = 'Blues' )
 
     ax1.set_ylabel('Depth (m)')
     ax1.set_title('June 27, 2023: Depth of Flooding')
-    ax1.get_legend().remove()
+    ax1.get_legend()
     plt.tight_layout()
     ax1.grid(axis='y')
-    #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Depth.svg')
+    plt.show()
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Depth.svg')
 
 def flow_parallelcoord(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    pd.plotting.parallel_coordinates(relative_flow_df, 'node_name',  colormap = 'Blues')
+    pd.plotting.parallel_coordinates(relative_flow_df, 'neighborhood',  colormap = 'Blues')
 
     ax1.set_ylabel('Flowrate (cfs)')
     ax1.set_title('June 27, 2023: Flowrate')
-    ax1.get_legend().remove()
+    ax1.get_legend()
     plt.tight_layout()
     ax1.grid(axis='y')
-    #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.svg')
+    plt.show()
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.svg')
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
@@ -269,7 +270,7 @@ if __name__ == "__main__":
 
     # execute
     # relative means relative to base case
-    plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios)
+    #plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios)
     #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
     #plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
     #plot_flowrt_barchart(processed_df, scenarios)
@@ -279,6 +280,6 @@ if __name__ == "__main__":
     #boxplot_relative_depth(relative_depth_df)
     #boxplot_relative_flow(relative_flow_df)
     #boxplot_above_curb(depth_time_df)
-    #depth_parallelcoord(relative_depth_df)
+    depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df)
 
