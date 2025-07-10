@@ -11,24 +11,33 @@ import datetime as dt
 from datetime import datetime
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 from matplotlib import colormaps
 import itertools
 from pandas.plotting import parallel_coordinates
 from scripts.config import scenarios
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
-def plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios):
+# can use BE_nodes to plot a subset of locations. BE_nodes is sequential, upstream to downstream.
+def plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes):
     processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(8, 5))
     df_plot = processed_df.loc['Base']
-    ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], color='gold', linewidth = 3)
-    ax1.plot(df_plot['timestamp'], df_plot['J782-S_depth'], color='gold', linewidth=3)
 
-    # plot rain on second axis as inverted. Should be bar chart but its not working
-    xmin = pd.Timestamp('2023-06-27 15:30:00')
-    xmax = pd.Timestamp('2023-06-27 19:00:00')
+    # If plotting several nodes at a time (e.g., using BE_nodes), create a colormap and get N colors (N = number of nodes)
+    cmap = cm.get_cmap('Oranges', len(BE_nodes))
+    colors = cmap(np.linspace(0, 1, len(BE_nodes)))
 
+    for i, node in enumerate(BE_nodes):
+        ax1.plot(df_plot['timestamp'], df_plot[node], color=colors[i], label=node, linewidth=2)
+
+    #plot just one node at a time
+    #ax1.plot(df_plot['timestamp'], df_plot['J782-S_depth'], color='gold', linewidth=3)
+
+    # plot rain on second axis as inverted. Limit range using xmin and xmax.
+    xmin = pd.Timestamp('2023-06-27 2:30:00')
+    xmax = pd.Timestamp('2023-06-27 5:00:00')
     ax2 = ax1.twinx()
     ax2.set_xlim([xmin, xmax])
     ax2.bar(rain_df['dt'], rain_df['rain_cm'], color='cornflowerblue', width=0.002)
@@ -36,20 +45,22 @@ def plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios):
     ax2.invert_yaxis()
     ax2.set_ylabel('Precipitation (cm)', color='cornflowerblue')
 
-
+    # set formatting and save
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
     ax1.set_ylim(-0.05, 0.4)
-    ax1.set_ylabel('depth (m)', color = 'goldenrod')
-    ax1.set_title('June 27, 2023: Patterson Park Flood Depth')
-    #ax1.legend(loc='center left')
-    #ax1.grid(axis='y')
+    ax1.set_ylabel('depth (m)', color = 'orange')
+    ax1.set_title('June 27, 2023: Broadway East Flood Depths')
+    ax1.legend()
+    ax1.grid(axis='y')
     plt.tight_layout()
     plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/base_depth_J437.svg')
+    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/BE_SequentialNodes_depth_firstburst.svg')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
 def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
+    processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
+    rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
 
@@ -58,9 +69,9 @@ def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
         current_color = next(colors)
         ax1.plot(df_plot['timestamp'], df_plot['J338-S_flow'], label=scenario, color=current_color)
 
-    # plot rain on second axis as inverted. Should be bar chart but its not working
+    # plot rain on second axis as inverted.
     ax2 = ax1.twinx()
-    ax2.depth(rain_df['dt'], rain_df['rain_cm'], color='slategrey')
+    ax2.depth(rain_df['dt'], rain_df['rain_cm'], color='slategrey', width=0.002)
     ax2.set_ylim(-0.05, 5)
     ax2.invert_yaxis()
     ax2.set_ylabel('Precipitation (cm)', color='slategrey')
@@ -75,8 +86,10 @@ def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
     #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_with_hyetograph_J338S.svg')
 
 
-# plot depth over time for one node with inverted hyetograph, all scenarios (cms) (cms)
+# plot depth over time for one node with inverted hyetograph, all scenarios (cms)
 def plot_depth_with_hyetograph(processed_df, rain_df, scenarios):
+    processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
+    rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
     for scenario in scenarios.keys():
@@ -84,9 +97,9 @@ def plot_depth_with_hyetograph(processed_df, rain_df, scenarios):
         current_color = next(colors)
         ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], label=scenario, color=current_color)
 
-    # plot rain on second axis as inverted. Should be bar chart but its not working
+    # plot rain on second axis as inverted.
     ax2 = ax1.twinx()
-    ax2.bar(rain_df['dt'], rain_df['rain_cm'], color='slategrey')
+    ax2.bar(rain_df['dt'], rain_df['rain_cm'], color='slategrey', width=0.002)
     ax2.set_ylim(-0.05, 5)
     ax2.invert_yaxis()
     ax2.set_ylabel('Precipitation (cm)', color='slategrey')
@@ -310,13 +323,15 @@ if __name__ == "__main__":
     relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
     depth_time_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
+    BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
+                'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
 
     # execute
     # relative means relative to base case
-    #plot_basedepth_with_hyetograph(processed_df, rain_df, scenarios)
+    plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes)
     #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
-    #plot_depth_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+    #plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
     #plot_flowrt_barchart(processed_df, scenarios)
     #plot_depth_barchart(processed_df, scenarios)
     #boxplot_max_depth(max_depth_df)
@@ -325,7 +340,7 @@ if __name__ == "__main__":
     #boxplot_relative_flow(relative_flow_df)
     #boxplot_watersheds_relative_depth(relative_depth_df)
     #boxplot_above_curb(depth_time_df)
-    depth_parallelcoord(relative_depth_df)
+    #depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df)
 
 
