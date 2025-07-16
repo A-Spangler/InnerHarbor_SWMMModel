@@ -4,6 +4,7 @@
 #              this code can be run with one or several scenarios
 
 # IMPORTS --------------------------------------------------------------------------------------------------------------
+import os
 import pandas as pd
 import swmmio
 import pyswmm
@@ -11,17 +12,19 @@ import datetime as dt
 from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
 from scripts.config import scenarios
 from scripts.config import model_path
+from scripts.config import scenarios
+from scripts.utils import clean_rpt_encoding
+
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 # Initialize dictionaries for storing data from each scenario, for each node, for each property
 # function to run pyswmm and save outputs as dict
-cfs_to_cms = (12**3)*(2.3**3)*(1/100**3)
+cfs_to_cms = (12**3)*(2.54**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
 model = swmmio.Model(model_path)
-from scripts.config import scenarios
-from scripts.config import model_path
 
-def list_street_nodes(model_path):
+
+def list_street_nodes(model):
     nodes_df = model.nodes.dataframe
     nodes_df = nodes_df.reset_index()
     node_names = nodes_df['Name'].tolist()
@@ -64,9 +67,18 @@ print(node_neighborhood)
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 # only rerun this code when SWMM_dataprocessing.py is run
 if __name__ == "__main__":
+    # Clean all scenario RPT files before loading; skip missing files
+    for name, inp_path in scenarios.items():
+        rpt_path = os.path.splitext(inp_path)[0] + '.rpt'
+        if os.path.isfile(rpt_path):
+            print(f"Cleaning report file: {rpt_path}")
+            clean_rpt_encoding(rpt_path)
+        else:
+            print(f"Report file not found: {rpt_path} (skipping)")
+
     # find street node names
     model = swmmio.Model(model_path)
-    node_ids = list_street_nodes(model_path)
+    node_ids = list_street_nodes(model)
     node_ids.remove('J509-S') # drop patterson pond node, it is not a street and shouldn't be considered
 
 

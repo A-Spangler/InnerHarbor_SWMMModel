@@ -22,24 +22,25 @@ from scripts.config import scenarios
 def plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes):
     processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
-    fig, ax1 = plt.subplots(figsize=(8, 5))
+    fig, ax1 = plt.subplots(figsize=(27, 5))
     df_plot = processed_df.loc['Base']
 
     # If plotting several nodes at a time (e.g., using BE_nodes), create a colormap and get N colors (N = number of nodes)
-    cmap = cm.get_cmap('Oranges', len(BE_nodes))
+    cmap = cm.get_cmap('Blues', len(BE_nodes))
     colors = cmap(np.linspace(0, 1, len(BE_nodes)))
 
     for i, node in enumerate(BE_nodes):
-        ax1.plot(df_plot['timestamp'], df_plot[node], color=colors[i], label=node, linewidth=2)
+        #ax1.plot(df_plot['timestamp'], df_plot[node], color=colors[i], label=node, linewidth=2)
+        ax1.plot(df_plot['timestamp'], df_plot[node], color=colors[i], linewidth=2)
 
     #plot just one node at a time
     #ax1.plot(df_plot['timestamp'], df_plot['J782-S_depth'], color='gold', linewidth=3)
 
     # plot rain on second axis as inverted. Limit range using xmin and xmax.
-    xmin = pd.Timestamp('2023-06-27 2:30:00')
-    xmax = pd.Timestamp('2023-06-27 5:00:00')
+    #xmin = pd.Timestamp('2023-06-27 2:30:00')
+    #xmax = pd.Timestamp('2023-06-27 5:00:00')
     ax2 = ax1.twinx()
-    ax2.set_xlim([xmin, xmax])
+    #ax2.set_xlim([xmin, xmax])
     ax2.bar(rain_df['dt'], rain_df['rain_cm'], color='cornflowerblue', width=0.002)
     ax2.set_ylim(-0.05, 4)
     ax2.invert_yaxis()
@@ -49,13 +50,13 @@ def plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes):
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
     ax1.set_ylim(-0.05, 0.4)
-    ax1.set_ylabel('depth (m)', color = 'orange')
+    ax1.set_ylabel('depth (m)', color = 'darkblue')
     ax1.set_title('June 27, 2023: Broadway East Flood Depths')
-    ax1.legend()
+    #ax1.legend()
     ax1.grid(axis='y')
     plt.tight_layout()
-    plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/BE_SequentialNodes_depth_firstburst.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/J329_BaseDepth.svg')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
 def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
@@ -323,8 +324,9 @@ if __name__ == "__main__":
     relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
     depth_time_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
-    BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
-                'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
+    BE_nodes = ['J329-S_depth']
+    #BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
+                #'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
 
     # execute
