@@ -51,7 +51,7 @@ def find_max_flow(processed_df, node_neighborhood_df):
     # find maxes for each node flowrate depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
-    # select depth cols
+    # select flow cols
     flow_cols = [col for col in grouped_df.columns if col.endswith('_flow')]
     max_flow_df = grouped_df[flow_cols]
 
@@ -65,7 +65,7 @@ def find_max_flow(processed_df, node_neighborhood_df):
 
     # define new df showing relative change from base case
     # drop node names for subtraction, then add back in
-    relative_change_in_flow = max_flow_df.iloc[:, 1:7].copy() #TODO fix harcoding in the column indicies, changes w scenarios
+    relative_change_in_flow = max_flow_df.iloc[:, 1:7].copy() #TODO fix harcoding in the column indicies for subtraction, changes w scenarios
     relative_change_in_flow = relative_change_in_flow.sub(max_flow_df['Base'], axis = 0)
     relative_change_in_flow['node_name'] = max_flow_df['node_name']
     relative_change_in_flow['node_id'] = max_flow_df['node_id']
@@ -77,25 +77,25 @@ def find_max_flow(processed_df, node_neighborhood_df):
 
 def time_above_curb(processed_df):
     threshold = 0.1524 # m (6 inches)
-    node_columns = [col for col in processed_df.columns if col.endswith('_depth')]
+    node_columns = [col for col in processed_df.columns if col.endswith('_depth')] #single out depth cols
+    processed_df = processed_df.reset_index()
+    depth_duration_df = processed_df.loc[:, ['scenario', 'timestamp', *node_columns]]
+    depth_duration_df = depth_duration_df.melt(id_vars=['scenario', 'timestamp'], var_name='node', value_name='depth_m') #TODO: Should all df's start like this? Is this what processedDf should be saved as?
 
-    # Create a boolean df where True if above threshold
-    above_threshold = processed_df[node_columns] > threshold
+    # boolean mask and count hours above threshold
+    depth_duration_df['above_thresh'] = depth_duration_df['depth_m'] > threshold
+    duration_result = (
+        depth_duration_df[depth_duration_df['above_thresh']]
+        .groupby(['scenario', 'node'])
+        .size()
+        .reset_index(name='count')
+    )
 
-    #count number of cols, multiply by timestep set in data_processing.py (300sec = 5min) to get duration
-    count_above = above_threshold.groupby(level='scenario').sum()
-    total_time_above = count_above * 300 # seconds
-    total_time_above = total_time_above / 60 # min
-    total_time_above = total_time_above / 60  # hour
+    duration_result['time_above'] = duration_result['count']* 5 #5min per above threshold (boolean = True) event
+    #print(result)
 
-    # make scenarios be column headers
-    depth_time_df= total_time_above.reset_index()
-    depth_time_df = depth_time_df.set_index('scenario').T.reset_index(drop=True)
-
-    #TODO: relative time above curb, neighborhoods
-
-    depth_time_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
-    return depth_time_df
+    duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
+    return duration_result, depth_duration_df
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -105,11 +105,11 @@ if __name__ == "__main__":
                            'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
 
     #execute find max
-    find_max_depth(processed_df, node_neighborhood)
+    #find_max_depth(processed_df, node_neighborhood)
     #find_max_flow(processed_df, node_neighborhood)
 
     # execute above curb
-    #time_above_curb(processed_df)
+    time_above_curb(processed_df)
 
 
 

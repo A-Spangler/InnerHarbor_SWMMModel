@@ -56,7 +56,7 @@ def plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/J329_BaseDepth.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/J329_BaseDepth.png')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
 def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
@@ -72,7 +72,7 @@ def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
 
     # plot rain on second axis as inverted.
     ax2 = ax1.twinx()
-    ax2.depth(rain_df['dt'], rain_df['rain_cm'], color='slategrey', width=0.002)
+    ax2.bar(rain_df['dt'], rain_df['rain_cm'], color='slategrey', width=0.002)
     ax2.set_ylim(-0.05, 5)
     ax2.invert_yaxis()
     ax2.set_ylabel('Precipitation (cm)', color='slategrey')
@@ -84,7 +84,8 @@ def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_with_hyetograph_J338S.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_with_hyetograph_J338S.png')
 
 
 # plot depth over time for one node with inverted hyetograph, all scenarios (cms)
@@ -112,15 +113,15 @@ def plot_depth_with_hyetograph(processed_df, rain_df, scenarios):
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
-    plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_with_hyetograph_J338S.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_with_hyetograph_J338S.png')
 
 
 # plot max depths for one node, all scenarios (m)
 def plot_depth_barchart(processed_df, scenarios):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
-    # scenarios = ('base', 'BGN', 'BGNx3', 'IC', 'GM', 'GM+IC')
+    # scenarios = ('base', 'BGN', 'BGNx3', 'G', 'I', 'G&I')
     for scenario in scenarios.keys():
         df_plot = processed_df.loc[scenario].max()
         current_color = next(colors)
@@ -132,7 +133,8 @@ def plot_depth_barchart(processed_df, scenarios):
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_barchart_J338S.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_barchart_J338S.png')
 
 
 # plot max flowrate for one node, all scenarios (cms)
@@ -146,17 +148,18 @@ def plot_flowrt_barchart(processed_df, scenarios):
         ax1.bar(scenario, df_plot['J338-S_flow'], label=scenario, color=current_color)
 
     ax1.set_xlabel('Scenario')
-    ax1.set_ylabel('Depth (m)')
+    ax1.set_ylabel('Flowrate (cms)')
     ax1.set_title('June 27, 2023: Maximum Storm Flow in Broadway East')
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.png')
 
 def boxplot_max_depth(max_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = max_depth_df['Base'], max_depth_df['BGN'], max_depth_df['BGNx3'], max_depth_df['GM'], max_depth_df['IC'], max_depth_df['GM+IC']
-    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    x = max_depth_df['Base'], max_depth_df['BGN'], max_depth_df['BGNx3'], max_depth_df['G'], max_depth_df['I'], max_depth_df['G&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
 
@@ -169,12 +172,12 @@ def boxplot_max_depth(max_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_boxplot_allnodes.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_boxplot_allnodes.png')
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = max_flow_df['Base'], max_flow_df['BGN'], max_flow_df['BGNx3'], max_flow_df['GM'], max_flow_df['IC'], max_flow_df['GM+IC']
-    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    x = max_flow_df['Base'], max_flow_df['BGN'], max_flow_df['BGNx3'], max_flow_df['G'], max_flow_df['I'], max_flow_df['G&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
     #bplot = ax1.violinplot(x)
@@ -188,12 +191,12 @@ def boxplot_max_flow(max_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.png')
 
 def boxplot_relative_depth(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_depth_df['Base'], relative_depth_df['BGN'], relative_depth_df['BGNx3'], relative_depth_df['GM'], relative_depth_df['IC'], relative_depth_df['GM+IC']
-    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    x = relative_depth_df['Base'], relative_depth_df['BGN'], relative_depth_df['BGNx3'], relative_depth_df['G'], relative_depth_df['I'], relative_depth_df['G&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
@@ -206,11 +209,11 @@ def boxplot_relative_depth(relative_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeDepth.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeDepth.png')
 
 def boxplot_watersheds_relative_depth(relative_depth_df):
     #make df long
-    value_vars = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    value_vars = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     long_df = relative_depth_df.melt(
         id_vars=['node_name', 'node_id', 'historic_stream'],
         value_vars=value_vars,
@@ -243,14 +246,14 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
     plt.xticks(rotation = 90)
     plt.tight_layout()
     plt.grid(axis='y')
-    plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeDepth.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/WatershedBoxplot_RelativeDepth.png')
 
 
 def boxplot_relative_flow(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_flow_df['Base'], relative_flow_df['BGN'], relative_flow_df['BGNx3'], relative_flow_df['GM'], relative_flow_df['IC'], relative_flow_df['GM+IC']
-    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    x = relative_flow_df['Base'], relative_flow_df['BGN'], relative_flow_df['BGNx3'], relative_flow_df['G'], relative_flow_df['I'], relative_flow_df['G&I']
+    labels = ['base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
@@ -263,13 +266,13 @@ def boxplot_relative_flow(relative_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeFlow.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeFlow.png')
 
 
-def boxplot_above_curb(depth_time_df):
+def boxplot_time_above_curb(depth_time_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = depth_time_df['Base'], depth_time_df['BGN'], depth_time_df['BGNx3'], depth_time_df['GM'], depth_time_df['IC'], depth_time_df['GM+IC']
-    labels = ['Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    x = depth_time_df['Base'], depth_time_df['BGN'], depth_time_df['BGNx3'], depth_time_df['G'], depth_time_df['I'], depth_time_df['G&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
 
@@ -281,14 +284,14 @@ def boxplot_above_curb(depth_time_df):
     ax1.set_title('June 27, 2023: Duration of Flooding Above Curb')
     plt.tight_layout()
     ax1.grid(axis='y')
-    plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.png')
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     unwanted = ['Northside, Drains to Harbor', 'Southside, Drains to Harbor', 'Armistead Creek']
     plot_df = relative_depth_df[~relative_depth_df['historic_stream'].isin(unwanted)]
-    plot_cols = ['historic_stream', 'Base', 'BGN', 'BGNx3', 'GM', 'IC', 'GM+IC']
+    plot_cols = ['historic_stream', 'Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightskyblue', 'blue']
     pd.plotting.parallel_coordinates(plot_df[plot_cols], 'historic_stream', color = colors)
 
@@ -299,7 +302,7 @@ def depth_parallelcoord(relative_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Relative_ParallelPlot_Depth.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Relative_ParallelPlot_Depth.png')
 
 def flow_parallelcoord(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -310,8 +313,8 @@ def flow_parallelcoord(relative_flow_df):
     ax1.get_legend(loc = 'center left')
     plt.tight_layout()
     ax1.grid(axis='y')
-    plt.show()
-    #plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.svg')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.png')
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
@@ -329,20 +332,20 @@ if __name__ == "__main__":
                 #'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
 
-    # execute
-    # relative means relative to base case
-    plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes)
-    #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios) #problems with yaxis
+    # execute, note 'relative' functions means the result is relative to base case
+    #plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes)
+    #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios)
     #plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
     #plot_flowrt_barchart(processed_df, scenarios)
     #plot_depth_barchart(processed_df, scenarios)
+    plot_duration_barchart(processed_df, scenarios)
     #boxplot_max_depth(max_depth_df)
     #boxplot_max_flow(max_flow_df)
     #boxplot_relative_depth(relative_depth_df)
     #boxplot_relative_flow(relative_flow_df)
     #boxplot_watersheds_relative_depth(relative_depth_df)
-    #boxplot_above_curb(depth_time_df)
+    #boxplot_time_above_curb(depth_time_df)
     #depth_parallelcoord(relative_depth_df)
-    #flow_parallelcoord(relative_flow_df)
+    #flow_parallelcoord(relative_flow_df) #ValueError: could not convert string to float: 'J105-S_flow'
 
 

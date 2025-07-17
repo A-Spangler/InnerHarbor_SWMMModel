@@ -1,3 +1,7 @@
+# By: Ava Spangler
+# Date: 7/16/25
+# Description: This code has utility functions, like one to clean utf-8 encoding that pcswmm messes up sometimes.
+
 import os
 
 def clean_rpt_encoding(rpt_path, inplace=True):
