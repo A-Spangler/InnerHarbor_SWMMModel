@@ -118,8 +118,8 @@ if __name__ == "__main__":
                            'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
 
     #execute find max
-    #find_max_depth(processed_df, node_neighborhood)
-    #find_max_flow(processed_df, node_neighborhood)
+    find_max_depth(processed_df, node_neighborhood)
+    find_max_flow(processed_df, node_neighborhood)
 
     # execute above curb
     time_above_curb(processed_df)

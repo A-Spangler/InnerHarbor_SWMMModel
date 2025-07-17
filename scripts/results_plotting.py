@@ -271,12 +271,13 @@ def boxplot_relative_flow(relative_flow_df):
 
 def boxplot_relative_duration_above_curb(relative_duration_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    labels = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
+    labels = [ 'Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
 
-    # get scenario columns as a list of arrays, plot
-    data_to_plot = [relative_duration_df[col].values for col in relative_duration_df.columns]
-    bplot = ax1.boxplot(data_to_plot, labels=labels, patch_artist=True)
+    # Select only scenario columns (exclude 'node' column)
+    scenario_cols = [col for col in relative_duration_df.columns if col != 'node']
+    data_to_plot = [relative_duration_df[col].values for col in scenario_cols]
+    bplot = ax1.boxplot(data_to_plot, tick_labels=labels, patch_artist=True)
 
      #fill with colors
     for patch, color in zip(bplot['boxes'], colors):
@@ -320,6 +321,7 @@ def flow_parallelcoord(relative_flow_df):
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.png')
 
 
+
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
@@ -336,20 +338,20 @@ if __name__ == "__main__":
                 #'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
 
-    # execute, note 'relative' functions means the result is relative to base case
-    #plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes)
-    #plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios)
-    #plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
-    #plot_flowrt_barchart(processed_df, scenarios)
-    #plot_depth_barchart(processed_df, scenarios)
+    #execute, note 'relative' functions means the result is relative to base case
+    plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes)
+    plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios)
+    plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
+    plot_flowrt_barchart(processed_df, scenarios)
+    plot_depth_barchart(processed_df, scenarios)
     ##plot_duration_barchart(processed_df, scenarios) #TODO
-    #boxplot_max_depth(max_depth_df)
-    #boxplot_max_flow(max_flow_df)
-    #boxplot_relative_depth(relative_depth_df)
-    #boxplot_relative_flow(relative_flow_df)
-    #boxplot_watersheds_relative_depth(relative_depth_df)
-    #boxplot_relative_duration_above_curb(relative_duration_df)
-    #depth_parallelcoord(relative_depth_df)
+    boxplot_max_depth(max_depth_df)
+    boxplot_max_flow(max_flow_df)
+    boxplot_relative_depth(relative_depth_df)
+    boxplot_relative_flow(relative_flow_df)
+    boxplot_watersheds_relative_depth(relative_depth_df)
+    boxplot_relative_duration_above_curb(relative_duration_df)
+    depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df) #ValueError: could not convert string to float: 'J105-S_flow'
 
 

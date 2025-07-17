@@ -11,7 +11,6 @@ import pyswmm
 import datetime as dt
 from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGroups
 from scripts.config import scenarios
-from scripts.config import model_path
 from scripts.config import scenarios
 from scripts.utils import clean_rpt_encoding
 
@@ -21,8 +20,6 @@ from scripts.utils import clean_rpt_encoding
 # function to run pyswmm and save outputs as dict
 cfs_to_cms = (12**3)*(2.54**3)*(1/100**3)
 ft_to_m = 12*2.54*(1/100)
-model = swmmio.Model(model_path)
-
 
 def list_street_nodes(model):
     nodes_df = model.nodes.dataframe
@@ -77,6 +74,7 @@ if __name__ == "__main__":
             print(f"Report file not found: {rpt_path} (skipping)")
 
     # find street node names
+    model_path = scenarios['Base']
     model = swmmio.Model(model_path)
     node_ids = list_street_nodes(model)
     node_ids.remove('J509-S') # drop patterson pond node, it is not a street and shouldn't be considered
