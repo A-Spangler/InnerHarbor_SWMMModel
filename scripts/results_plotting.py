@@ -269,18 +269,21 @@ def boxplot_relative_flow(relative_flow_df):
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeFlow.png')
 
 
-def boxplot_time_above_curb(depth_time_df):
+def boxplot_relative_duration_above_curb(relative_duration_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = depth_time_df['Base'], depth_time_df['BGN'], depth_time_df['BGNx3'], depth_time_df['G'], depth_time_df['I'], depth_time_df['G&I']
     labels = ['Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black']
-    bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
 
-    # fill with colors
+    # get scenario columns as a list of arrays, plot
+    data_to_plot = [relative_duration_df[col].values for col in relative_duration_df.columns]
+    bplot = ax1.boxplot(data_to_plot, labels=labels, patch_artist=True)
+
+     #fill with colors
     for patch, color in zip(bplot['boxes'], colors):
         patch.set_facecolor(color)
 
-    ax1.set_ylabel('Time (hour)')
+    ax1.set_ylabel('Time (min)')
+    ax1.set_xlabel('Scenario')
     ax1.set_title('June 27, 2023: Duration of Flooding Above Curb')
     plt.tight_layout()
     ax1.grid(axis='y')
@@ -289,8 +292,8 @@ def boxplot_time_above_curb(depth_time_df):
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    unwanted = ['Northside, Drains to Harbor', 'Southside, Drains to Harbor', 'Armistead Creek']
-    plot_df = relative_depth_df[~relative_depth_df['historic_stream'].isin(unwanted)]
+    drop= ['Northside, Drains to Harbor', 'Southside, Drains to Harbor', 'Armistead Creek']
+    plot_df = relative_depth_df[~relative_depth_df['historic_stream'].isin(drop)]
     plot_cols = ['historic_stream', 'Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     colors = ['lightskyblue', 'blue']
     pd.plotting.parallel_coordinates(plot_df[plot_cols], 'historic_stream', color = colors)
@@ -323,9 +326,10 @@ if __name__ == "__main__":
     processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
     max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
     max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
+    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
     relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
     relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
-    depth_time_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_TimeDepth.csv')
+    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
     BE_nodes = ['J329-S_depth']
     #BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
@@ -338,13 +342,13 @@ if __name__ == "__main__":
     #plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
     #plot_flowrt_barchart(processed_df, scenarios)
     #plot_depth_barchart(processed_df, scenarios)
-    plot_duration_barchart(processed_df, scenarios)
+    ##plot_duration_barchart(processed_df, scenarios) #TODO
     #boxplot_max_depth(max_depth_df)
     #boxplot_max_flow(max_flow_df)
     #boxplot_relative_depth(relative_depth_df)
     #boxplot_relative_flow(relative_flow_df)
     #boxplot_watersheds_relative_depth(relative_depth_df)
-    #boxplot_time_above_curb(depth_time_df)
+    #boxplot_relative_duration_above_curb(relative_duration_df)
     #depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df) #ValueError: could not convert string to float: 'J105-S_flow'
 

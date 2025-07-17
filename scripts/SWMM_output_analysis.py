@@ -75,39 +75,11 @@ def find_max_flow(processed_df, node_neighborhood_df):
     relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv')
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
-'''
-def time_above_curb(processed_df):
-    threshold = 0.1524 # m (6 inches)
-    node_columns = [col for col in processed_df.columns if col.endswith('_depth')] #single out depth cols
-    processed_df = processed_df.reset_index()
-    depth_duration_df = processed_df.loc[:, ['scenario', 'timestamp', *node_columns]]
-    depth_duration_df = depth_duration_df.melt(id_vars=['scenario', 'timestamp'], var_name='node', value_name='depth_m') #TODO: Should all df's start like this? Is this what processedDf should be saved as?
-
-    # boolean mask and count hours above threshold
-    depth_duration_df['above_thresh'] = depth_duration_df['depth_m'] > threshold
-    duration_result = (
-        depth_duration_df[depth_duration_df['above_thresh']]
-        .groupby(['scenario', 'node'])
-        .size()
-        .reset_index(name='count')
-    )
-
-    duration_result['time_above'] = duration_result['count']* 5 #5min per above threshold (boolean = True) event
-
-    # Pivot to make scenarios columns,subtract 'Base' from all other scenario
-    relative_duration = duration_result.pivot(index='node', columns='scenario', values='time_above')
-    relative_duration = relative_duration.sub(relative_duration['Base'], axis=0)
-    relative_duration = relative_duration.reset_index()
-    print(relative_duration)
-
-    duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
-    relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv')
-    return duration_result, depth_duration_df
-'''
 
 def time_above_curb(processed_df):
     threshold = 0.1524  # m (6 inches)
     timestep_min = 5    # 5 minutes per step, as per SWMM model structure
+    col_order = ['node', 'Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
     node_columns = [col for col in processed_df.columns if col.endswith('_depth')]
 
     # Boolean DataFrame where True means above threshold, by scenario
@@ -118,16 +90,19 @@ def time_above_curb(processed_df):
     # count above-threshold per node per scenario
     duration_result = above_thresh.groupby('scenario')[node_columns].sum().T
 
-    # convert to DataFrame with columns: node, scenario1, scenario2, ...
+    #convert to DataFrame with columns for node, scneario, and count above threshold
     duration_result.reset_index(inplace=True)
     duration_result = duration_result.melt(id_vars='index', var_name='scenario', value_name='count')
     duration_result.rename(columns={'index': 'node'}, inplace=True)
     duration_result['time_above'] = duration_result['count'] * timestep_min # time in min
 
-    #subtract Base from all scenarios
+
+    #subtract Base from all scenarios, reorganize cols
     relative_duration = duration_result.pivot(index='node', columns='scenario', values='time_above')
     relative_duration = relative_duration.sub(relative_duration['Base'], axis=0)
     relative_duration = relative_duration.reset_index()
+    relative_duration = relative_duration.reindex(columns=col_order)
+
 
     duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
     relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv')
