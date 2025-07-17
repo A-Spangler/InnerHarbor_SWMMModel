@@ -75,6 +75,7 @@ def find_max_flow(processed_df, node_neighborhood_df):
     relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv')
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
+'''
 def time_above_curb(processed_df):
     threshold = 0.1524 # m (6 inches)
     node_columns = [col for col in processed_df.columns if col.endswith('_depth')] #single out depth cols
@@ -92,10 +93,47 @@ def time_above_curb(processed_df):
     )
 
     duration_result['time_above'] = duration_result['count']* 5 #5min per above threshold (boolean = True) event
-    #print(result)
+
+    # Pivot to make scenarios columns,subtract 'Base' from all other scenario
+    relative_duration = duration_result.pivot(index='node', columns='scenario', values='time_above')
+    relative_duration = relative_duration.sub(relative_duration['Base'], axis=0)
+    relative_duration = relative_duration.reset_index()
+    print(relative_duration)
 
     duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
+    relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv')
     return duration_result, depth_duration_df
+'''
+
+def time_above_curb(processed_df):
+    threshold = 0.1524  # m (6 inches)
+    timestep_min = 5    # 5 minutes per step, as per SWMM model structure
+    node_columns = [col for col in processed_df.columns if col.endswith('_depth')]
+
+    # Boolean DataFrame where True means above threshold, by scenario
+    processed_df = processed_df.reset_index()
+    above_thresh = processed_df[node_columns] > threshold
+    above_thresh['scenario'] = processed_df['scenario']
+
+    # count above-threshold per node per scenario
+    duration_result = above_thresh.groupby('scenario')[node_columns].sum().T
+
+    # convert to DataFrame with columns: node, scenario1, scenario2, ...
+    duration_result.reset_index(inplace=True)
+    duration_result = duration_result.melt(id_vars='index', var_name='scenario', value_name='count')
+    duration_result.rename(columns={'index': 'node'}, inplace=True)
+    duration_result['time_above'] = duration_result['count'] * timestep_min # time in min
+
+    #subtract Base from all scenarios
+    relative_duration = duration_result.pivot(index='node', columns='scenario', values='time_above')
+    relative_duration = relative_duration.sub(relative_duration['Base'], axis=0)
+    relative_duration = relative_duration.reset_index()
+
+    duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
+    relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv')
+
+    return relative_duration, duration_result
+
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
