@@ -19,11 +19,11 @@ from scripts.config import scenarios
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 # can use BE_nodes to plot a subset of locations. BE_nodes is sequential, upstream to downstream.
-def plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes):
-    processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
+def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes):
+    processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(27, 5))
-    df_plot = processed_df.loc['Base']
+    df_plot = processed_nodes_df.loc['Base']
 
     # If plotting several nodes at a time (e.g., using BE_nodes), create a colormap and get N colors (N = number of nodes)
     cmap = cm.get_cmap('Blues', len(BE_nodes))
@@ -56,17 +56,17 @@ def plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/J329_BaseDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/J329_BaseDepth.png')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
-def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
-    processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
+def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
+    processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
 
     for scenario in scenarios.keys():
-        df_plot = processed_df.loc[scenario]
+        df_plot = processed_nodes_df.loc[scenario]
         current_color = next(colors)
         ax1.plot(df_plot['timestamp'], df_plot['J338-S_flow'], label=scenario, color=current_color)
 
@@ -85,17 +85,17 @@ def plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_with_hyetograph_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/flwrt_with_hyetograph_J338S.png')
 
 
 # plot depth over time for one node with inverted hyetograph, all scenarios (cms)
-def plot_depth_with_hyetograph(processed_df, rain_df, scenarios):
-    processed_df['timestamp'] = pd.to_datetime(processed_df['timestamp'])
+def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
+    processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
     for scenario in scenarios.keys():
-        df_plot = processed_df.loc[scenario]
+        df_plot = processed_nodes_df.loc[scenario]
         current_color = next(colors)
         ax1.plot(df_plot['timestamp'], df_plot['J338-S_depth'], label=scenario, color=current_color)
 
@@ -114,16 +114,16 @@ def plot_depth_with_hyetograph(processed_df, rain_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_with_hyetograph_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/depth_with_hyetograph_J338S.png')
 
 
 # plot max depths for one node, all scenarios (m)
-def plot_depth_barchart(processed_df, scenarios):
+def plot_depth_barchart(processed_nodes_df, scenarios):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
     # scenarios = ('base', 'BGN', 'BGNx3', 'G', 'I', 'G&I')
     for scenario in scenarios.keys():
-        df_plot = processed_df.loc[scenario].max()
+        df_plot = processed_nodes_df.loc[scenario].max()
         current_color = next(colors)
         ax1.bar(scenario, df_plot['J338-S_depth'], label=scenario, color=current_color)
 
@@ -134,16 +134,16 @@ def plot_depth_barchart(processed_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_barchart_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/depth_barchart_J338S.png')
 
 
 # plot max flowrate for one node, all scenarios (cms)
-def plot_flowrt_barchart(processed_df, scenarios):
+def plot_flowrt_barchart(processed_nodes_df, scenarios):
     # bar chart showing max flowrate across scenarios
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'black'])
     for scenario in scenarios.keys():
-        df_plot = processed_df.loc[scenario].max()
+        df_plot = processed_nodes_df.loc[scenario].max()
         current_color = next(colors)
         ax1.bar(scenario, df_plot['J338-S_flow'], label=scenario, color=current_color)
 
@@ -154,7 +154,7 @@ def plot_flowrt_barchart(processed_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flwrt_barchart_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/flwrt_barchart_J338S.png')
 
 def boxplot_max_depth(max_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -172,7 +172,7 @@ def boxplot_max_depth(max_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/depth_boxplot_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/depth_boxplot_allnodes.png')
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -191,7 +191,7 @@ def boxplot_max_flow(max_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/flow_boxplot_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/flow_boxplot_allnodes.png')
 
 def boxplot_relative_depth(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -209,7 +209,7 @@ def boxplot_relative_depth(relative_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Boxplot_RelativeDepth.png')
 
 def boxplot_watersheds_relative_depth(relative_depth_df):
     #make df long
@@ -247,7 +247,7 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
     plt.tight_layout()
     plt.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/WatershedBoxplot_RelativeDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/WatershedBoxplot_RelativeDepth.png')
 
 
 def boxplot_relative_flow(relative_flow_df):
@@ -266,7 +266,7 @@ def boxplot_relative_flow(relative_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Boxplot_RelativeFlow.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Boxplot_RelativeFlow.png')
 
 
 def boxplot_relative_duration_above_curb(relative_duration_df):
@@ -289,7 +289,7 @@ def boxplot_relative_duration_above_curb(relative_duration_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/AboveCurb_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/AboveCurb_allnodes.png')
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -306,7 +306,7 @@ def depth_parallelcoord(relative_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/Relative_ParallelPlot_Depth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Relative_ParallelPlot_Depth.png')
 
 def flow_parallelcoord(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -318,33 +318,33 @@ def flow_parallelcoord(relative_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/ParallelPlot_Flow.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/ParallelPlot_Flow.png')
 
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
-    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
-    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
-    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
-    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
-    rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_23_rain_df.csv')
+    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_simV20_AllNodes.csv', index_col=[0, 1])
+    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_MaxFlow.csv')
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_MaxDepth.csv')
+    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_DurationOverCurb.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
+    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
+    rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_23_rain_df.csv')
     BE_nodes = ['J329-S_depth']
     #BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
                 #'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
 
     #execute, note 'relative' functions means the result is relative to base case
-    plot_basedepth_with_hyetograph(processed_df, rain_df, BE_nodes)
-    plot_flowrt_with_hyetograph(processed_df, rain_df, scenarios)
-    plot_depth_with_hyetograph(processed_df, rain_df, scenarios)
-    plot_flowrt_barchart(processed_df, scenarios)
-    plot_depth_barchart(processed_df, scenarios)
-    ##plot_duration_barchart(processed_df, scenarios) #TODO
+    plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes)
+    plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios)
+    plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios)
+    plot_flowrt_barchart(processed_nodes_df, scenarios)
+    plot_depth_barchart(processed_nodes_df, scenarios)
+    ##plot_duration_barchart(processed_nodes_df, scenarios) #TODO
     boxplot_max_depth(max_depth_df)
     boxplot_max_flow(max_flow_df)
     boxplot_relative_depth(relative_depth_df)

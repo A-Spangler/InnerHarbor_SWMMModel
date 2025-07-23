@@ -43,8 +43,8 @@ def find_max_depth(processed_df, node_neighborhood):
     relative_change_in_depth['neighborhood'] = max_depth_df['neighborhood']
     relative_change_in_depth['historic_stream'] = max_depth_df['historic_stream']
 
-    max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxDepth.csv')
-    relative_change_in_depth.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDepth.csv')
+    max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_MaxDepth.csv')
+    relative_change_in_depth.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/nodes/processed/6_27_2023_V20_AllNodes_RelativeDepth.csv')
     return max_depth_df, relative_change_in_depth  # relative means relative to base case
 
 def find_max_flow(processed_df, node_neighborhood_df):
@@ -71,21 +71,21 @@ def find_max_flow(processed_df, node_neighborhood_df):
     relative_change_in_flow['node_id'] = max_flow_df['node_id']
     relative_change_in_flow['neighborhood'] = max_flow_df['neighborhood']
 
-    max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_MaxFlow.csv')
-    relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeFlow.csv')
+    max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_MaxFlow.csv')
+    relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/nodes/processed/6_27_2023_V20_AllNodes_RelativeFlow.csv')
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
 
-def time_above_curb(processed_df):
+def time_above_curb(processed_nodes_df):
     threshold = 0.1524  # m (6 inches)
     timestep_min = 5    # 5 minutes per step, as per SWMM model structure
     col_order = ['node', 'Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
-    node_columns = [col for col in processed_df.columns if col.endswith('_depth')]
+    node_columns = [col for col in processed_nodes_df.columns if col.endswith('_depth')]
 
     # Boolean DataFrame where True means above threshold, by scenario
-    processed_df = processed_df.reset_index()
-    above_thresh = processed_df[node_columns] > threshold
-    above_thresh['scenario'] = processed_df['scenario']
+    processed_nodes_df = processed_nodes_df.reset_index()
+    above_thresh = processed_nodes_df[node_columns] > threshold
+    above_thresh['scenario'] = processed_nodes_df['scenario']
 
     # count above-threshold per node per scenario
     duration_result = above_thresh.groupby('scenario')[node_columns].sum().T
@@ -104,8 +104,8 @@ def time_above_curb(processed_df):
     relative_duration = relative_duration.reindex(columns=col_order)
 
 
-    duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_DurationOverCurb.csv')
-    relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_V19_AllNodes_RelativeDurationOverCurb.csv')
+    duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_DurationOverCurb.csv')
+    relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeDurationOverCurb.csv')
 
     return relative_duration, duration_result
 
@@ -113,7 +113,7 @@ def time_above_curb(processed_df):
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     #load processed data
-    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/6_27_2023_simV19_AllNodes.csv', index_col=[0, 1])
+    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_simV20_AllNodes.csv', index_col=[0, 1])
     neighborhoods = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - '
                            'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
 
