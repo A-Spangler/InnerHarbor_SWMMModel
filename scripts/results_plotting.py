@@ -253,7 +253,7 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
 def boxplot_relative_flow(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     x = relative_flow_df['Base'], relative_flow_df['BGN'], relative_flow_df['BGNx3'], relative_flow_df['UG'], relative_flow_df['V'], relative_flow_df['I'], relative_flow_df['V&I']
-    labels = ['base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'G&I']
+    labels = ['base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
