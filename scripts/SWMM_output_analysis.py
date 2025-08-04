@@ -36,7 +36,7 @@ def find_max_depth(processed_df, node_neighborhood):
 
     # define new df showing relative change from base case
     # drop node names and neighborhoods for subtraction, then add back in
-    relative_change_in_depth = max_depth_df.iloc[:, 1:7].copy() # TODO: fix hardcoding in the column indicies, changes w scenarios
+    relative_change_in_depth = max_depth_df.iloc[:, 1:8].copy() # TODO: fix hardcoding in the column indicies, changes w scenarios
     relative_change_in_depth = relative_change_in_depth.sub(max_depth_df['Base'], axis = 0)
     relative_change_in_depth['node_name'] = max_depth_df['node_name']
     relative_change_in_depth['node_id'] = max_depth_df['node_id']
@@ -44,7 +44,7 @@ def find_max_depth(processed_df, node_neighborhood):
     relative_change_in_depth['historic_stream'] = max_depth_df['historic_stream']
 
     max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_MaxDepth.csv')
-    relative_change_in_depth.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/nodes/processed/6_27_2023_V20_AllNodes_RelativeDepth.csv')
+    relative_change_in_depth.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeDepth.csv')
     return max_depth_df, relative_change_in_depth  # relative means relative to base case
 
 def find_max_flow(processed_df, node_neighborhood_df):
@@ -65,21 +65,21 @@ def find_max_flow(processed_df, node_neighborhood_df):
 
     # define new df showing relative change from base case
     # drop node names for subtraction, then add back in
-    relative_change_in_flow = max_flow_df.iloc[:, 1:7].copy() #TODO fix harcoding in the column indicies for subtraction, changes w scenarios
+    relative_change_in_flow = max_flow_df.iloc[:, 1:8].copy() #TODO fix harcoding in the column indicies for subtraction, changes w scenarios
     relative_change_in_flow = relative_change_in_flow.sub(max_flow_df['Base'], axis = 0)
     relative_change_in_flow['node_name'] = max_flow_df['node_name']
     relative_change_in_flow['node_id'] = max_flow_df['node_id']
     relative_change_in_flow['neighborhood'] = max_flow_df['neighborhood']
 
     max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_MaxFlow.csv')
-    relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/nodes/processed/6_27_2023_V20_AllNodes_RelativeFlow.csv')
+    relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeFlow.csv')
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
 
 def time_above_curb(processed_nodes_df):
     threshold = 0.1524  # m (6 inches)
     timestep_min = 5    # 5 minutes per step, as per SWMM model structure
-    col_order = ['node', 'Base', 'BGN', 'BGNx3', 'G', 'I', 'G&I']
+    col_order = ['node', 'Base', 'BGN', 'BGNx3','UG', 'V', 'I', 'G&I']
     node_columns = [col for col in processed_nodes_df.columns if col.endswith('_depth')]
 
     # Boolean DataFrame where True means above threshold, by scenario
