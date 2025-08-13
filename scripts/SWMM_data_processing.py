@@ -53,8 +53,8 @@ def run_pyswmm(inp_path, node_ids, link_ids):
             for node_id, node in nodes.items(): # store node flow and depth data in node dictionary
                 output_nodes[node_id]['depth'].append(node.depth*ft_to_m) # ft to m
                 output_nodes[node_id]['flow'].append(node.total_inflow*cfs_to_cms) #m**3/s
-            for link_id, link in links.items():  # store node flow and depth data in node dictionary
-                output_links[link_id]['velocity'].append(link.flow * ft_to_m) #ft/s to meter/s
+            for link_id, link in links.items():  # store flowrate/average cross-sectional area in dictionary.
+                output_links[link_id]['velocity'].append((link.flow/((link.ds_xsection_area + link.ups_xsection_area)/2)) * ft_to_m) #ft/s to meter/s
 
         # construct df
         node_data = {'timestamp': time_stamps} #dictionary of timestamps
@@ -67,6 +67,7 @@ def run_pyswmm(inp_path, node_ids, link_ids):
 
         df_node_data = pd.DataFrame(node_data).copy()
         df_link_data = pd.DataFrame(link_data).copy()
+        df_link_data = df_link_data.apply(pd.to_numeric, errors='coerce')
         return df_node_data, df_link_data
 
     # define node neighborhood tuple
@@ -124,7 +125,6 @@ if __name__ == "__main__":
     processed_links_df = pd.concat(scenario_link_results, names=['scenario'])
     processed_links_df.index.set_names(['scenario', 'row'], inplace=True)
     processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_simV20_AllLinks.csv')
-
 
 
 # TODO: write a function to process subcatchments

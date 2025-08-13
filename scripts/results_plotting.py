@@ -281,7 +281,7 @@ def boxplot_relative_veloc(relative_veloc_df):
     for patch, color in zip(bplot['boxes'], colors):
         patch.set_facecolor(color)
 
-    ax1.set_ylabel('Velocity (m/s)')
+    ax1.set_ylabel('Relative Velocity (m/s)')
     ax1.set_title('June 27, 2023: Relative Change in Flow Velocity')
     plt.tight_layout()
     ax1.grid(axis='y')
@@ -336,7 +336,6 @@ def depth_parallelcoord(relative_depth_df):
     #qualitative colormap
     cmap = matplotlib.colormaps['tab20']
     cmap = cmap.resampled(num_neigh)
-
     colors = [cmap(i) for i in range(num_neigh)]
     # Create a mapping of neighborhood to color (optional, not required for parallel_coordinates itself)
     color_map = {nb: colors[i] for i, nb in enumerate(unique_neighborhoods)}
@@ -359,15 +358,27 @@ def veloc_parallelcoord(relative_veloc_df):
     # Columns to plot (first is the class column)
     plot_cols = ['neighborhood', 'Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
 
-    # Get unique neighborhoods in the order they appear
+    # plot only broadway east as blue
     neighborhood_order = relative_veloc_df['neighborhood'].unique()
-    # Build color list: blue for 'Broadway East', grey for others
-    colors = ['blue' if n == 'Broadway East' else 'grey' for n in neighborhood_order]
+    #blue for 'Broadway East', grey for others
+    colors = ['blue' if n == 'Broadway East' or n == 'Eager Park' else 'grey' for n in neighborhood_order]
+
+    # Get unique neighborhoods sorted
+    #relative_veloc_df['neighborhood'] = relative_veloc_df['neighborhood'].astype(str)
+    #unique_neighborhoods = sorted(relative_veloc_df['neighborhood'].unique())
+    #num_neigh = len(unique_neighborhoods)
+
+    #qualitative colormap
+    #cmap = matplotlib.colormaps['tab20']
+    #cmap = cmap.resampled(num_neigh)
+    #colors = [cmap(i) for i in range(num_neigh)]
+    # Create a mapping of neighborhood to color (optional, not required for parallel_coordinates itself)
+    #color_map = {nb: colors[i] for i, nb in enumerate(unique_neighborhoods)}
 
     # plot
     pd.plotting.parallel_coordinates(relative_veloc_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
-    ax1.set_ylabel('Depth (m)')
-    ax1.set_title('June 27, 2023: Relative Improvement in Flood Velocity')
+    ax1.set_ylabel('Change in Velocity Relative to Base Scenario (m/s)')
+    ax1.set_title('June 27, 2023: Relative Change in Flood Velocity')
     ax1.grid(axis='y')
 
     ax1.legend(title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))

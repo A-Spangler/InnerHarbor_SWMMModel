@@ -76,7 +76,7 @@ def find_max_flow(processed_df, node_neighborhood_df):
     relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeFlow.csv')
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
-def find_max_velocty(processed_links_df,link_neighborhood_df):
+def find_max_velocty(processed_links_df,link_neighborhood_df): # something isn't working in this calculation
     # find max velocity for each link
     max_veloc_df = processed_links_df.groupby(level=0).max()
 
@@ -147,15 +147,16 @@ if __name__ == "__main__":
     #neighborhoods = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - '
                            #'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
 
-    # define node neighborhood tuple
+    # testing
+    print(processed_links_df.describe())
 
 
-    #execute find max
+    #execute find max fxns
     find_max_depth(processed_df, node_neighborhood)
     find_max_flow(processed_df, node_neighborhood)
     find_max_velocty(processed_links_df, link_neighborhood)
 
-    # execute above curb
+    # execute above curb fxn
     time_above_curb(processed_df)
 
 
