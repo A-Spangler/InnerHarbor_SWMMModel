@@ -9,6 +9,7 @@ import pandas as pd
 import seaborn as sns
 import datetime as dt
 from datetime import datetime
+import matplotlib
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -16,6 +17,7 @@ from matplotlib import colormaps
 import itertools
 from pandas.plotting import parallel_coordinates
 from scripts.config import scenarios
+import matplotlib.patches as mpatches
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 # can use BE_nodes to plot a subset of locations. BE_nodes is sequential, upstream to downstream.
@@ -25,9 +27,9 @@ def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes):
     fig, ax1 = plt.subplots(figsize=(27, 5))
     df_plot = processed_nodes_df.loc['Base']
 
-    # If plotting several nodes at a time (e.g., using BE_nodes), create a colormap and get N colors (N = number of nodes)
-    cmap = cm.get_cmap('Blues', len(BE_nodes))
-    colors = cmap(np.linspace(0, 1, len(BE_nodes)))
+    cmap = matplotlib.colormaps['Blues']
+    cmap = cmap.resampled(len(BE_nodes))
+    colors = cmap(range(cmap.N))
 
     for i, node in enumerate(BE_nodes):
         #ax1.plot(df_plot['timestamp'], df_plot[node], color=colors[i], label=node, linewidth=2)
@@ -158,8 +160,8 @@ def plot_flowrt_barchart(processed_nodes_df, scenarios):
 
 def boxplot_max_depth(max_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = max_depth_df['Base'], max_depth_df['BGN'], max_depth_df['BGNx3'], max_depth_df['UG'], max_depth_df['V'], max_depth_df['I'], max_depth_df['V&I']
-    labels = ['Base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
+    x = max_depth_df['Base'], max_depth_df['BGN'], max_depth_df['BGNx3'], max_depth_df['UG+I'], max_depth_df['V'], max_depth_df['I'], max_depth_df['V&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
 
@@ -176,8 +178,8 @@ def boxplot_max_depth(max_depth_df):
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = max_flow_df['Base'], max_flow_df['BGN'], max_flow_df['BGNx3'], max_flow_df['UG'], max_flow_df['V'], max_flow_df['I'], max_flow_df['V&I']
-    labels = ['Base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
+    x = max_flow_df['Base'], max_flow_df['BGN'], max_flow_df['BGNx3'], max_flow_df['UG+I'], max_flow_df['V'], max_flow_df['I'], max_flow_df['V&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
     #bplot = ax1.violinplot(x)
@@ -195,8 +197,8 @@ def boxplot_max_flow(max_flow_df):
 
 def boxplot_relative_depth(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_depth_df['Base'], relative_depth_df['BGN'], relative_depth_df['BGNx3'], relative_depth_df['UG'], relative_depth_df['V'], relative_depth_df['I'], relative_depth_df['V&I']
-    labels = ['Base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
+    x = relative_depth_df['Base'], relative_depth_df['BGN'], relative_depth_df['BGNx3'], relative_depth_df['UG+I'], relative_depth_df['V'], relative_depth_df['I'], relative_depth_df['V&I']
+    labels = ['Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
@@ -213,7 +215,7 @@ def boxplot_relative_depth(relative_depth_df):
 
 def boxplot_watersheds_relative_depth(relative_depth_df):
     #make df long
-    value_vars = ['Base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
+    value_vars = ['Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     long_df = relative_depth_df.melt(
         id_vars=['node_name', 'node_id', 'historic_stream'],
         value_vars=value_vars,
@@ -252,8 +254,8 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
 
 def boxplot_relative_flow(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_flow_df['Base'], relative_flow_df['BGN'], relative_flow_df['BGNx3'], relative_flow_df['UG'], relative_flow_df['V'], relative_flow_df['I'], relative_flow_df['V&I']
-    labels = ['base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
+    x = relative_flow_df['Base'], relative_flow_df['BGN'], relative_flow_df['BGNx3'], relative_flow_df['UG+I'], relative_flow_df['V'], relative_flow_df['I'], relative_flow_df['V&I']
+    labels = ['base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
@@ -268,10 +270,28 @@ def boxplot_relative_flow(relative_flow_df):
     #plt.show()
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Boxplot_RelativeFlow.png')
 
+def boxplot_relative_veloc(relative_veloc_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    x = relative_veloc_df['Base'], relative_veloc_df['BGN'], relative_veloc_df['BGNx3'], relative_veloc_df['UG+I'], relative_veloc_df['V'], relative_veloc_df['I'], relative_veloc_df['V&I']
+    labels = ['base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
+    bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
+
+    # fill with colors
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    ax1.set_ylabel('Velocity (m/s)')
+    ax1.set_title('June 27, 2023: Relative Change in Flow Velocity')
+    plt.tight_layout()
+    ax1.grid(axis='y')
+    #plt.show()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/Boxplot_RelativeVelocity.png')
+
 
 def boxplot_relative_duration_above_curb(relative_duration_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    labels = ['Base', 'BGN', 'BGNx3','UG', 'V', 'I', 'V&I']
+    labels = ['Base', 'BGN', 'BGNx3','UG+I', 'V', 'I', 'V&I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
 
     # Select only scenario columns (exclude 'node' column)
@@ -293,7 +313,7 @@ def boxplot_relative_duration_above_curb(relative_duration_df):
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    plot_cols = ['neighborhood', 'Base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
+    plot_cols = ['neighborhood', 'Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     pd.plotting.parallel_coordinates(relative_depth_df[plot_cols], 'neighborhood')
 
     ax1.set_ylabel('Depth (m)')
@@ -305,44 +325,54 @@ def depth_parallelcoord(relative_depth_df):
     #plt.show()
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Relative_ParallelPlot_Depth.png')
 
-
-import matplotlib.patches as mpatches
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-
     # Columns to plot (first is the class column)
-    plot_cols = ['neighborhood', 'Base', 'BGN', 'BGNx3', 'UG', 'V', 'I', 'V&I']
-
+    plot_cols = ['neighborhood', 'Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
     # Get unique neighborhoods sorted
     unique_neighborhoods = sorted(relative_depth_df['neighborhood'].unique())
     num_neigh = len(unique_neighborhoods)
 
-    # Dynamically generate enough distinct colors from the 'tab20' qualitative colormap
-    cmap = plt.cm.get_cmap('tab20', num_neigh)
-    colors = [cmap(i) for i in range(num_neigh)]
+    #qualitative colormap
+    cmap = matplotlib.colormaps['tab20']
+    cmap = cmap.resampled(num_neigh)
 
+    colors = [cmap(i) for i in range(num_neigh)]
     # Create a mapping of neighborhood to color (optional, not required for parallel_coordinates itself)
     color_map = {nb: colors[i] for i, nb in enumerate(unique_neighborhoods)}
 
-    # Plot parallel coordinates using the color list
+    #plot
     pd.plotting.parallel_coordinates(relative_depth_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
-
-    # Set labels and title
     ax1.set_ylabel('Depth (m)')
     ax1.set_title('June 27, 2023: Relative Improvement of Depth of Flooding')
-
-    # Add grid on y axis
     ax1.grid(axis='y')
 
     # Create and place a manual legend with color patches corresponding to neighborhoods
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
-
     plt.tight_layout()
-
-    # Save the figure to the specified path
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Relative_ParallelPlot_Depth.png')
-    plt.close(fig)
+
+
+def veloc_parallelcoord(relative_veloc_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    # Columns to plot (first is the class column)
+    plot_cols = ['neighborhood', 'Base', 'BGN', 'BGNx3', 'UG+I', 'V', 'I', 'V&I']
+
+    # Get unique neighborhoods in the order they appear
+    neighborhood_order = relative_veloc_df['neighborhood'].unique()
+    # Build color list: blue for 'Broadway East', grey for others
+    colors = ['blue' if n == 'Broadway East' else 'grey' for n in neighborhood_order]
+
+    # plot
+    pd.plotting.parallel_coordinates(relative_veloc_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
+    ax1.set_ylabel('Depth (m)')
+    ax1.set_title('June 27, 2023: Relative Improvement in Flood Velocity')
+    ax1.grid(axis='y')
+
+    ax1.legend(title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.tight_layout()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/Relative_ParallelPlot_Veloc.png')
 
 
 
@@ -357,6 +387,7 @@ if __name__ == "__main__":
     relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
     relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/rainfall/6_27_23_rain_df.csv')
+    relative_veloc_df = pd.read_csv( '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V20_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
     BE_nodes = ['J329-S_depth']
     #BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
                 #'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
@@ -373,9 +404,10 @@ if __name__ == "__main__":
     boxplot_max_flow(max_flow_df)
     boxplot_relative_depth(relative_depth_df)
     boxplot_relative_flow(relative_flow_df)
+    boxplot_relative_veloc(relative_veloc_df)
     boxplot_watersheds_relative_depth(relative_depth_df)
     boxplot_relative_duration_above_curb(relative_duration_df)
     depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df) #ValueError: could not convert string to float: 'J105-S_flow'
-
+    veloc_parallelcoord(relative_veloc_df)
 

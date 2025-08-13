@@ -12,6 +12,7 @@ from pyswmm import Simulation, Nodes, Links, Subcatchments, LidControls, LidGrou
 from scripts.config import model_path
 from SWMM_data_processing import list_street_nodes
 from SWMM_data_processing import node_neighborhood
+from SWMM_data_processing import link_neighborhood
 
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ def find_max_depth(processed_df, node_neighborhood):
     max_depth_df = max_depth_df.reset_index().rename(columns={'index': 'node_name'})
     max_depth_df = max_depth_df.reset_index(drop = True)
     # assign neighborhoods to node name by extracting node name and mapping dict
-    max_depth_df['node_id'] = max_depth_df['node_name'].str.extract(r'([^_]+)')[0]
+    max_depth_df['node_id'] = max_depth_df['node_name'].str.extract(r'([^_]+)')[0] # extract all ccharacters before the underscore
     max_depth_df['neighborhood'] = max_depth_df['node_id'].map(lambda x: node_neighborhood[x][0])
     max_depth_df['historic_stream'] = max_depth_df['node_id'].map(lambda x: node_neighborhood[x][1])
     # TODO: rearrange order? order = ['col1', 'col2',...] df = df[order]
@@ -60,7 +61,7 @@ def find_max_flow(processed_df, node_neighborhood_df):
     max_flow_df = max_flow_df.set_index('scenario').T
     max_flow_df = max_flow_df.reset_index().rename(columns={'index': 'node_name'})
     # assign neighborhoods to node name by extracting node name and mapping dict
-    max_flow_df['node_id'] = max_flow_df['node_name'].str.extract(r'([^_]+)')[0]
+    max_flow_df['node_id'] = max_flow_df['node_name'].str.extract(r'([^_]+)')[0] # extract all ccharacters before the underscore
     max_flow_df['neighborhood'] = max_flow_df['node_id'].map(node_neighborhood_df)
 
     # define new df showing relative change from base case
@@ -75,11 +76,39 @@ def find_max_flow(processed_df, node_neighborhood_df):
     relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V20_AllNodes_RelativeFlow.csv')
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
+def find_max_velocty(processed_links_df,link_neighborhood_df):
+    # find max velocity for each link
+    max_veloc_df = processed_links_df.groupby(level=0).max()
+
+    # make scenarios be column headers, keep node names
+    max_veloc_df = max_veloc_df.reset_index()
+    max_veloc_df = max_veloc_df.set_index('scenario').T
+    max_veloc_df = max_veloc_df.reset_index().rename(columns={'index': 'link_name'})
+    # assign neighborhoods to node name by extracting node name and mapping dict
+    max_veloc_df['link_id'] = max_veloc_df['link_name'].str.extract(r'([^_]+)')[0] # extract all ccharacters before the underscore
+    max_veloc_df['neighborhood'] = max_veloc_df['link_id'].map(link_neighborhood_df)
+
+    # define new df showing relative change from base case
+    # drop node names for subtraction, then add back in
+    relative_change_in_veloc = max_veloc_df.iloc[:, 1:8].copy() #TODO fix harcoding in the column indicies for subtraction, changes w scenarios
+    # ensure all are numeric
+    relative_change_in_veloc = relative_change_in_veloc.apply(pd.to_numeric, errors='coerce')
+    max_veloc_df['Base'] = pd.to_numeric(max_veloc_df['Base'], errors='coerce')
+    # subtract base values
+    relative_change_in_veloc = relative_change_in_veloc.sub(max_veloc_df['Base'], axis = 0)
+    relative_change_in_veloc['link_name'] = max_veloc_df['link_name']
+    relative_change_in_veloc['link_id'] = max_veloc_df['link_id']
+    relative_change_in_veloc['neighborhood'] = max_veloc_df['neighborhood']
+
+    max_veloc_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V20_AllNodes_MaxVelocity.csv')
+    relative_change_in_veloc.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V20_AllNodes_RelativeVelocity.csv')
+    return max_veloc_df, relative_change_in_veloc  # relative means relative to base case
+
 
 def time_above_curb(processed_nodes_df):
     threshold = 0.1524  # m (6 inches)
     timestep_min = 5    # 5 minutes per step, as per SWMM model structure
-    col_order = ['node', 'Base', 'BGN', 'BGNx3','UG', 'V', 'I', 'G&I']
+    col_order = ['node', 'Base', 'BGN', 'BGNx3','UG+I', 'V', 'I', 'G&I']
     node_columns = [col for col in processed_nodes_df.columns if col.endswith('_depth')]
 
     # Boolean DataFrame where True means above threshold, by scenario
@@ -114,12 +143,17 @@ def time_above_curb(processed_nodes_df):
 if __name__ == "__main__":
     #load processed data
     processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_simV20_AllNodes.csv', index_col=[0, 1])
-    neighborhoods = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - '
-                           'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
+    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_simV20_AllLinks.csv', index_col=[0, 1])
+    #neighborhoods = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - '
+                           #'Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx') # named based on https://livebaltimore.com/neighborhoods/
+
+    # define node neighborhood tuple
+
 
     #execute find max
     find_max_depth(processed_df, node_neighborhood)
     find_max_flow(processed_df, node_neighborhood)
+    find_max_velocty(processed_links_df, link_neighborhood)
 
     # execute above curb
     time_above_curb(processed_df)
