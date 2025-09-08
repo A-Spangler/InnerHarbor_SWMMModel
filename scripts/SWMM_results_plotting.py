@@ -65,7 +65,7 @@ def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue'])
+    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue'])
 
     for scenario in scenarios.keys():
         df_plot = processed_nodes_df.loc[scenario]
@@ -95,7 +95,7 @@ def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue'])
+    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue'])
     for scenario in scenarios.keys():
         df_plot = processed_nodes_df.loc[scenario]
         current_color = next(colors)
@@ -122,8 +122,8 @@ def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
 # plot max depths for one node, all scenarios (m)
 def plot_depth_barchart(processed_nodes_df, scenarios):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue'])
-    # scenarios = ('base', 'BGN', 'BGNx3', 'G', 'I', 'G&I')
+    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue'])
+    # scenarios = ('base', 'BGN', 'BGNx3', 'V', 'I', 'V+I')
     for scenario in scenarios.keys():
         df_plot = processed_nodes_df.loc[scenario].max()
         current_color = next(colors)
@@ -143,7 +143,7 @@ def plot_depth_barchart(processed_nodes_df, scenarios):
 def plot_flowrt_barchart(processed_nodes_df, scenarios):
     # bar chart showing max flowrate across scenarios
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue'])
+    colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue'])
     for scenario in scenarios.keys():
         df_plot = processed_nodes_df.loc[scenario].max()
         current_color = next(colors)
@@ -160,9 +160,9 @@ def plot_flowrt_barchart(processed_nodes_df, scenarios):
 
 def boxplot_max_depth(max_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = max_depth_df['Base'], max_depth_df['V'], max_depth_df['UG+I'], max_depth_df['I'], max_depth_df['V&I']
-    labels = ['Base', 'V', 'UG+I', 'I', 'V+I']
-    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue']
+    x = max_depth_df['Base'], max_depth_df['V'], max_depth_df['I'], max_depth_df['V&I']
+    labels = ['Base', 'V', 'I', 'V+I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
 
     # fill with colors
@@ -178,9 +178,9 @@ def boxplot_max_depth(max_depth_df):
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = max_flow_df['Base'],  max_flow_df['V'], max_flow_df['UG+I'], max_flow_df['I'], max_flow_df['V&I']
-    labels = ['Base', 'V', 'UG+I', 'I', 'V+I']
-    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue']
+    x = max_flow_df['Base'],  max_flow_df['V'], max_flow_df['I'], max_flow_df['V&I']
+    labels = ['Base', 'V', 'I', 'V+I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
     bplot = ax1.boxplot(x, patch_artist = True, tick_labels = labels)
     #bplot = ax1.violinplot(x)
 
@@ -197,9 +197,9 @@ def boxplot_max_flow(max_flow_df):
 
 def boxplot_relative_depth(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_depth_df['Base'],  relative_depth_df['V'], relative_depth_df['UG+I'], relative_depth_df['I'], relative_depth_df['V&I']
-    labels = ['Base', 'V', 'UG+I', 'I', 'V+I']
-    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue', 'navy', 'black']
+    x = relative_depth_df['Base'],  relative_depth_df['V'], relative_depth_df['I'], relative_depth_df['V&I']
+    labels = ['Base', 'V', 'I', 'V+I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
     # fill with colors
@@ -215,7 +215,7 @@ def boxplot_relative_depth(relative_depth_df):
 
 def boxplot_watersheds_relative_depth(relative_depth_df):
     #make df long
-    value_vars = ['Base', 'V', 'UG+I', 'I', 'V&I']
+    value_vars = ['Base', 'V', 'I', 'V&I']
     long_df = relative_depth_df.melt(
         id_vars=['node_name', 'node_id', 'historic_stream'],
         value_vars=value_vars,
@@ -254,9 +254,9 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
 
 def boxplot_relative_flow(relative_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_flow_df['Base'], relative_flow_df['V'], relative_flow_df['UG+I'],  relative_flow_df['I'], relative_flow_df['V&I']
-    labels = ['base', 'V', 'UG+I', 'I', 'V+I']
-    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue']
+    x = relative_flow_df['Base'], relative_flow_df['V'],  relative_flow_df['I'], relative_flow_df['V&I']
+    labels = ['base', 'V', 'I', 'V+I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
     # fill with colors
@@ -272,9 +272,9 @@ def boxplot_relative_flow(relative_flow_df):
 
 def boxplot_relative_veloc(relative_veloc_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    x = relative_veloc_df['Base'], relative_veloc_df['V'],  relative_veloc_df['UG+I'], relative_veloc_df['I'], relative_veloc_df['V&I']
-    labels = ['base', 'V', 'UG+I', 'I', 'V+I']
-    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue']
+    x = relative_veloc_df['Base'], relative_veloc_df['V'],  relative_veloc_df['I'], relative_veloc_df['V&I']
+    labels = ['base', 'V', 'I', 'V+I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
     bplot = ax1.boxplot(x, patch_artist=True, tick_labels=labels)
 
     # fill with colors
@@ -291,8 +291,8 @@ def boxplot_relative_veloc(relative_veloc_df):
 
 def boxplot_relative_duration_above_curb(relative_duration_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    labels = ['Base', 'V', 'UG+I', 'I', 'V+I']
-    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue', 'darkblue']
+    labels = ['Base', 'V', 'I', 'V+I']
+    colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
 
     # Select only scenario columns (exclude 'node' column)
     scenario_cols = [col for col in relative_duration_df.columns if col != 'node']
@@ -313,27 +313,17 @@ def boxplot_relative_duration_above_curb(relative_duration_df):
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    plot_cols = ['neighborhood', 'Base', 'V', 'UG+I', 'I', 'V+I']
-    pd.plotting.parallel_coordinates(relative_depth_df[plot_cols], 'neighborhood')
-
-    ax1.set_ylabel('Depth (m)')
-    ax1.set_title('June 27, 2023: Relative Improvement of Depth of Flooding')
-    ax1.get_legend()
-    ax1.legend(loc = 'center left')
-    plt.tight_layout()
-    ax1.grid(axis='y')
-    #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Relative_ParallelPlot_Depth.png')
-
-def depth_parallelcoord(relative_depth_df):
-    fig, ax1 = plt.subplots(figsize=(10, 5))
     # Columns to plot (first is the class column)
-    plot_cols = ['neighborhood', 'Base', 'V', 'UG+I', 'I', 'V&I']
+    plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
     # Get unique neighborhoods sorted
     unique_neighborhoods = sorted(relative_depth_df['neighborhood'].unique())
     num_neigh = len(unique_neighborhoods)
 
-    #qualitative colormap
+    # plot only broadway east as blue
+    #color for Broadway East, grey for others
+    #colors = ['mediumpurple' if n == 'Broadway East' or n == 'Dunbar-Broadway' or n == 'Eager Park' else 'lightgrey' for n in unique_neighborhoods]
+
+    #color by nieghborhood
     cmap = matplotlib.colormaps['tab20']
     cmap = cmap.resampled(num_neigh)
     colors = [cmap(i) for i in range(num_neigh)]
@@ -346,17 +336,47 @@ def depth_parallelcoord(relative_depth_df):
     ax1.set_title('June 27, 2023: Relative Improvement of Depth of Flooding')
     ax1.grid(axis='y')
 
-    # Create and place a manual legend with color patches corresponding to neighborhoods
+    # legend
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
     plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Relative_ParallelPlot_Depth.png')
 
+def volume_parallelcoord(relative_volume_df):
+    fig, ax1 = plt.subplots(figsize=(10, 5))
+    # Columns to plot (first is the class column)
+    plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
+    # Get unique neighborhoods sorted
+    unique_neighborhoods = sorted(relative_volume_df['neighborhood'].unique())
+    num_neigh = len(unique_neighborhoods)
+
+    # plot only broadway east as blue
+    #color for Broadway East, grey for others
+    #colors = ['yellowgreen' if n == 'Broadway East' or n == 'Dunbar-Broadway' or n == 'Eager Park' else 'lightgrey' for n in unique_neighborhoods]
+
+    #color by nieghborhood
+    cmap = matplotlib.colormaps['tab20']
+    cmap = cmap.resampled(num_neigh)
+    colors = [cmap(i) for i in range(num_neigh)]
+    # Create a mapping of neighborhood to color (optional, not required for parallel_coordinates itself)
+    color_map = {nb: colors[i] for i, nb in enumerate(unique_neighborhoods)}
+
+    #plot
+    pd.plotting.parallel_coordinates(relative_volume_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
+    ax1.set_ylabel('Flood volume (m\u00b3)')
+    ax1.set_title('June 27, 2023: Relative Improvement in Flood Volume')
+    ax1.grid(axis='y')
+
+    # legend
+    patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
+    ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.tight_layout()
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Relative_ParallelPlot_Volume.png')
 
 def veloc_parallelcoord(relative_veloc_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     # Columns to plot (first is the class column)
-    plot_cols = ['neighborhood', 'Base', 'V', 'UG+I', 'I', 'V&I']
+    plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
 
     # plot only broadway east as blue
     neighborhood_order = relative_veloc_df['neighborhood'].unique()
@@ -398,10 +418,11 @@ if __name__ == "__main__":
     relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
     relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/rainfall/6_27_23_rain_df.csv')
-    relative_veloc_df = pd.read_csv( '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
-    BE_nodes = ['J329-S_depth']
-    #BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
-                #'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
+    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    #BE_nodes = ['J329-S_depth']
+    BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
+                'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
 
     #execute, note 'relative' functions means the result is relative to base case
@@ -421,4 +442,5 @@ if __name__ == "__main__":
     depth_parallelcoord(relative_depth_df)
     #flow_parallelcoord(relative_flow_df) #ValueError: could not convert string to float: 'J105-S_flow'
     veloc_parallelcoord(relative_veloc_df)
+    volume_parallelcoord(relative_volume_df)
 

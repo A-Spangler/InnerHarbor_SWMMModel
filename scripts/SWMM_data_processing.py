@@ -37,7 +37,7 @@ def list_street_links(model): #separate out above ground storage nodes from belo
 
 # TODO: restructure so separate Dfs come out for depth and flow, not combined df
 def run_pyswmm(inp_path, node_ids, link_ids):
-    output_nodes = {node: {'depth': [], 'flow': []} for node in node_ids}
+    output_nodes = {node: {'depth': [], 'flow': [], 'volume':[]} for node in node_ids}
     output_links = {link: {'velocity': []} for link in link_ids}
 
 # run inp_path simulation, instantiate BE nodes
@@ -53,6 +53,7 @@ def run_pyswmm(inp_path, node_ids, link_ids):
             for node_id, node in nodes.items(): # store node flow and depth data in node dictionary
                 output_nodes[node_id]['depth'].append(node.depth*ft_to_m) # ft to m
                 output_nodes[node_id]['flow'].append(node.total_inflow*cfs_to_cms) #m**3/s
+                output_nodes[node_id]['volume'].append(node.volume * cfs_to_cms) #m**3
             for link_id, link in links.items():  # store flowrate/average cross-sectional area in dictionary.
                 output_links[link_id]['velocity'].append((link.flow/((link.ds_xsection_area + link.ups_xsection_area)/2)) * ft_to_m) #ft/s to meter/s
 
@@ -61,6 +62,7 @@ def run_pyswmm(inp_path, node_ids, link_ids):
         for node_id in node_ids:
             node_data[f'{node_id}_depth'] = output_nodes[node_id]['depth']
             node_data[f'{node_id}_flow'] = output_nodes[node_id]['flow']
+            node_data[f'{node_id}_volume'] = output_nodes[node_id]['volume']
         link_data = {'timestamp': time_stamps}  # dictionary of timestamps
         for link_id in link_ids:
             link_data[f'{link_id}_velocity'] = output_links[link_id]['velocity']
@@ -91,6 +93,8 @@ if __name__ == "__main__":
         if os.path.isfile(rpt_path):
             print(f"Cleaning report file: {rpt_path}")
             clean_rpt_encoding(rpt_path)
+
+    print(node_neighborhood_df)
 
     #find street node names
     model_path = scenarios['Base']
@@ -125,6 +129,7 @@ if __name__ == "__main__":
     processed_links_df = pd.concat(scenario_link_results, names=['scenario'])
     processed_links_df.index.set_names(['scenario', 'row'], inplace=True)
     processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_simV22_AllLinks.csv')
+
 
 
 # TODO: write a function to process subcatchments
