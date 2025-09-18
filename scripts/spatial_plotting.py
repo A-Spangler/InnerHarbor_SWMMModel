@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     gdf_polygons = parse_inp_polygons(inp_path)
 
-    stats_csv_path = f"{results_dir}6_27_2023_simV20_stats.csv"
+    stats_csv_path = f"{results_dir}6_27_2023_simV22_stats.csv"
     df_stats_all = pd.read_csv(stats_csv_path)
     df_stats = df_stats_all[df_stats_all['scenario'] == scenario_name]
 
