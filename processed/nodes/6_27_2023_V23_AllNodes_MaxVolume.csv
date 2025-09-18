@@ -1,0 +1,125 @@
+,node_name,Base,I,V,V&I,node_id,neighborhood,historic_stream
+0,J105-S_volume,0.0,0.0,0.0,0.0,J105-S,Downtown,"Southside, Drains to Harbor"
+1,J10-S_volume,0.0,0.0,0.0,0.0,J10-S,Downtown,"Southside, Drains to Harbor"
+2,J116-S_volume,0.0,0.0,0.0,0.0,J116-S,Downtown,"Southside, Drains to Harbor"
+3,J119-S_volume,0.0,0.0,0.0,0.0,J119-S,Downtown,"Southside, Drains to Harbor"
+4,J130-S_volume,0.0,0.0,0.0,0.0,J130-S,Downtown,"Southside, Drains to Harbor"
+5,J131-S_volume,0.0,0.0,0.0,0.0,J131-S,Downtown,"Southside, Drains to Harbor"
+6,J141-S_volume,0.0,0.0,0.0,0.0,J141-S,Downtown,"Southside, Drains to Harbor"
+7,J163-S_volume,0.0,0.0,0.0,0.0,J163-S,Downtown,"Southside, Drains to Harbor"
+8,J165-S_volume,0.0,0.0,0.0,0.0,J165-S,Federal Hill,"Southside, Drains to Harbor"
+9,J171-S_volume,0.0,0.0,0.0,0.0,J171-S,Canton,"Northside, Drains to Harbor"
+10,J177-S_volume,0.0,0.0,0.0,0.0,J177-S,Federal Hill,"Southside, Drains to Harbor"
+11,J182-S_volume,0.0,0.0,0.0,0.0,J182-S,Federal Hill,"Southside, Drains to Harbor"
+12,J191-S_volume,0.0,0.0,0.0,0.0,J191-S,Fells Point,Canal Street Creek
+13,J1-S_volume,0.0,0.0,0.0,0.0,J1-S,Clifton Park,Canal Street Creek
+14,J204-S_volume,0.0,0.0,0.0,0.0,J204-S,Fells Point,Canal Street Creek
+15,J208-S_volume,0.0,0.0,0.0,0.0,J208-S,Downtown,"Southside, Drains to Harbor"
+16,J227-S_volume,0.0,0.0,0.0,0.0,J227-S,Locust Point,"Southside, Drains to Harbor"
+17,J231-S_volume,0.0,0.0,0.0,0.0,J231-S,Locust Point,"Southside, Drains to Harbor"
+18,J234-S_volume,0.0,0.0,0.0,0.0,J234-S,Locust Point,"Southside, Drains to Harbor"
+19,J238-S_volume,0.0,0.0,0.0,0.0,J238-S,Locust Point,"Southside, Drains to Harbor"
+20,J245-S_volume,0.0,0.0,0.0,0.0,J245-S,Locust Point,"Southside, Drains to Harbor"
+21,J253-S_volume,0.0,0.0,0.0,0.0,J253-S,Eager Park,Canal Street Creek
+22,J260-S_volume,0.0,0.0,0.0,0.0,J260-S,Broadway East,Canal Street Creek
+23,J268-S_volume,0.0,0.0,0.0,0.0,J268-S,Clifton Park,Canal Street Creek
+24,J273-S_volume,0.0,0.0,0.0,0.0,J273-S,Clifton Park,Canal Street Creek
+25,J329-S_volume,0.0,0.0,0.0,0.0,J329-S,Broadway East,Canal Street Creek
+26,J34-S_volume,0.0,0.0,0.0,0.0,J34-S,Locust Point,"Southside, Drains to Harbor"
+27,J366-S_volume,0.0,0.0,0.0,0.0,J366-S,Eager Park,Canal Street Creek
+28,J385-S_volume,0.0,0.0,0.0,0.0,J385-S,Broadway East,Harris Creek
+29,J3-S_volume,0.0,0.0,0.0,0.0,J3-S,Fells Point,"Northside, Drains to Harbor"
+30,J421-S_volume,0.0,0.0,0.0,0.0,J421-S,McElderry Park,Harris Creek
+31,J42-S_volume,0.0,0.0,0.0,0.0,J42-S,Locust Point,"Southside, Drains to Harbor"
+32,J437-S_volume,0.0,0.0,0.0,0.0,J437-S,Patterson Park,Harris Creek
+33,J438-S_volume,0.0,0.0,0.0,0.0,J438-S,McElderry Park,Harris Creek
+34,J45-S_volume,0.0,0.0,0.0,0.0,J45-S,Locust Point,"Southside, Drains to Harbor"
+35,J460-S_volume,0.0,0.0,0.0,0.0,J460-S,Orangeville,Harris Creek
+36,J461-S_volume,0.0,0.0,0.0,0.0,J461-S,Baltimore Highlands,Harris Creek
+37,J46-S_volume,0.0,0.0,0.0,0.0,J46-S,Locust Point,"Southside, Drains to Harbor"
+38,J480-S_volume,0.0,0.0,0.0,0.0,J480-S,McElderry Park,Harris Creek
+39,J492-S_volume,0.0,0.0,0.0,0.0,J492-S,Baltimore Highlands,Harris Creek
+40,J49-S_volume,0.0,0.0,0.0,0.0,J49-S,Washington Hill,Canal Street Creek
+41,J4-S_volume,0.0,0.0,0.0,0.0,J4-S,Canton,"Northside, Drains to Harbor"
+42,J507-S_volume,0.0,0.0,0.0,0.0,J507-S,Patterson Park,Harris Creek
+43,J50-S_volume,0.0,0.0,0.0,0.0,J50-S,Washington Hill,Canal Street Creek
+44,J541-S_volume,0.0,0.0,0.0,0.0,J541-S,Canton Industrial Area,"Northside, Drains to Harbor"
+45,J556-S_volume,0.0,0.0,0.0,0.0,J556-S,Canton,Harris Creek
+46,J568-S_volume,0.0,0.0,0.0,0.0,J568-S,Berea,Armistead Creek
+47,J571-S_volume,0.0,0.0,0.0,0.0,J571-S,Berea,Armistead Creek
+48,J576-S_volume,0.0,0.0,0.0,0.0,J576-S,Dunbar-Broadway,Canal Street Creek
+49,J578-S_volume,0.0,0.0,0.0,0.0,J578-S,Dunbar-Broadway,Canal Street Creek
+50,J587-S_volume,0.0,0.0,0.0,0.0,J587-S,Downtown,"Southside, Drains to Harbor"
+51,J592-S_volume,0.0,0.0,0.0,0.0,J592-S,Dunbar-Broadway,Canal Street Creek
+52,J5-S_volume,0.0,0.0,0.0,0.0,J5-S,Canton,"Northside, Drains to Harbor"
+53,J609-S_volume,0.0,0.0,0.0,0.0,J609-S,Dunbar-Broadway,Canal Street Creek
+54,J60-S_volume,0.0,0.0,0.0,0.0,J60-S,Downtown,"Southside, Drains to Harbor"
+55,J619-S_volume,0.0,0.0,0.0,0.0,J619-S,Dunbar-Broadway,Canal Street Creek
+56,J62-S_volume,0.0,0.0,0.0,0.0,J62-S,Downtown,"Southside, Drains to Harbor"
+57,J632-S_volume,0.0,0.0,0.0,0.0,J632-S,Eager Park,Canal Street Creek
+58,J640-S_volume,0.0,0.0,0.0,0.0,J640-S,Eager Park,Canal Street Creek
+59,J672-S_volume,0.0,0.0,0.0,0.0,J672-S,Canton,Harris Creek
+60,J675-S_volume,0.0,0.0,0.0,0.0,J675-S,Canton,Harris Creek
+61,J686-S_volume,0.0,0.0,0.0,0.0,J686-S,Canton,Harris Creek
+62,J712-S_volume,0.0,0.0,0.0,0.0,J712-S,Patterson Park,Harris Creek
+63,J714-S_volume,0.0,0.0,0.0,0.0,J714-S,Upper Fells Point,"Northside, Drains to Harbor"
+64,J71-S_volume,0.0,0.0,0.0,0.0,J71-S,Federal Hill,"Southside, Drains to Harbor"
+65,J722-S_volume,0.0,0.0,0.0,0.0,J722-S,Fells Point,"Northside, Drains to Harbor"
+66,J72-S_volume,0.0,0.0,0.0,0.0,J72-S,Federal Hill,"Southside, Drains to Harbor"
+67,J733-S_volume,0.0,0.0,0.0,0.0,J733-S,Canton,"Northside, Drains to Harbor"
+68,J749-S_volume,0.0,0.0,0.0,0.0,J749-S,Fells Point,Canal Street Creek
+69,J751-S_volume,0.0,0.0,0.0,0.0,J751-S,Fells Point,"Northside, Drains to Harbor"
+70,J756-S_volume,0.0,0.0,0.0,0.0,J756-S,Upper Fells Point,"Northside, Drains to Harbor"
+71,J758-S_volume,0.0,0.0,0.0,0.0,J758-S,Fells Point,"Northside, Drains to Harbor"
+72,J760-S_volume,0.0,0.0,0.0,0.0,J760-S,Fells Point,"Northside, Drains to Harbor"
+73,J761-S_volume,0.0,0.0,0.0,0.0,J761-S,Fells Point,Canal Street Creek
+74,J762-S_volume,0.0,0.0,0.0,0.0,J762-S,Canton Industrial Area,"Northside, Drains to Harbor"
+75,J765-S_volume,0.0,0.0,0.0,0.0,J765-S,Fells Point,"Northside, Drains to Harbor"
+76,J772-S_volume,0.0,0.0,0.0,0.0,J772-S,Canton,"Northside, Drains to Harbor"
+77,J782-S_volume,0.0,0.0,0.0,0.0,J782-S,Patterson Park,Harris Creek
+78,J787-S_volume,0.0,0.0,0.0,0.0,J787-S,Berea,Armistead Creek
+79,J789-S_volume,0.0,0.0,0.0,0.0,J789-S,Dunbar-Broadway,Canal Street Creek
+80,J799-S_volume,0.0,0.0,0.0,0.0,J799-S,Fells Point,"Northside, Drains to Harbor"
+81,J7-S_volume,0.0,0.0,0.0,0.0,J7-S,Canton Industrial Area,"Northside, Drains to Harbor"
+82,J80-S_volume,0.0,0.0,0.0,0.0,J80-S,Federal Hill,"Southside, Drains to Harbor"
+83,J88-S_volume,0.0,0.0,0.0,0.0,J88-S,Federal Hill,"Southside, Drains to Harbor"
+84,J8-S_volume,0.0,0.0,0.0,0.0,J8-S,Canton Industrial Area,"Northside, Drains to Harbor"
+85,J128-S_volume,17.74097980794903,7.501140250264617,17.72779341826598,7.48680009095781,J128-S,Canton,Harris Creek
+86,J136-S_volume,48.52644661730448,45.35123000772341,48.21729662689544,44.98654352988552,J136-S,Downtown,"Southside, Drains to Harbor"
+87,J138-S_volume,21.15350378971879,22.520757755206176,21.19244970137141,22.54509825067473,J138-S,Downtown,"Southside, Drains to Harbor"
+88,J157-S_volume,30.429710211099184,25.32862947959623,30.021527210619112,24.982371523004737,J157-S,Downtown,"Southside, Drains to Harbor"
+89,J211-S_volume,18.508645784476577,15.488373565311148,18.47583903464293,15.457454968556998,J211-S,Fells Point,Canal Street Creek
+90,J232-S_volume,32.81639221250665,31.409736052031807,32.815933779123704,31.410211039909832,J232-S,Locust Point,"Southside, Drains to Harbor"
+91,J240-S_volume,20.664684843545302,20.09022813645556,20.65177467081119,20.0742284019268,J240-S,Locust Point,"Southside, Drains to Harbor"
+92,J266-S_volume,15.259741713174948,14.230983683759211,14.953563459276983,13.943573593429369,J266-S,Clifton Park,Canal Street Creek
+93,J278-S_volume,18.55003383634264,13.778834693397892,17.829079646858965,13.258910221247822,J278-S,Broadway East,Canal Street Creek
+94,J27-S_volume,20.15820527422081,18.8757215663898,20.15795369206085,18.876312024805912,J27-S,Locust Point,"Southside, Drains to Harbor"
+95,J280-S_volume,30.704462193265528,25.52562317424739,29.58749784096687,24.538939698389363,J280-S,Broadway East,Canal Street Creek
+96,J328-S_volume,34.006269294959814,34.81558252802395,33.31077185303623,34.09908153323887,J328-S,Broadway East,Canal Street Creek
+97,J338-S_volume,28.321835449443803,21.47699074702183,26.84535603588408,20.27596556143609,J338-S,Eager Park,Canal Street Creek
+98,J33-S_volume,40.22681728485914,36.29219035534432,40.22681898726185,36.292187647480254,J33-S,Locust Point,"Southside, Drains to Harbor"
+99,J361-S_volume,26.91606928682621,22.55897102814257,26.16841917189642,22.24882325234118,J361-S,Eager Park,Canal Street Creek
+100,J413-S_volume,18.924967332799174,18.934141830228054,18.795206364882763,18.803992712323968,J413-S,Broadway East,Harris Creek
+101,J433-S_volume,18.45178813282483,18.63301787355314,18.430166592982605,18.61086813583361,J433-S,Madison-Eastend,Harris Creek
+102,J450-S_volume,14.629827854080478,13.933660294331675,14.614237471978573,13.918369675396727,J450-S,Madison-Eastend,Harris Creek
+103,J456-S_volume,21.18590958148745,22.0976712934804,21.19738619271057,22.105040919136307,J456-S,Orangeville,Harris Creek
+104,J471-S_volume,34.781183101266976,35.27718591339283,34.283080404993775,34.773919848425464,J471-S,Orangeville,Harris Creek
+105,J484-S_volume,34.29581991503651,25.567429861993016,34.23085845407294,25.53025805735222,J484-S,Baltimore Highlands,Harris Creek
+106,J491-S_volume,22.57733039270404,18.169610115872963,22.54404628771764,18.145972230007985,J491-S,Kresson,Harris Creek
+107,J506-S_volume,24.959883154471783,25.24973839829246,24.951792805370907,25.23674065918822,J506-S,Baltimore Highlands,Harris Creek
+108,J512-S_volume,19.70045871411072,13.273831014870783,19.685067666316243,13.271159179888912,J512-S,Patterson Park,Harris Creek
+109,J534-S_volume,25.833745571323128,26.73292234541083,25.76707405955452,26.4882789441054,J534-S,Patterson Park,Harris Creek
+110,J539-S_volume,36.44490568365655,34.8359732460902,35.036496847871526,33.442833621726514,J539-S,Canton,"Northside, Drains to Harbor"
+111,J548-S_volume,39.67590978046847,39.78800053441644,38.11691522778232,38.217044780729154,J548-S,Canton,"Northside, Drains to Harbor"
+112,J567-S_volume,15.08018498837222,13.799527066761405,15.042444541545724,13.763828222888844,J567-S,Berea,Armistead Creek
+113,J586-S_volume,5.884625168984645,2.819588480997333,5.839832696521732,2.797877468671462,J586-S,Dunbar-Broadway,Canal Street Creek
+114,J637-S_volume,20.961031103135284,14.58300551115116,20.38123856604383,14.335215360831617,J637-S,Eager Park,Canal Street Creek
+115,J659-S_volume,25.855473721977997,26.953599070975592,25.849923656413814,26.94610325604047,J659-S,Baltimore Highlands,Harris Creek
+116,J694-S_volume,2.2166515495203027,2.267919584174274,2.215213844221588,2.269352782281605,J694-S,Canton,Harris Creek
+117,J695-S_volume,14.716902196540092,11.253024068550626,14.716890299596884,11.25293805201136,J695-S,Canton,Harris Creek
+118,J732-S_volume,26.273461928007546,20.737892514788683,26.269676662705653,20.734595684142445,J732-S,Fells Point,"Northside, Drains to Harbor"
+119,J748-S_volume,6.893693485860485,4.067785374361828,6.869045062310604,4.065395280933065,J748-S,Washington Hill,Canal Street Creek
+120,J764-S_volume,15.3693617079828,14.10348872429202,15.369339012386137,14.103487679727582,J764-S,Fells Point,"Northside, Drains to Harbor"
+121,J78-S_volume,16.126236619418023,16.126719518481426,16.114357323061814,16.114847673468883,J78-S,Federal Hill,"Southside, Drains to Harbor"
+122,J792-S_volume,40.91471241827327,41.91610432430802,40.91466574448224,41.91620477233664,J792-S,Canton,"Northside, Drains to Harbor"
+123,J801-S_volume,12.8858389229112,9.085281735616,12.629616756945996,8.8398086889755,J801-S,Broadway East,Canal Street Creek

@@ -58,7 +58,7 @@ def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_J329_BaseDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23_J329_BaseDepth.png')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
 def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
@@ -87,7 +87,7 @@ def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 flwrt_with_hyetograph_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 flwrt_with_hyetograph_J338S.png')
 
 
 # plot depth over time for one node with inverted hyetograph, all scenarios (cms)
@@ -116,7 +116,7 @@ def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 depth_with_hyetograph_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 depth_with_hyetograph_J338S.png')
 
 
 # plot max depths for one node, all scenarios (m)
@@ -136,7 +136,7 @@ def plot_depth_barchart(processed_nodes_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 depth_barchart_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 depth_barchart_J338S.png')
 
 
 # plot max flowrate for one node, all scenarios (cms)
@@ -156,7 +156,7 @@ def plot_flowrt_barchart(processed_nodes_df, scenarios):
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 flwrt_barchart_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 flwrt_barchart_J338S.png')
 
 def boxplot_max_depth(max_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -174,7 +174,7 @@ def boxplot_max_depth(max_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 depth_boxplot_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 depth_boxplot_allnodes.png')
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -193,7 +193,7 @@ def boxplot_max_flow(max_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 flow_boxplot_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 flow_boxplot_allnodes.png')
 
 def boxplot_relative_depth(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -211,7 +211,7 @@ def boxplot_relative_depth(relative_depth_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 Boxplot_RelativeDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 Boxplot_RelativeDepth.png')
 
 def boxplot_watersheds_relative_depth(relative_depth_df):
     #make df long
@@ -249,7 +249,7 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
     plt.tight_layout()
     plt.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 WatershedBoxplot_RelativeDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 WatershedBoxplot_RelativeDepth.png')
 
 
 def boxplot_relative_flow(relative_flow_df):
@@ -268,7 +268,7 @@ def boxplot_relative_flow(relative_flow_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 Boxplot_RelativeFlow.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 Boxplot_RelativeFlow.png')
 
 def boxplot_relative_veloc(relative_veloc_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -286,7 +286,7 @@ def boxplot_relative_veloc(relative_veloc_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/6_27_2023 Boxplot_RelativeVelocity.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/6_27_2023_V23 Boxplot_RelativeVelocity.png')
 
 
 def boxplot_relative_duration_above_curb(relative_duration_df):
@@ -309,7 +309,7 @@ def boxplot_relative_duration_above_curb(relative_duration_df):
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 AboveCurb_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 AboveCurb_allnodes.png')
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -339,8 +339,8 @@ def depth_parallelcoord(relative_depth_df):
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 Relative_ParallelPlot_Depth.svg')
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 Relative_ParallelPlot_Depth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 Relative_ParallelPlot_Depth.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 Relative_ParallelPlot_Depth.png')
 
 def volume_parallelcoord(relative_volume_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -370,7 +370,7 @@ def volume_parallelcoord(relative_volume_df):
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023 Relative_ParallelPlot_Volume.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/6_27_2023_V23 Relative_ParallelPlot_Volume.png')
 
 def veloc_parallelcoord(relative_veloc_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -402,23 +402,23 @@ def veloc_parallelcoord(relative_veloc_df):
 
     ax1.legend(title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/6_27_2023 Relative_ParallelPlot_Veloc.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/6_27_2023_V23 Relative_ParallelPlot_Veloc.png')
 
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
-    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_simV22_AllNodes.csv', index_col=[0, 1])
-    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_MaxFlow.csv')
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_MaxDepth.csv')
-    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_DurationOverCurb.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
-    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
+    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_simV23_AllNodes.csv', index_col=[0, 1])
+    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_MaxFlow.csv')
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_MaxDepth.csv')
+    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_DurationOverCurb.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
+    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/rainfall/6_27_23_rain_df.csv')
-    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
-    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_2023_V23_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_2023_V23_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
     #BE_nodes = ['J329-S_depth']
     BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
                 'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
