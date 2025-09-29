@@ -2,10 +2,10 @@
 0,J105-S_depth,Base,3,15
 1,J10-S_depth,Base,10,50
 2,J116-S_depth,Base,11,55
-3,J119-S_depth,Base,0,0
+3,J119-S_depth,Base,2,10
 4,J128-S_depth,Base,5,25
 5,J130-S_depth,Base,65,325
-6,J131-S_depth,Base,2,10
+6,J131-S_depth,Base,3,15
 7,J136-S_depth,Base,14,70
 8,J138-S_depth,Base,5,25
 9,J141-S_depth,Base,3,15
@@ -48,7 +48,7 @@
 46,J421-S_depth,Base,21,105
 47,J42-S_depth,Base,0,0
 48,J433-S_depth,Base,6,30
-49,J437-S_depth,Base,2,10
+49,J437-S_depth,Base,8,40
 50,J438-S_depth,Base,16,80
 51,J450-S_depth,Base,3,15
 52,J456-S_depth,Base,3,15
@@ -66,7 +66,7 @@
 64,J506-S_depth,Base,9,45
 65,J507-S_depth,Base,15,75
 66,J50-S_depth,Base,3,15
-67,J512-S_depth,Base,7,35
+67,J512-S_depth,Base,8,40
 68,J534-S_depth,Base,10,50
 69,J539-S_depth,Base,24,120
 70,J541-S_depth,Base,4,20
@@ -116,7 +116,7 @@
 114,J772-S_depth,Base,11,55
 115,J782-S_depth,Base,0,0
 116,J787-S_depth,Base,5,25
-117,J789-S_depth,Base,2,10
+117,J789-S_depth,Base,3,15
 118,J78-S_depth,Base,2,10
 119,J792-S_depth,Base,20,100
 120,J799-S_depth,Base,0,0
@@ -128,12 +128,12 @@
 126,J105-S_depth,I,3,15
 127,J10-S_depth,I,6,30
 128,J116-S_depth,I,8,40
-129,J119-S_depth,I,0,0
+129,J119-S_depth,I,1,5
 130,J128-S_depth,I,0,0
 131,J130-S_depth,I,56,280
-132,J131-S_depth,I,0,0
+132,J131-S_depth,I,1,5
 133,J136-S_depth,I,10,50
-134,J138-S_depth,I,7,35
+134,J138-S_depth,I,6,30
 135,J141-S_depth,I,3,15
 136,J157-S_depth,I,10,50
 137,J163-S_depth,I,4,20
@@ -174,7 +174,7 @@
 172,J421-S_depth,I,17,85
 173,J42-S_depth,I,0,0
 174,J433-S_depth,I,7,35
-175,J437-S_depth,I,2,10
+175,J437-S_depth,I,8,40
 176,J438-S_depth,I,9,45
 177,J450-S_depth,I,3,15
 178,J456-S_depth,I,3,15
@@ -197,7 +197,7 @@
 195,J539-S_depth,I,21,105
 196,J541-S_depth,I,4,20
 197,J548-S_depth,I,29,145
-198,J556-S_depth,I,12,60
+198,J556-S_depth,I,13,65
 199,J567-S_depth,I,4,20
 200,J568-S_depth,I,6,30
 201,J571-S_depth,I,0,0
@@ -254,10 +254,10 @@
 252,J105-S_depth,V,3,15
 253,J10-S_depth,V,9,45
 254,J116-S_depth,V,10,50
-255,J119-S_depth,V,0,0
+255,J119-S_depth,V,2,10
 256,J128-S_depth,V,5,25
 257,J130-S_depth,V,63,315
-258,J131-S_depth,V,2,10
+258,J131-S_depth,V,3,15
 259,J136-S_depth,V,14,70
 260,J138-S_depth,V,5,25
 261,J141-S_depth,V,3,15
@@ -300,7 +300,7 @@
 298,J421-S_depth,V,19,95
 299,J42-S_depth,V,0,0
 300,J433-S_depth,V,6,30
-301,J437-S_depth,V,2,10
+301,J437-S_depth,V,7,35
 302,J438-S_depth,V,15,75
 303,J450-S_depth,V,3,15
 304,J456-S_depth,V,3,15
@@ -368,7 +368,7 @@
 366,J772-S_depth,V,10,50
 367,J782-S_depth,V,0,0
 368,J787-S_depth,V,5,25
-369,J789-S_depth,V,2,10
+369,J789-S_depth,V,3,15
 370,J78-S_depth,V,2,10
 371,J792-S_depth,V,20,100
 372,J799-S_depth,V,0,0
@@ -426,8 +426,8 @@
 424,J421-S_depth,V&I,16,80
 425,J42-S_depth,V&I,0,0
 426,J433-S_depth,V&I,7,35
-427,J437-S_depth,V&I,2,10
-428,J438-S_depth,V&I,8,40
+427,J437-S_depth,V&I,7,35
+428,J438-S_depth,V&I,9,45
 429,J450-S_depth,V&I,2,10
 430,J456-S_depth,V&I,3,15
 431,J45-S_depth,V&I,0,0
@@ -449,7 +449,7 @@
 447,J539-S_depth,V&I,19,95
 448,J541-S_depth,V&I,4,20
 449,J548-S_depth,V&I,25,125
-450,J556-S_depth,V&I,12,60
+450,J556-S_depth,V&I,13,65
 451,J567-S_depth,V&I,4,20
 452,J568-S_depth,V&I,6,30
 453,J571-S_depth,V&I,0,0
