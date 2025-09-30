@@ -53,12 +53,12 @@ def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes):
     ax1.set_xlabel('Time of Day')
     ax1.set_ylim(-0.05, 0.4)
     ax1.set_ylabel('depth (m)', color = 'darkblue')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Broadway East Flood Depths')
+    ax1.set_title('SCS Type 1a Storm: Broadway East Flood Depths')
     #ax1.legend()
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22_J329_BaseDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22_J329_BaseDepth.png')
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
 def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
@@ -82,12 +82,12 @@ def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
     ax1.set_ylabel('Flow (cms)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Broadway East Storm Flow')
+    ax1.set_title('SCS Type 1a Storm: Broadway East Storm Flow')
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 flwrt_with_hyetograph_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 flwrt_with_hyetograph_J338S.png')
 
 
 # plot depth over time for one node with inverted hyetograph, all scenarios (cms)
@@ -111,12 +111,12 @@ def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
     ax1.set_ylabel('Flow (cms)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Broadway East Flood Depth')
+    ax1.set_title('SCS Type 1a Storm: Broadway East Flood Depth')
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 depth_with_hyetograph_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 depth_with_hyetograph_J338S.png')
 
 
 # plot max depths for one node, all scenarios (m)
@@ -131,12 +131,12 @@ def plot_depth_barchart(processed_nodes_df, scenarios):
 
     ax1.set_xlabel('Scenario')
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Maximum Flood Depth in Broadway East')
+    ax1.set_title('SCS Type 1a Storm: Maximum Flood Depth in Broadway East')
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 depth_barchart_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 depth_barchart_J338S.png')
 
 
 # plot max flowrate for one node, all scenarios (cms)
@@ -151,12 +151,12 @@ def plot_flowrt_barchart(processed_nodes_df, scenarios):
 
     ax1.set_xlabel('Scenario')
     ax1.set_ylabel('Flowrate (cms)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Maximum Storm Flow in Broadway East')
+    ax1.set_title('SCS Type 1a Storm: Maximum Storm Flow in Broadway East')
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 flwrt_barchart_J338S.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 flwrt_barchart_J338S.png')
 
 def boxplot_max_depth(max_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -170,11 +170,11 @@ def boxplot_max_depth(max_depth_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Maximum Flood Depths Across Baltimore Harbor')
+    ax1.set_title('SCS Type 1a Storm: Maximum Flood Depths Across Baltimore Harbor')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 depth_boxplot_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 depth_boxplot_allnodes.png')
 
 def boxplot_max_flow(max_flow_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -189,11 +189,11 @@ def boxplot_max_flow(max_flow_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Flow (cms)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Maximum Flowrate Across Baltimore Harbor')
+    ax1.set_title('SCS Type 1a Storm: Maximum Flowrate Across Baltimore Harbor')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 flow_boxplot_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 flow_boxplot_allnodes.png')
 
 def boxplot_relative_depth(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -207,11 +207,11 @@ def boxplot_relative_depth(relative_depth_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Relative Change in Flood Depth')
+    ax1.set_title('SCS Type 1a Storm: Relative Change in Flood Depth')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 Boxplot_RelativeDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Boxplot_RelativeDepth.png')
 
 def boxplot_watersheds_relative_depth(relative_depth_df):
     #make df long
@@ -243,13 +243,13 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
         showfliers=False
     )
     plt.ylabel('Relative Depth (m)')
-    plt.title('Chicago Hypothetical Storm (r = 0.75): Relative Change in Max Flood Depth')
+    plt.title('SCS Type 1a Storm: Relative Change in Max Flood Depth')
     plt.legend(title='Neighborhood', bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.xticks(rotation = 90)
     plt.tight_layout()
     plt.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 WatershedBoxplot_RelativeDepth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 WatershedBoxplot_RelativeDepth.png')
 
 
 def boxplot_relative_flow(relative_flow_df):
@@ -264,11 +264,11 @@ def boxplot_relative_flow(relative_flow_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Flowrate (cms)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Relative Change in Flowrate')
+    ax1.set_title('SCS Type 1a Storm: Relative Change in Flowrate')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 Boxplot_RelativeFlow.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Boxplot_RelativeFlow.png')
 
 def boxplot_relative_veloc(relative_veloc_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -282,11 +282,11 @@ def boxplot_relative_veloc(relative_veloc_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Relative Velocity (m/s)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Relative Change in Flow Velocity')
+    ax1.set_title('SCS Type 1a Storm: Relative Change in Flow Velocity')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/Chicago075_V22 Boxplot_RelativeVelocity.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/SCS1a_V22 Boxplot_RelativeVelocity.png')
 
 
 def boxplot_relative_duration_above_curb(relative_duration_df):
@@ -305,11 +305,11 @@ def boxplot_relative_duration_above_curb(relative_duration_df):
 
     ax1.set_ylabel('Time (min)')
     ax1.set_xlabel('Scenario')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Duration of Flooding Above Curb')
+    ax1.set_title('SCS Type 1a Storm: Duration of Flooding Above Curb')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 AboveCurb_allnodes.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 AboveCurb_allnodes.png')
 
 def depth_parallelcoord(relative_depth_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -332,15 +332,16 @@ def depth_parallelcoord(relative_depth_df):
     #plot
     pd.plotting.parallel_coordinates(relative_depth_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Relative Improvement of Depth of Flooding')
+    ax1.set_ylim(-0.15, 0.15)
+    ax1.set_title('SCS Type 1a Storm: Relative Improvement of Depth of Flooding')
     ax1.grid(axis='y')
 
     # legend
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 Relative_ParallelPlot_Depth.svg')
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 Relative_ParallelPlot_Depth.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Relative_ParallelPlot_Depth.svg')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Relative_ParallelPlot_Depth.png')
 
 def volume_parallelcoord(relative_volume_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -363,14 +364,14 @@ def volume_parallelcoord(relative_volume_df):
     #plot
     pd.plotting.parallel_coordinates(relative_volume_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Flood volume (m\u00b3)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Relative Improvement in Flood Volume')
+    ax1.set_title('SCS Type 1a Storm: Relative Improvement in Flood Volume')
     ax1.grid(axis='y')
 
     # legend
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/Chicago075_V22 Relative_ParallelPlot_Volume.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Relative_ParallelPlot_Volume.png')
 
 def veloc_parallelcoord(relative_veloc_df):
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -397,28 +398,28 @@ def veloc_parallelcoord(relative_veloc_df):
     # plot
     pd.plotting.parallel_coordinates(relative_veloc_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Change in Velocity Relative to Base Scenario (m/s)')
-    ax1.set_title('Chicago Hypothetical Storm (r = 0.75): Relative Change in Flood Velocity')
+    ax1.set_title('SCS Type 1a Storm: Relative Change in Flood Velocity')
     ax1.grid(axis='y')
 
     ax1.legend(title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/Chicago075_V22 Relative_ParallelPlot_Veloc.png')
+    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/SCS1a_V22 Relative_ParallelPlot_Veloc.png')
 
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
-    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_simV22_AllNodes.csv', index_col=[0, 1])
-    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_MaxFlow.csv')
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_MaxDepth.csv')
-    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_DurationOverCurb.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
-    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
+    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_simV22_AllNodes.csv', index_col=[0, 1])
+    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_MaxFlow.csv')
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_MaxDepth.csv')
+    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_DurationOverCurb.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
+    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/rainfall/6_27_23_rain_df.csv')
-    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/Chicago075_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
-    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/Chicago075_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/SCS1a_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
     #BE_nodes = ['J329-S_depth']
     BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
                 'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
