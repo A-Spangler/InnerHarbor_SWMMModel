@@ -9,19 +9,19 @@ import matplotlib.pyplot as plt
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 # rainfall data--------------------------------------------------------------------------------------------------------
-rain_df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_formatted.xlsx')
+rain_df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2024January9_formatted.xlsx')
 scs2_df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - '
-                              'RainfallData/ProcessedStorms/SCS2_2.96in_24hour.xlsx')
+                              'RainfallData/ProcessedStorms/SCS2_2.96in_12hour.xlsx')
 scs1a_df = pd.read_excel('/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - '
-                              'RainfallData/ProcessedStorms/SCS1A_2.96in_24hour.xlsx')
+                              'RainfallData/ProcessedStorms/SCS1A_2.96in_12hour.xlsx')
 #find intensity of the real storm using np.gradient
 #convert minutes to hours
 real_elapsed = rain_df.time_elapsed_minutes/60
 real_intensity = np.gradient(rain_df.cumulative_rain,real_elapsed)
 peak_intensity = real_intensity.max()
 average_intensity = real_intensity.mean()
-cum_depth = rain_df.rain_inches.sum()
-print("real storm cumulative depth:", cum_depth)
+#cum_depth = rain_df.rain_inches.sum()
+#print("real storm cumulative depth:", cum_depth)
 print("real storm average intensity:", average_intensity, "in/hr")
 print("real storm peak intensity:", peak_intensity, "in/hr")
 
@@ -49,16 +49,16 @@ print("SCS 1A average intensity:", scs1a_avg_intensity, "in/hr")
 print("SCS 1A peak intensity:", scs1a_peak_intensity, "in/hr")
 
 #plot
-plt.plot(real_elapsed, rain_df.cumulative_rain)
 plt.plot(scs2_elapsed, scs2_df.cum_rain_inches)
 plt.plot(scs1a_elapsed, scs1a_df.cum_rain_inches)
+plt.plot(real_elapsed, rain_df.cumulative_rain)
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
 plt.show()
 
-plt.plot(real_elapsed, real_intensity)
-plt.plot(scs2_elapsed, scs2_intensity)
-plt.plot(scs1a_elapsed, scs1a_intensity)
+plt.bar(real_elapsed, real_intensity)
+plt.bar(scs2_elapsed, scs2_intensity)
+plt.bar(scs1a_elapsed, scs1a_intensity)
 plt.ylabel("Rainfall Rate (inches/hour)")
 plt.xlabel("Elapsed time (hours)")
 plt.show()
