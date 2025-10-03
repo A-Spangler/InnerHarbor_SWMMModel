@@ -21,7 +21,7 @@ import matplotlib.patches as mpatches
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 # can use BE_nodes to plot a subset of locations. BE_nodes is sequential, upstream to downstream.
-def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes):
+def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes, name):
     processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(27, 5))
@@ -53,15 +53,16 @@ def plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes):
     ax1.set_xlabel('Time of Day')
     ax1.set_ylim(-0.05, 0.4)
     ax1.set_ylabel('depth (m)', color = 'darkblue')
-    ax1.set_title('SCS Type 1a Storm: Broadway East Flood Depths')
+    ax1.set_title(f'{name} Storm: J329 Depth')
     #ax1.legend()
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22_J329_BaseDepth.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_J329_BaseDepth.png'
+    plt.savefig(save_path)
 
 # plot flowrate over time for one node with inverted hyetograph, all scenarios (cms) (cms)
-def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
+def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios, name):
     processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -72,7 +73,7 @@ def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
         current_color = next(colors)
         ax1.plot(df_plot['timestamp'], df_plot['J338-S_flow'], label=scenario, color=current_color)
 
-    # plot rain on second axis as inverted.
+    # plot rain on second axis, inverted
     ax2 = ax1.twinx()
     ax2.bar(rain_df['dt'], rain_df['rain_cm'], color='slategrey', width=0.002)
     ax2.set_ylim(-0.05, 5)
@@ -82,16 +83,17 @@ def plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
     ax1.set_ylabel('Flow (cms)')
-    ax1.set_title('SCS Type 1a Storm: Broadway East Storm Flow')
+    ax1.set_title(f'{name} Storm: Broadway East Storm Flow')
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 flwrt_with_hyetograph_J338S.png')
+    save_path =  f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_flwrt_with_hyetograph_J338S.png'
+    plt.savefig(save_path)
 
 
 # plot depth over time for one node with inverted hyetograph, all scenarios (cms)
-def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
+def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios, name):
     processed_nodes_df['timestamp'] = pd.to_datetime(processed_nodes_df['timestamp'])
     rain_df['dt'] = pd.to_datetime(rain_df['dt'])
     fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -111,16 +113,16 @@ def plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios):
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
     ax1.set_xlabel('Time of Day')
     ax1.set_ylabel('Flow (cms)')
-    ax1.set_title('SCS Type 1a Storm: Broadway East Flood Depth')
+    ax1.set_title(f'{name} Storm: Broadway East Flood Depth')
     ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 depth_with_hyetograph_J338S.png')
-
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_depth_with_hyetograph_J338S.png'
+    plt.savefig(save_path)
 
 # plot max depths for one node, all scenarios (m)
-def plot_depth_barchart(processed_nodes_df, scenarios):
+def plot_depth_barchart(processed_nodes_df, scenarios, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue'])
     # scenarios = ('base', 'BGN', 'BGNx3', 'V', 'I', 'V+I')
@@ -131,16 +133,16 @@ def plot_depth_barchart(processed_nodes_df, scenarios):
 
     ax1.set_xlabel('Scenario')
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('SCS Type 1a Storm: Maximum Flood Depth in Broadway East')
+    ax1.set_title(f'{name} Storm: Maximum Flood Depth in Broadway East')
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 depth_barchart_J338S.png')
-
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_depth_barchart_J338S.png'
+    plt.savefig(save_path)
 
 # plot max flowrate for one node, all scenarios (cms)
-def plot_flowrt_barchart(processed_nodes_df, scenarios):
+def plot_flowrt_barchart(processed_nodes_df, scenarios, name):
     # bar chart showing max flowrate across scenarios
     fig, ax1 = plt.subplots(figsize=(10, 5))
     colors = itertools.cycle(['lightblue', 'cornflowerblue', 'royalblue', 'blue'])
@@ -151,14 +153,14 @@ def plot_flowrt_barchart(processed_nodes_df, scenarios):
 
     ax1.set_xlabel('Scenario')
     ax1.set_ylabel('Flowrate (cms)')
-    ax1.set_title('SCS Type 1a Storm: Maximum Storm Flow in Broadway East')
+    ax1.set_title(f'{name} Storm: Maximum Storm Flow in Broadway East')
     # ax1.legend(loc='center left')
     ax1.grid(axis='y')
     plt.tight_layout()
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 flwrt_barchart_J338S.png')
-
-def boxplot_max_depth(max_depth_df):
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_flwrt_barchart_J338S.png'
+    plt.savefig(save_path)
+def boxplot_max_depth(max_depth_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     x = max_depth_df['Base'], max_depth_df['V'], max_depth_df['I'], max_depth_df['V&I']
     labels = ['Base', 'V', 'I', 'V+I']
@@ -170,13 +172,14 @@ def boxplot_max_depth(max_depth_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('SCS Type 1a Storm: Maximum Flood Depths Across Baltimore Harbor')
+    ax1.set_title(f'{name} Storm: Maximum Flood Depths Across Baltimore Harbor')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 depth_boxplot_allnodes.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_depth_boxplot_allnodes.png'
+    plt.savefig(save_path)
 
-def boxplot_max_flow(max_flow_df):
+def boxplot_max_flow(max_flow_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     x = max_flow_df['Base'],  max_flow_df['V'], max_flow_df['I'], max_flow_df['V&I']
     labels = ['Base', 'V', 'I', 'V+I']
@@ -189,13 +192,14 @@ def boxplot_max_flow(max_flow_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Flow (cms)')
-    ax1.set_title('SCS Type 1a Storm: Maximum Flowrate Across Baltimore Harbor')
+    ax1.set_title(f'{name} Storm: Maximum Flowrate Across Baltimore Harbor')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 flow_boxplot_allnodes.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_flow_boxplot_allnodes.png'
+    plt.savefig(save_path)
 
-def boxplot_relative_depth(relative_depth_df):
+def boxplot_relative_depth(relative_depth_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     x = relative_depth_df['Base'],  relative_depth_df['V'], relative_depth_df['I'], relative_depth_df['V&I']
     labels = ['Base', 'V', 'I', 'V+I']
@@ -207,13 +211,14 @@ def boxplot_relative_depth(relative_depth_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Depth (m)')
-    ax1.set_title('SCS Type 1a Storm: Relative Change in Flood Depth')
+    ax1.set_title(f'{name} Storm: Relative Change in Flood Depth')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Boxplot_RelativeDepth.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_Boxplot_RelativeDepth.png'
+    plt.savefig(save_path)
 
-def boxplot_watersheds_relative_depth(relative_depth_df):
+def boxplot_watersheds_relative_depth(relative_depth_df, name):
     #make df long
     value_vars = ['Base', 'V', 'I', 'V&I']
     long_df = relative_depth_df.melt(
@@ -243,16 +248,17 @@ def boxplot_watersheds_relative_depth(relative_depth_df):
         showfliers=False
     )
     plt.ylabel('Relative Depth (m)')
-    plt.title('SCS Type 1a Storm: Relative Change in Max Flood Depth')
+    plt.title(f'{name} Storm: Relative Change in Max Flood Depth')
     plt.legend(title='Neighborhood', bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.xticks(rotation = 90)
     plt.tight_layout()
     plt.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 WatershedBoxplot_RelativeDepth.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_WatershedBoxplot_RelativeDepth.png'
+    plt.savefig(save_path)
 
 
-def boxplot_relative_flow(relative_flow_df):
+def boxplot_relative_flow(relative_flow_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     x = relative_flow_df['Base'], relative_flow_df['V'],  relative_flow_df['I'], relative_flow_df['V&I']
     labels = ['base', 'V', 'I', 'V+I']
@@ -264,13 +270,14 @@ def boxplot_relative_flow(relative_flow_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Flowrate (cms)')
-    ax1.set_title('SCS Type 1a Storm: Relative Change in Flowrate')
+    ax1.set_title(f'{name} Storm: Relative Change in Flowrate')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Boxplot_RelativeFlow.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_Boxplot_RelativeFlow.png'
+    plt.savefig(save_path)
 
-def boxplot_relative_veloc(relative_veloc_df):
+def boxplot_relative_veloc(relative_veloc_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     x = relative_veloc_df['Base'], relative_veloc_df['V'],  relative_veloc_df['I'], relative_veloc_df['V&I']
     labels = ['base', 'V', 'I', 'V+I']
@@ -282,14 +289,15 @@ def boxplot_relative_veloc(relative_veloc_df):
         patch.set_facecolor(color)
 
     ax1.set_ylabel('Relative Velocity (m/s)')
-    ax1.set_title('SCS Type 1a Storm: Relative Change in Flow Velocity')
+    ax1.set_title(f'{name} Storm: Relative Change in Flow Velocity')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/SCS1a_V22 Boxplot_RelativeVelocity.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/{name}_Boxplot_RelativeVelocity.png'
+    plt.savefig(save_path)
 
 
-def boxplot_relative_duration_above_curb(relative_duration_df):
+def boxplot_relative_duration_above_curb(relative_duration_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     labels = ['Base', 'V', 'I', 'V+I']
     colors = ['lightblue', 'cornflowerblue', 'royalblue', 'blue']
@@ -305,13 +313,14 @@ def boxplot_relative_duration_above_curb(relative_duration_df):
 
     ax1.set_ylabel('Time (min)')
     ax1.set_xlabel('Scenario')
-    ax1.set_title('SCS Type 1a Storm: Duration of Flooding Above Curb')
+    ax1.set_title(f'{name} Storm: Duration of Flooding Above Curb')
     plt.tight_layout()
     ax1.grid(axis='y')
     #plt.show()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 AboveCurb_allnodes.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_AboveCurb_allnodes.png'
+    plt.savefig(save_path)
 
-def depth_parallelcoord(relative_depth_df):
+def depth_parallelcoord(relative_depth_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     # Columns to plot (first is the class column)
     plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
@@ -332,18 +341,20 @@ def depth_parallelcoord(relative_depth_df):
     #plot
     pd.plotting.parallel_coordinates(relative_depth_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Depth (m)')
-    ax1.set_ylim(-0.15, 0.15)
-    ax1.set_title('SCS Type 1a Storm: Relative Improvement of Depth of Flooding')
+    ax1.set_title(f'{name} Storm: Relative Improvement of Depth of Flooding')
+    ax1.set_ylim(-0.15,0.15)
     ax1.grid(axis='y')
 
     # legend
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Relative_ParallelPlot_Depth.svg')
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Relative_ParallelPlot_Depth.png')
+    svg_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_Relative_ParallelPlot_Depth.svg'
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_Relative_ParallelPlot_Depth.png'
+    plt.savefig(svg_path)
+    plt.savefig(save_path)
 
-def volume_parallelcoord(relative_volume_df):
+def volume_parallelcoord(relative_volume_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     # Columns to plot (first is the class column)
     plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
@@ -364,16 +375,17 @@ def volume_parallelcoord(relative_volume_df):
     #plot
     pd.plotting.parallel_coordinates(relative_volume_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Flood volume (m\u00b3)')
-    ax1.set_title('SCS Type 1a Storm: Relative Improvement in Flood Volume')
+    ax1.set_title(f'{name} Storm: Relative Improvement in Flood Volume')
     ax1.grid(axis='y')
 
     # legend
     patches = [mpatches.Patch(color=colors[i], label=unique_neighborhoods[i]) for i in range(num_neigh)]
     ax1.legend(handles=patches, title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/SCS1a_V22 Relative_ParallelPlot_Volume.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/nodes/{name}_Relative_ParallelPlot_Volume.png'
+    plt.savefig(save_path)
 
-def veloc_parallelcoord(relative_veloc_df):
+def veloc_parallelcoord(relative_veloc_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 5))
     # Columns to plot (first is the class column)
     plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
@@ -398,48 +410,49 @@ def veloc_parallelcoord(relative_veloc_df):
     # plot
     pd.plotting.parallel_coordinates(relative_veloc_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Change in Velocity Relative to Base Scenario (m/s)')
-    ax1.set_title('SCS Type 1a Storm: Relative Change in Flood Velocity')
+    ax1.set_title(f'{name} Storm: Relative Change in Flood Velocity')
     ax1.grid(axis='y')
 
     ax1.legend(title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/SCS1a_V22 Relative_ParallelPlot_Veloc.png')
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/SCS1a_V22 Relative_ParallelPlot_Veloc.png'
+    plt.savefig(save_path)
 
 
 
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
-    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_simV22_AllNodes.csv', index_col=[0, 1])
-    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_MaxFlow.csv')
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_MaxDepth.csv')
-    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_DurationOverCurb.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
-    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
+    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_simV22_AllNodes.csv', index_col=[0, 1])
+    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_MaxFlow.csv')
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_MaxDepth.csv')
+    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_DurationOverCurb.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
+    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/rainfall/6_27_23_rain_df.csv')
-    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/SCS1a_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
-    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/1_9_2024_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
     #BE_nodes = ['J329-S_depth']
     BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
                 'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
-
+    storm_name = 'January 9, 2024'
     #execute, note 'relative' functions means the result is relative to base case
     #plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes)
     #plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios)
     #plot_depth_with_hyetograph(processed_nodes_df, rain_df, scenarios)
-    plot_flowrt_barchart(processed_nodes_df, scenarios)
-    plot_depth_barchart(processed_nodes_df, scenarios)
-    ##plot_duration_barchart(processed_nodes_df, scenarios) #TODO
-    boxplot_max_depth(max_depth_df)
-    boxplot_max_flow(max_flow_df)
-    boxplot_relative_depth(relative_depth_df)
-    boxplot_relative_flow(relative_flow_df)
-    boxplot_relative_veloc(relative_veloc_df)
-    boxplot_watersheds_relative_depth(relative_depth_df)
-    boxplot_relative_duration_above_curb(relative_duration_df)
-    depth_parallelcoord(relative_depth_df)
-    veloc_parallelcoord(relative_veloc_df)
-    volume_parallelcoord(relative_volume_df)
+    plot_flowrt_barchart(processed_nodes_df, scenarios, storm_name)
+    plot_depth_barchart(processed_nodes_df, scenarios, storm_name)
+    ##plot_duration_barchart(processed_nodes_df, scenarios, name) #TODO
+    boxplot_max_depth(max_depth_df, storm_name)
+    boxplot_max_flow(max_flow_df, storm_name)
+    boxplot_relative_depth(relative_depth_df, storm_name)
+    boxplot_relative_flow(relative_flow_df, storm_name)
+    boxplot_relative_veloc(relative_veloc_df, storm_name)
+    boxplot_watersheds_relative_depth(relative_depth_df, storm_name)
+    boxplot_relative_duration_above_curb(relative_duration_df, storm_name)
+    depth_parallelcoord(relative_depth_df, storm_name)
+    veloc_parallelcoord(relative_veloc_df, storm_name)
+    volume_parallelcoord(relative_volume_df, storm_name)
 

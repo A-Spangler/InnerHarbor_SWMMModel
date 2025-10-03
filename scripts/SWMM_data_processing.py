@@ -74,13 +74,13 @@ def run_pyswmm(inp_path, node_ids, link_ids):
     # define node neighborhood tuple
 node_neighborhood_df = pd.read_excel(
         '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
-        ' - Research/01 - BSEC Project/SWMM models copy/Node_Neighborhoods.xlsx')
+        ' - Research/01 - BSEC Project/01 - SWMM models copy/Node_Neighborhoods.xlsx')
 node_neighborhood = dict(zip(node_neighborhood_df['street_node_id'],zip(node_neighborhood_df['neighborhood'], node_neighborhood_df['historic_stream'])))
 
     # define node neighborhood tuple
 link_neighborhood_df = pd.read_excel(
         '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
-        ' - Research/01 - BSEC Project/SWMM models copy/Link_Neighborhoods.xlsx')
+        ' - Research/01 - BSEC Project/01 - SWMM models copy/Link_Neighborhoods.xlsx')
 link_neighborhood = dict(zip(link_neighborhood_df['link_id'],(link_neighborhood_df['neighborhood'])))
 
 
@@ -93,7 +93,7 @@ if __name__ == "__main__":
             print(f"Cleaning report file: {rpt_path}")
             clean_rpt_encoding(rpt_path)
 
-    print(node_neighborhood_df)
+    #print(node_neighborhood_df)
 
     #find street node names
     model_path = scenarios['Base']
@@ -122,12 +122,12 @@ if __name__ == "__main__":
     # combine and save nodes as a multiindex df
     processed_nodes_df = pd.concat(scenario_node_results, names=['scenario'])
     processed_nodes_df.index.set_names(['scenario', 'row'], inplace=True)
-    processed_nodes_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1a_simV22_AllNodes.csv')
+    processed_nodes_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_simV22_AllNodes.csv')
 
     # combine and save links as a multiindex df
     processed_links_df = pd.concat(scenario_link_results, names=['scenario'])
     processed_links_df.index.set_names(['scenario', 'row'], inplace=True)
-    processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/SCS1a_simV22_AllLinks.csv')
+    processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/1_9_2024_simV22_AllLinks.csv')
 
 
 # TODO: write a function to process subcatchments
