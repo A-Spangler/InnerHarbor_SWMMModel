@@ -122,12 +122,12 @@ if __name__ == "__main__":
     # combine and save nodes as a multiindex df
     processed_nodes_df = pd.concat(scenario_node_results, names=['scenario'])
     processed_nodes_df.index.set_names(['scenario', 'row'], inplace=True)
-    processed_nodes_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/1_9_2024_simV22_AllNodes.csv')
+    processed_nodes_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_simV22_AllNodes.csv')
 
     # combine and save links as a multiindex df
     processed_links_df = pd.concat(scenario_link_results, names=['scenario'])
     processed_links_df.index.set_names(['scenario', 'row'], inplace=True)
-    processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/1_9_2024_simV22_AllLinks.csv')
+    processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/SCS1_simV22_AllLinks.csv')
 
 
 # TODO: write a function to process subcatchments
