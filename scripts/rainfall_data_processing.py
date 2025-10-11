@@ -63,46 +63,68 @@ scs1a_avg_intensity = scs1a_intensity.mean()
 print("SCS 1A average intensity:", scs1a_avg_intensity, "in/hr")
 print("SCS 1A peak intensity:", scs1a_peak_intensity, "in/hr")
 
-#plot
+
+
+#plot together
+plt.plot(scs2_elapsed, scs2_df.cum_rain_inches, label = "scs2")
+plt.plot(scs1a_elapsed, scs1a_df.cum_rain_inches, label = "scs1A")
+plt.plot(real_elapsed, rain_df.cumulative_rain, label = "9/1/2021 storm")
+plt.legend()
+plt.ylabel("Cumulative depth (inches)")
+plt.xlabel("Elapsed time (hours)")
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6hr_sept12021.png')
+plt.close()
+
+plt.plot(scs2_elapsed, scs2_intensity, label = "scs2")
+plt.plot(scs1a_elapsed, scs1a_intensity, label = "scs1a")
+plt.plot(real_elapsed, real_intensity, label = "1/9/2024 storm")
+plt.legend()
+plt.ylabel("Cumulative depth (inches)")
+plt.xlabel("Elapsed time (hours)")
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6hr_sept12021_hyeto.png')
+plt.close()
+'''
+
+#plot individually
 plt.plot(scs2_elapsed, scs2_df.cum_rain_inches, label = "scs2")
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
-plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS2_24cum.svg')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS2_cum.svg')
 plt.close()
 
 #plt.plot(scs1_elapsed, scs1_df.cum_rain_inches, label = "scs1")
 plt.plot(scs1a_elapsed, scs1a_df.cum_rain_inches, label = "scs1A")
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
-plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS1A_24cum.svg')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS1A_cum.svg')
 plt.close()
 
 plt.plot(real_elapsed, rain_df.cumulative_rain, label = "1/9/2024 storm")
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
-plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6_27_2023_cum.svg')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/1_9_2024_cum.svg')
 plt.close()
 
 
 plt.plot(scs2_elapsed, scs2_intensity, label = "scs2")
+plt.ylim(0,4)
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
-plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS2_24hyeto.svg')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS2_hyeto.svg')
 plt.close()
 
-plt.plot(scs1a_elapsed, scs1a_intensity, label = "scs1")
+plt.plot(scs1a_elapsed, scs1a_intensity, label = "scs1a")
+plt.ylim(0,4)
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
-plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS1a_24hyeto.svg')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/SCS1a_hyeto.svg')
 plt.close()
 
-#plt.plot(scs1_elapsed, scs1_intensity, label = "scs1A")
+#plt.plot(scs1_elapsed, scs1_intensity, label = "scs1")
 plt.plot(real_elapsed, real_intensity, label = "1/9/2024 storm")
+plt.ylim(0,4)
 plt.ylabel("Cumulative depth (inches)")
 plt.xlabel("Elapsed time (hours)")
-plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6_27_2023_hyeto.svg')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/1_9_2024_hyeto.svg')
 plt.close()
-
-
-# SAVE AND EXPORT ------------------------------------------------------------------------------------------------------
-
+'''

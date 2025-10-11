@@ -342,7 +342,7 @@ def depth_parallelcoord(relative_depth_df, name):
     pd.plotting.parallel_coordinates(relative_depth_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Depth (m)')
     ax1.set_title(f'{name} Storm: Relative Improvement of Depth of Flooding')
-    ax1.set_ylim(-0.15,0.15)
+    ax1.set_ylim(-0.10,0.05)
     ax1.grid(axis='y')
 
     # legend
@@ -415,7 +415,7 @@ def veloc_parallelcoord(relative_veloc_df, name):
 
     ax1.legend(title='Neighborhood', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
-    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/SCS1a_V22 Relative_ParallelPlot_Veloc.png'
+    save_path = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/links/{name}_V22 Relative_ParallelPlot_Veloc.png'
     plt.savefig(save_path)
 
 
@@ -423,21 +423,21 @@ def veloc_parallelcoord(relative_veloc_df, name):
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     # load dfs
-    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_simV22_AllNodes.csv', index_col=[0, 1])
-    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_MaxFlow.csv')
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_MaxDepth.csv')
-    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_DurationOverCurb.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
-    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
+    processed_nodes_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
+    max_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_MaxFlow.csv')
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_MaxDepth.csv')
+    duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_DurationOverCurb.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_flow_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeFlow.csv').drop(['Unnamed: 0'],axis=1)
+    relative_duration_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeDurationOverCurb.csv').drop(['Unnamed: 0'],axis=1)
     rain_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/rainfall/6_27_23_rain_df.csv')
-    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/SCS1_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
-    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    relative_veloc_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x2_6_27_23_V22_AllNodes_RelativeVelocity.csv').drop(['Unnamed: 0'], axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
     #BE_nodes = ['J329-S_depth']
     BE_nodes = ['J1-S_depth', 'J260-S_depth','J801-S_depth', 'J280-S_depth', 'J278-S_depth', 'J329-S_depth',
                 'J338-S_depth', 'J253-S_depth', 'J366-S_depth', 'J361-S_depth', 'J637-S_depth']
 
-    storm_name = 'SCS1'
+    storm_name = 'x2_6_27_23'
     #execute, note 'relative' functions means the result is relative to base case
     #plot_basedepth_with_hyetograph(processed_nodes_df, rain_df, BE_nodes)
     #plot_flowrt_with_hyetograph(processed_nodes_df, rain_df, scenarios)

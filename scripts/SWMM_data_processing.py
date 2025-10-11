@@ -35,8 +35,10 @@ def list_street_links(model): #separate out above ground storage nodes from belo
     return street_link_names
 
 # TODO: restructure so separate Dfs come out for depth and flow, not combined df
+
+
 def run_pyswmm(inp_path, node_ids, link_ids):
-    output_nodes = {node: {'depth': [], 'flow': [], 'volume':[]} for node in node_ids}
+    output_nodes = {node: {'depth': [], 'flow': [], 'volume': []} for node in node_ids}
     output_links = {link: {'velocity': []} for link in link_ids}
 
 # run inp_path simulation, instantiate BE nodes
@@ -71,13 +73,14 @@ def run_pyswmm(inp_path, node_ids, link_ids):
         df_link_data = df_link_data.apply(pd.to_numeric, errors='coerce')
         return df_node_data, df_link_data
 
-    # define node neighborhood tuple
+
+# define node neighborhood tuple
 node_neighborhood_df = pd.read_excel(
         '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
         ' - Research/01 - BSEC Project/01 - SWMM models copy/Node_Neighborhoods.xlsx')
 node_neighborhood = dict(zip(node_neighborhood_df['street_node_id'],zip(node_neighborhood_df['neighborhood'], node_neighborhood_df['historic_stream'])))
 
-    # define node neighborhood tuple
+# define node neighborhood tuple
 link_neighborhood_df = pd.read_excel(
         '/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05'
         ' - Research/01 - BSEC Project/01 - SWMM models copy/Link_Neighborhoods.xlsx')
@@ -122,12 +125,12 @@ if __name__ == "__main__":
     # combine and save nodes as a multiindex df
     processed_nodes_df = pd.concat(scenario_node_results, names=['scenario'])
     processed_nodes_df.index.set_names(['scenario', 'row'], inplace=True)
-    processed_nodes_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/SCS1_simV22_AllNodes.csv')
+    processed_nodes_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x0.2_6_27_23_simV22_AllNodes.csv')
 
     # combine and save links as a multiindex df
     processed_links_df = pd.concat(scenario_link_results, names=['scenario'])
     processed_links_df.index.set_names(['scenario', 'row'], inplace=True)
-    processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/SCS1_simV22_AllLinks.csv')
+    processed_links_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x0.2_6_27_23_simV22_AllLinks.csv')
 
 
 # TODO: write a function to process subcatchments
