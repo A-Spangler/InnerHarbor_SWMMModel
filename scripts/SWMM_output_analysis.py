@@ -16,7 +16,7 @@ from SWMM_data_processing import link_neighborhood
 
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
-def find_max_depth(processed_df, node_neighborhood):
+def find_max_depth(processed_df, node_neighborhood, storm_name):
     # find maxes for each node depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
@@ -44,11 +44,13 @@ def find_max_depth(processed_df, node_neighborhood):
     relative_change_in_depth['neighborhood'] = max_depth_df['neighborhood']
     relative_change_in_depth['historic_stream'] = max_depth_df['historic_stream']
 
-    max_depth_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_MaxDepth.csv')
-    relative_change_in_depth.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeDepth.csv')
+    savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_MaxDepth.csv'
+    savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_RelativeDepth.csv'
+    max_depth_df.to_csv(savepath1)
+    relative_change_in_depth.to_csv(savepath2)
     return max_depth_df, relative_change_in_depth  # relative means relative to base case
 
-def find_max_flow(processed_df, node_neighborhood_df):
+def find_max_flow(processed_df, node_neighborhood_df, storm_name):
     # find maxes for each node flowrate depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
@@ -73,11 +75,13 @@ def find_max_flow(processed_df, node_neighborhood_df):
     relative_change_in_flow['node_id'] = max_flow_df['node_id']
     relative_change_in_flow['neighborhood'] = max_flow_df['neighborhood']
 
-    max_flow_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_MaxFlow.csv')
-    relative_change_in_flow.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeFlow.csv')
+    savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_MaxFlow.csv'
+    savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_RelativeFlow.csv'
+    max_flow_df.to_csv(savepath1)
+    relative_change_in_flow.to_csv(savepath2)
     return max_flow_df, relative_change_in_flow  # relative means relative to base case
 
-def find_max_vol(processed_df, node_neighborhood_df):
+def find_max_vol(processed_df, node_neighborhood_df, storm_name):
     # find maxes for each node flowrate depth, each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
@@ -102,11 +106,13 @@ def find_max_vol(processed_df, node_neighborhood_df):
     relative_change_in_vol['node_id'] = max_vol_df['node_id']
     relative_change_in_vol['neighborhood'] = max_vol_df['neighborhood']
 
-    max_vol_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_MaxVolume.csv')
-    relative_change_in_vol.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeVolume.csv')
+    savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_MaxVolume.csv'
+    savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_RelativeVolume.csv'
+    max_vol_df.to_csv(savepath1)
+    relative_change_in_vol.to_csv(savepath2)
     return max_vol_df, relative_change_in_vol  # relative means relative to base case
 
-def find_max_velocty(processed_links_df,link_neighborhood_df):
+def find_max_velocty(processed_links_df,link_neighborhood_df, storm_name):
     # find max velocity for each link
     max_veloc_df = processed_links_df.groupby(level=0).max()
 
@@ -130,12 +136,15 @@ def find_max_velocty(processed_links_df,link_neighborhood_df):
     relative_change_in_veloc['link_id'] = max_veloc_df['link_id']
     relative_change_in_veloc['neighborhood'] = max_veloc_df['neighborhood']
 
-    max_veloc_df.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x2_6_27_23_V22_AllNodes_MaxVelocity.csv')
-    relative_change_in_veloc.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x2_6_27_23_V22_AllNodes_RelativeVelocity.csv')
+
+    savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/{storm_name}_V22_AllNodes_MaxVelocity.csv'
+    savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/{storm_name}_V22_AllNodes_RelativeVelocity.csv'
+    max_veloc_df.to_csv(savepath1)
+    relative_change_in_veloc.to_csv(savepath2)
     return max_veloc_df, relative_change_in_veloc  # relative means relative to base case
 
 
-def time_above_curb(processed_nodes_df):
+def time_above_curb(processed_nodes_df, storm_name):
     threshold = 0.1524  # m (6 inches)
     timestep_min = 5    # 5 minutes per step, as per SWMM model structure
     col_order = ['node', 'Base', 'V', 'I', 'V+I']
@@ -163,8 +172,10 @@ def time_above_curb(processed_nodes_df):
     relative_duration = relative_duration.reindex(columns=col_order)
 
     #save
-    duration_result.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_DurationOverCurb.csv')
-    relative_duration.to_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_V22_AllNodes_RelativeDurationOverCurb.csv')
+    savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_DurationOverCurb.csv'
+    savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_RelativeDurationOverCurb.csv'
+    duration_result.to_csv(savepath1)
+    relative_duration.to_csv(savepath2)
 
     return relative_duration, duration_result
 
@@ -172,17 +183,18 @@ def time_above_curb(processed_nodes_df):
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     #load processed data
-    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2_6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
-    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x2_6_27_23_simV22_AllLinks.csv', index_col=[0, 1])
+    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x1depth_6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
+    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x1depth_6_27_23_simV22_AllLinks.csv', index_col=[0, 1])
 
+    storm_name = 'x1depth_6_27_23'
     #execute find max fxns
-    find_max_depth(processed_df, node_neighborhood)
-    find_max_flow(processed_df, node_neighborhood)
-    find_max_vol(processed_df, node_neighborhood)
-    find_max_velocty(processed_links_df, link_neighborhood)
+    find_max_depth(processed_df, node_neighborhood, storm_name)
+    find_max_flow(processed_df, node_neighborhood, storm_name)
+    find_max_vol(processed_df, node_neighborhood, storm_name)
+    find_max_velocty(processed_links_df, link_neighborhood, storm_name)
 
     # execute above curb fxn
-    time_above_curb(processed_df)
+    time_above_curb(processed_df, storm_name)
 
 
 

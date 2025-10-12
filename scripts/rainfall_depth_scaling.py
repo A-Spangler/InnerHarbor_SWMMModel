@@ -62,17 +62,18 @@ plt.xlabel("Elapsed Time (minutes)")
 plt.ylabel("Rainfall (inches)")
 plt.legend()
 plt.title("Cumulative Rainfall")
-plt.show()
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/incrdecr_cumulative.svg')
 
 
-plt.plot(real_time_elapsed, real_intensity, label = '6/27/2023')
-plt.plot(decr_time, decr_intensity, label = 'Smaller 6/27/2023')
-plt.plot(incr_time, incr_intensity, label = 'Larger 6/27/2023')
+
+plt.bar(real_time_elapsed, real_intensity, label = '6/27/2023')
+plt.bar(decr_time, decr_intensity, label = 'Smaller 6/27/2023')
+plt.bar(incr_time, incr_intensity, label = 'Larger 6/27/2023')
 plt.xlabel("Elapsed Time (minutes)")
 plt.ylabel("Rainfall intensity (inches / 5 min)")
 plt.legend()
 plt.title("Rainfall Hyetograph")
-plt.show()
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/incrdecr_hyeto.svg')
 
 #create dfs and save, creating HH:MM formatting for SWMM
 decr_df = pd.DataFrame()
