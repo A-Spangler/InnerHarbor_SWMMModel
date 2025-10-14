@@ -44,6 +44,7 @@ def find_max_depth(processed_df, node_neighborhood, storm_name):
     relative_change_in_depth['neighborhood'] = max_depth_df['neighborhood']
     relative_change_in_depth['historic_stream'] = max_depth_df['historic_stream']
 
+
     savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_MaxDepth.csv'
     savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_RelativeDepth.csv'
     max_depth_df.to_csv(savepath1)
@@ -183,10 +184,10 @@ def time_above_curb(processed_nodes_df, storm_name):
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     #load processed data
-    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x1depth_6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
-    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x1depth_6_27_23_simV22_AllLinks.csv', index_col=[0, 1])
+    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x2depth_6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
+    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/x2depth_6_27_23_simV22_AllLinks.csv', index_col=[0, 1])
 
-    storm_name = 'x1depth_6_27_23'
+    storm_name = 'x2depth_6_27_23'
     #execute find max fxns
     find_max_depth(processed_df, node_neighborhood, storm_name)
     find_max_flow(processed_df, node_neighborhood, storm_name)
