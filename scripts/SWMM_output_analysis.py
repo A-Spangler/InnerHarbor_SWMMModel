@@ -17,14 +17,14 @@ from SWMM_data_processing import link_neighborhood
 
 # DEFINITIONS ----------------------------------------------------------------------------------------------------------
 def find_max_depth(processed_df, node_neighborhood, storm_name):
-    # find maxes for each node depth, each scenario
+    # find maxes for each node depth across entire runtime, for each scenario
     grouped_df = processed_df.groupby(level=0).max()
 
     # select depth cols
     depth_cols = [col for col in grouped_df.columns if col.endswith('_depth')]
     max_depth_df = grouped_df[depth_cols]
 
-    # make scenarios to column headers
+    # make scenarios into column headers
     max_depth_df = max_depth_df.reset_index()
     max_depth_df = max_depth_df.set_index('scenario').T
     max_depth_df = max_depth_df.reset_index().rename(columns={'index': 'node_name'})
