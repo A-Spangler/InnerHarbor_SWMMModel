@@ -24,7 +24,7 @@ import matplotlib.patches as mpatches
 def depth_parallelcoord(max_depth_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 4))
     # Columns to plot (first is the class column)
-    plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
+    plot_cols = ['neighborhood', 'Base', 'I', 'V', 'V&I']
     # Get unique neighborhoods sorted
     unique_neighborhoods = sorted(max_depth_df['neighborhood'].unique())
     num_neigh = len(unique_neighborhoods)
@@ -36,7 +36,7 @@ def depth_parallelcoord(max_depth_df, name):
     pd.plotting.parallel_coordinates(max_depth_df[plot_cols], 'neighborhood', color=colors, ax=ax1)
     ax1.set_ylabel('Depth (m)')
     ax1.set_title(f'{name} Storm: Depth of Flooding')
-    ax1.set_ylim(0,0.9)
+    ax1.set_ylim(0,1.1)
     ax1.grid(axis='y')
 
     # legend
@@ -51,7 +51,7 @@ def depth_parallelcoord(max_depth_df, name):
 def volume_parallelcoord(max_volume_df, name):
     fig, ax1 = plt.subplots(figsize=(10, 4))
     # Columns to plot (first is the class column)
-    plot_cols = ['neighborhood', 'Base', 'V', 'I', 'V&I']
+    plot_cols = ['neighborhood', 'Base', 'I', 'V', 'V&I']
     # Get unique neighborhoods sorted
     unique_neighborhoods = sorted(max_volume_df['neighborhood'].unique())
     num_neigh = len(unique_neighborhoods)
@@ -84,12 +84,12 @@ def volume_parallelcoord(max_volume_df, name):
 if __name__ == "__main__":
     # load dfs
 
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x1depth_6_27_23_V22_AllNodes_MaxDepth.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x1depth_6_27_23_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x1depth_6_27_23_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
-    max_volume_df = pd.read_csv( '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/x1depth_6_27_23_V22_AllNodes_MaxVolume.csv').drop(['Unnamed: 0'], axis=1)
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_23_V22_AllNodes_MaxDepth.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_23_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_23_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    max_volume_df = pd.read_csv( '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_23_V22_AllNodes_MaxVolume.csv').drop(['Unnamed: 0'], axis=1)
 
-    storm_name = 'x1depth_6_27_23'
+    storm_name = '6_27_23'
     #execute, note 'relative' functions means the result is relative to base case
     depth_parallelcoord(max_depth_df, storm_name)
     volume_parallelcoord(relative_volume_df, storm_name)
