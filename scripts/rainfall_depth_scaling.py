@@ -1,14 +1,14 @@
 #ava Spangler
 #10/10/2025
-# comment our lines 11 and 12 to switch between cm for plotting and inches for SWMM model
+# comment out line 11 to switch between cm for plotting and inches for SWMM model
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-real_storm = pd.read_excel("/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_formatted.xlsx")
+real_storm = pd.read_excel("/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_all_timesteps.xlsx")
 
 # convert to centimeters for plotting
-#real_storm['cumulative_rain'] = real_storm['cumulative_rain'] * 2.54
+real_storm['cumulative_rain'] = real_storm['cumulative_rain'] * 2.54
 
 print(real_storm)
 #process real storm
@@ -20,8 +20,9 @@ real_intensity = np.gradient(real_storm.cumulative_rain,real_time_elapsed)
 peak_intensity = real_intensity.max()
 average_intensity = real_intensity.mean()
 print('real storm cumulative depth:', rain_cum_max,'unit')
-print("real storm average intensity:", average_intensity, "unit/time")
-print("real storm peak intensity:", peak_intensity, "unit/time")
+print("real storm average intensity:", average_intensity, "cm/min")
+print("real storm peak intensity:", peak_intensity, "cm/min")
+print("real storm peak intensity:", peak_intensity*60, "cm/hr")
 
 
 # interpolate to create cumulative distribution of half-depth storm
@@ -58,7 +59,7 @@ print('increased cumulative depth:', incr_storm_max,'unit')
 print("increased depth average intensity:", incr_average_intensity, "unit/time")
 print("increased depth peak intensity:", incr_peak_intensity, "unit")
 
-'''
+
 # plot
 plt.plot(real_time_elapsed, rain_cum, label = '6/27/2023')
 plt.plot(decr_time, decr_storm_rain, label = 'Smaller 6/27/2023')
@@ -67,7 +68,7 @@ plt.xlabel("Elapsed Time (minutes)")
 plt.ylabel("Rainfall (cm)")
 plt.legend()
 plt.title("Cumulative Rainfall")
-#plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6_27_23_incrdecr_cum.png')
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6_27_23_alltimesteps_incrdecr_cum.png')
 plt.close()
 plt.clf()
 
@@ -79,8 +80,8 @@ plt.xlabel("Elapsed Time (minutes)")
 plt.ylabel("Rainfall intensity (cm / min)")
 plt.legend()
 plt.title("Rainfall Hyetograph")
-#plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6_27_23_incrdecr_hyeto.png')
-'''
+plt.savefig('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/plots/rainfall/6_27_23_alltimesteps_incrdecr_hyeto.png')
+
 
 #create dfs and save, creating HH:MM formatting for SWMM
 decr_df = pd.DataFrame()
@@ -89,8 +90,7 @@ decr_df['rain_cumulative'] = decr_storm_rain
 hours = (decr_df['time_elapsed_minutes'] // 60).astype(int)
 minutes = (decr_df['time_elapsed_minutes'] % 60).astype(int)
 decr_df['elapsed_time_HHMM'] = hours.astype(str).str.zfill(2) + ':' + minutes.astype(str).str.zfill(2)
-print(decr_df.head())
-decr_df.to_excel(("/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_depthx0.5.xlsx"))
+#decr_df.to_excel(("/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_depthx0.5.xlsx"))
 
 incr_df = pd.DataFrame()
 incr_df['time_elapsed_minutes'] = incr_time.astype(int)
@@ -98,4 +98,4 @@ incr_df = incr_df.assign(time_elapsed_minutes=incr_time, rain_cumulative=incr_st
 hours = (incr_df['time_elapsed_minutes'] // 60).astype(int)
 minutes = (incr_df['time_elapsed_minutes'] % 60).astype(int)
 incr_df['elapsed_time_HHMM'] = hours.astype(str).str.zfill(2) + ':' + minutes.astype(str).str.zfill(2)
-incr_df.to_excel(("/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_depthx2.xlsx"))
+#incr_df.to_excel(("/Users/aas6791/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/05 - Research/01 - BSEC Project/04 - RainfallData/ProcessedStorms/2023June27_depthx2.xlsx"))

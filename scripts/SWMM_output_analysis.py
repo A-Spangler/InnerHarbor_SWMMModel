@@ -35,13 +35,14 @@ def find_max_depth(processed_df, node_neighborhood, storm_name):
     max_depth_df['historic_stream'] = max_depth_df['node_id'].map(lambda x: node_neighborhood[x][1])
     # TODO: rearrange order? order = ['col1', 'col2',...] df = df[order]
 
-    # Print maximum and average depth for each scenario in the original max_depth_df
+    #determine and print peak change in flood depth
     print("\nPeak Depths by Scenario:")
     for scenario in max_depth_df.columns[1:-3]:  # Skip node-related columns
         max_val = max_depth_df[scenario].max()
         max_node = max_depth_df.loc[max_depth_df[scenario].idxmax(), 'node_name']
         print(f"Scenario: {scenario}, Node: {max_node}, Peak Depth: {max_val:.3f} m")
 
+    # determine and print avg change in flood depth
     print("\nAverage Depths by Scenario:")
     for scenario in max_depth_df.columns[1:-3]:
         avg_val = max_depth_df[scenario].mean()
@@ -55,6 +56,41 @@ def find_max_depth(processed_df, node_neighborhood, storm_name):
     relative_change_in_depth['node_id'] = max_depth_df['node_id']
     relative_change_in_depth['neighborhood'] = max_depth_df['neighborhood']
     relative_change_in_depth['historic_stream'] = max_depth_df['historic_stream']
+
+    #determine and print peak change in flood depth
+    print("\nPeak Relative Change by Scenario:")
+    for scenario in relative_change_in_depth.columns[0:-4]:
+        # Find peak increase
+        incr = relative_change_in_depth[scenario].min()
+        incr_idx = relative_change_in_depth[scenario].idxmin()
+        incr_node = relative_change_in_depth.loc[incr_idx, 'node_name']
+
+        # Find base depth at that node for percentage calculation
+        base_depth_incr = max_depth_df.loc[incr_idx, 'Base']
+        pct_change_incr = (incr / base_depth_incr * 100) if base_depth_incr > 0 else float('inf')
+
+        # Find peak absolute change
+        abs_vals = relative_change_in_depth[scenario].abs()
+        idx_abs_max = abs_vals.idxmax()
+        max_val = relative_change_in_depth.loc[idx_abs_max, scenario]
+        max_node = relative_change_in_depth.loc[idx_abs_max, 'node_name']
+
+        # Find base depth for peak absolute change node
+        base_depth_abs = max_depth_df.loc[idx_abs_max, 'Base']
+        pct_change_abs = (max_val / base_depth_abs * 100) if base_depth_abs > 0 else float('inf')
+
+        print(f"Scenario: {scenario}")
+        print(f"  Peak Absolute Change: {max_val:.3f} m at {max_node} (Base: {base_depth_abs:.3f} m, Change: {pct_change_abs:.1f}%)")
+        print(f"  Peak Increase: {incr:.3f} m at {incr_node} (Base: {base_depth_incr:.3f} m, Change: {pct_change_incr:.1f}%)")
+
+# this line does nothing and can be calculated from the averages determined for each scenario above ( as %)
+#    print("\nAverage Relative Change by Scenario (:")
+#    for scenario in relative_change_in_depth.columns[0:-4]:
+#        col_data = relative_change_in_depth[scenario].copy()
+#        col_data[col_data > 0] = float('nan')
+#        avg_neg = col_data.mean()
+#        avg_signed_change = relative_change_in_depth[scenario].mean()
+#        print(f"Scenario: {scenario}, avg: {avg_signed_change}, Average decrease (remove incr locations): {avg_neg:} m")
 
     savepath1 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_MaxDepth.csv'
     savepath2 = f'/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/{storm_name}_V22_AllNodes_RelativeDepth.csv'
