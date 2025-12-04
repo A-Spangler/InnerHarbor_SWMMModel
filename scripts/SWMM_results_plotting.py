@@ -72,12 +72,12 @@ def volume_parallelcoord(max_volume_df, name):
 if __name__ == "__main__":
     # load dfs
 
-    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/0.5x_fullstorm_6_27_23_V22_AllNodes_MaxDepth.csv')
-    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/0.5x_fullstorm_6_27_23_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
-    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/0.5x_fullstorm_6_27_23_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
-    max_volume_df = pd.read_csv( '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/0.5x_fullstorm_6_27_23_V22_AllNodes_MaxVolume.csv').drop(['Unnamed: 0'], axis=1)
+    max_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/2x_fullstorm_6_27_23_V22_AllNodes_MaxDepth.csv')
+    relative_depth_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/2x_fullstorm_6_27_23_V22_AllNodes_RelativeDepth.csv').drop(['Unnamed: 0'],axis=1)
+    relative_volume_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/2x_fullstorm_6_27_23_V22_AllNodes_RelativeVolume.csv').drop(['Unnamed: 0'], axis=1)
+    max_volume_df = pd.read_csv( '/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/2x_fullstorm_6_27_23_V22_AllNodes_MaxVolume.csv').drop(['Unnamed: 0'], axis=1)
 
-    storm_name = '0.5x_fullstorm_6_27_23'
+    storm_name = '2x_fullstorm_6_27_23'
     #execute, note 'relative' functions means the result is relative to base case
     depth_parallelcoord(relative_depth_df, storm_name)
     volume_parallelcoord(relative_volume_df, storm_name)

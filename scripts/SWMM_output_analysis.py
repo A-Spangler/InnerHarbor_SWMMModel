@@ -229,10 +229,10 @@ def time_above_curb(processed_nodes_df, storm_name):
 # EXECUTION ------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     #load processed data
-    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
-    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/6_27_23_simV22_AllLinks.csv', index_col=[0, 1])
+    processed_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/nodes/2x_fullstorm_6_27_23_simV22_AllNodes.csv', index_col=[0, 1])
+    processed_links_df = pd.read_csv('/Users/aas6791/PycharmProject/InnerHarborSWMM_experiment/processed/links/2x_fullstorm_6_27_23_simV22_AllLinks.csv', index_col=[0, 1])
 
-    storm_name = '6_27_23'
+    storm_name = '2x_fullstorm_6_27_23'
     #execute find max fxns
     find_max_depth(processed_df, node_neighborhood, storm_name)
     find_max_flow(processed_df, node_neighborhood, storm_name)

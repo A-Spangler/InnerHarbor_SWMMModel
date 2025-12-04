@@ -42,7 +42,7 @@
 40,J34-S_depth,Base,0,0
 41,J361-S_depth,Base,10,50
 42,J366-S_depth,Base,0,0
-43,J385-S_depth,Base,32,160
+43,J385-S_depth,Base,33,165
 44,J3-S_depth,Base,1,5
 45,J413-S_depth,Base,2,10
 46,J421-S_depth,Base,17,85
@@ -434,7 +434,7 @@
 432,J460-S_depth,V&I,0,0
 433,J461-S_depth,V&I,0,0
 434,J46-S_depth,V&I,0,0
-435,J471-S_depth,V&I,17,85
+435,J471-S_depth,V&I,16,80
 436,J480-S_depth,V&I,9,45
 437,J484-S_depth,V&I,7,35
 438,J491-S_depth,V&I,2,10
